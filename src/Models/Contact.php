@@ -1,0 +1,53 @@
+<?php
+
+namespace TomatoPHP\TomatoCrm\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property integer $id
+ * @property integer $type_id
+ * @property integer $status_id
+ * @property string $name
+ * @property string $email
+ * @property string $phone
+ * @property string $subject
+ * @property string $message
+ * @property boolean $active
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Status $status
+ * @property Type $type
+ * @property ContactsMeta[] $contactsMetas
+ */
+class Contact extends Model
+{
+    /**
+     * @var array
+     */
+    protected $fillable = ['type_id', 'status_id', 'name', 'email', 'phone', 'subject', 'message', 'active', 'created_at', 'updated_at'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo('TomatoPHP\TomatoCrm\Models\Status');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo('TomatoPHP\TomatoCrm\Models\Type');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contactsMetas()
+    {
+        return $this->hasMany('TomatoPHP\TomatoCrm\Models\ContactsMeta');
+    }
+}

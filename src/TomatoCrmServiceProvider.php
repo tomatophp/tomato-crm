@@ -1,8 +1,10 @@
 <?php
 
-namespace Tomatophp\TomatoCrm;
+namespace TomatoPHP\TomatoCrm;
 
 use Illuminate\Support\ServiceProvider;
+use TomatoPHP\TomatoCrm\Menus\AccountMenu;
+use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
 
 
 class TomatoCrmServiceProvider extends ServiceProvider
@@ -11,43 +13,45 @@ class TomatoCrmServiceProvider extends ServiceProvider
     {
         //Register generate command
         $this->commands([
-           \Tomatophp\TomatoCrm\Console\TomatoCrmInstall::class,
+           \TomatoPHP\TomatoCrm\Console\TomatoCrmInstall::class,
         ]);
- 
+
         //Register Config file
         $this->mergeConfigFrom(__DIR__.'/../config/tomato-crm.php', 'tomato-crm');
- 
+
         //Publish Config
         $this->publishes([
            __DIR__.'/../config/tomato-crm.php' => config_path('tomato-crm.php'),
         ], 'tomato-crm-config');
- 
+
         //Register Migrations
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
- 
+
         //Publish Migrations
         $this->publishes([
            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'tomato-crm-migrations');
         //Register views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'tomato-crm');
- 
+
         //Publish Views
         $this->publishes([
            __DIR__.'/../resources/views' => resource_path('views/vendor/tomato-crm'),
         ], 'tomato-crm-views');
- 
+
         //Register Langs
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'tomato-crm');
- 
+
         //Publish Lang
         $this->publishes([
            __DIR__.'/../resources/lang' => app_path('lang/vendor/tomato-crm'),
         ], 'tomato-crm-lang');
- 
+
         //Register Routes
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
- 
+
+        TomatoMenuRegister::registerMenu(AccountMenu::class);
+
     }
 
     public function boot(): void
