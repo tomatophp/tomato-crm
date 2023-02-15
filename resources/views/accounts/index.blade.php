@@ -13,15 +13,36 @@
         <div class="mx-auto">
             @if(\TomatoPHP\TomatoCrm\Models\Account::count())
             <x-splade-table :for="$table" striped>
+                <x-splade-cell last_login>
+                    @if($item->last_login)
+                       {{  $item->last_login->diffForHumans() }}
+                    @else
+                        -
+                    @endif
+                </x-splade-cell>
+                <x-splade-cell activated>
+                    @if($item->activated)
+                        <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                    @else
+                        <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                    @endif
+                </x-splade-cell>
+                <x-splade-cell blocked>
+                    @if($item->blocked)
+                        <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                    @else
+                        <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                    @endif
+                </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
-                        <Link href="/admin/accounts/{{ $item->id }}" class="px-2 text-blue-500">
+                        <Link href="/admin/accounts/{{ $item->id }}" class="px-2 text-blue-500" modal>
                             <div class="flex justify-start space-x-2">
                                 <x-heroicon-s-eye class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
                                 <span>{{trans('tomato-admin::global.crud.view')}}</span>
                             </div>
                         </Link>
-                        <Link href="/admin/accounts/{{ $item->id }}/edit" class="px-2 text-yellow-400" slideover>
+                        <Link href="/admin/accounts/{{ $item->id }}/edit" class="px-2 text-yellow-400">
                             <div class="flex justify-start space-x-2">
                                 <x-heroicon-s-pencil class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
                                 <span>{{trans('tomato-admin::global.crud.edit')}}</span>

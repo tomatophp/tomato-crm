@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.view')}} {{ __('Account') }} #{{$model->id}}</h1>
 
     <div class="flex flex-col space-y-4">
-        
+
           <div class="flex justify-between">
               <div>
                   <h3 class="text-lg font-bold">
@@ -55,20 +55,6 @@
               </div>
           </div>
 
-          
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Otp code')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->otp_code}}
-                  </h3>
-              </div>
-          </div>
-
           <div class="flex justify-between">
               <div>
                   <h3 class="text-lg font-bold">
@@ -77,12 +63,12 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->last_login}}
+                      {{ $model->last_login->diffForHumans() }}
                   </h3>
               </div>
           </div>
 
-          
+
           <div class="flex justify-between">
               <div>
                   <h3 class="text-lg font-bold">
@@ -117,7 +103,11 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->login}}
+                      @if($model->blocked)
+                          <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                      @else
+                          <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                      @endif
                   </h3>
               </div>
           </div>
@@ -130,7 +120,11 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->activated}}
+                      @if($model->activated)
+                          <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                      @else
+                          <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                      @endif
                   </h3>
               </div>
           </div>
@@ -143,7 +137,11 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->blocked}}
+                      @if($model->blocked)
+                          <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                      @else
+                          <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                      @endif
                   </h3>
               </div>
           </div>

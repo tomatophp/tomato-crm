@@ -5,6 +5,12 @@
 
     <x-splade-form :default="['loginBy' => 'email']" class="flex flex-col space-y-4" action="{{route('admin.accounts.store')}}" method="post">
 
+        <x-splade-select label="{{__('Content Type')}}" placeholder="Post, Page, Ads" name="type_id" choices>
+            @foreach($types as $type)
+                <option value="{{$type->id}}">{{$type->name}}</option>
+            @endforeach
+        </x-splade-select>
+
         <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="Name" />
         <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="Email" />
         <x-tomato-tel label="{{__('Phone')}}" name="phone" type="tel"  placeholder="Phone" />

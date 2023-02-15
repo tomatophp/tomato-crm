@@ -8,6 +8,13 @@
         <div class="mx-auto">
             @if(\TomatoPHP\TomatoCrm\Models\Contact::count())
             <x-splade-table :for="$table" striped>
+                <x-splade-cell active>
+                    @if($item->active)
+                        <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                    @else
+                        <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
+                    @endif
+                </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
                         <Link href="/admin/contacts/{{ $item->id }}" class="px-2 text-blue-500" modal>

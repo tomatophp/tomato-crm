@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('type_id')->nullable()->constrained('types');
+
             $table->string('name')->nullable();
             $table->string('username')->unique();
             $table->string('loginBy')->default('email')->nullable();

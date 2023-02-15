@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property AccountsMeta[] $accountsMetas
  * @property Activity[] $activities
  * @property Comment[] $comments
+ * @property Model meta($key, $value)
  * @property Location[] $locations
  */
 class Account extends Model
@@ -33,8 +34,39 @@ class Account extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'username', 'loginBy', 'address', 'password', 'otp_code', 'otp_activated_at', 'last_login', 'agent', 'host', 'attempts', 'login', 'activated', 'blocked', 'deleted_at', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'type_id',
+        'name',
+        'username',
+        'loginBy',
+        'address',
+        'password',
+        'otp_code',
+        'otp_activated_at',
+        'last_login',
+        'agent',
+        'host',
+        'attempts',
+        'login',
+        'activated',
+        'blocked',
+        'deleted_at',
+        'created_at',
+        'updated_at'
+    ];
 
+    protected $casts = [
+        'login' => 'boolean',
+        'activated' => 'boolean',
+        'blocked' => 'boolean',
+    ];
+    protected $dates = [
+        'deleted_at',
+        'created_at',
+        'updated_at',
+        'otp_activated_at',
+        'last_login',
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -43,6 +75,20 @@ class Account extends Model
         return $this->hasMany('TomatoPHP\TomatoCrm\Models\AccountsMeta');
     }
 
+    /**
+     * @param string $key
+     * @param string|null $value
+     * @return Model|string
+     */
+    public function meta(string $key, string|null $value=null): Model|string
+    {
+        if($value){
+            return $this->accountsMetas()->updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+        else {
+            return $this->accountsMetas()->where('key', $key)->first()?->value;
+        }
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

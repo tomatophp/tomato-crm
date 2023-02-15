@@ -58,10 +58,6 @@ class ContactTable extends AbstractTable
             ->export()
             ->defaultSort('id')
             ->column(
-                key: 'id',
-                label: __('Id'),
-                sortable: true)
-            ->column(
                 key: 'type.name',
                 label: __('Type'),
                 sortable: true,
@@ -76,20 +72,8 @@ class ContactTable extends AbstractTable
                 label: __('Name'),
                 sortable: true)
             ->column(
-                key: 'email',
-                label: __('Email'),
-                sortable: true)
-            ->column(
-                key: 'phone',
-                label: __('Phone'),
-                sortable: true)
-            ->column(
                 key: 'subject',
                 label: __('Subject'),
-                sortable: true)
-            ->column(
-                key: 'message',
-                label: __('Message'),
                 sortable: true)
             ->column(
                 key: 'active',

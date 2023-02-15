@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\SpladeTable;
+use TomatoPHP\TomatoCategory\Models\Type;
 
 class AccountTable extends AbstractTable
 {
@@ -56,11 +57,10 @@ class AccountTable extends AbstractTable
                 confirm: true
             )
             ->export()
+            ->selectFilter('type_id',
+                options:Type::where('for', 'accounts')->get()->pluck('name', 'id')->toArray(),
+                label: __('Type'))
             ->defaultSort('id')
-            ->column(
-                key: 'id',
-                label: __('Id'),
-                sortable: true)
             ->column(
                 key: 'name',
                 label: __('Name'),
@@ -78,28 +78,8 @@ class AccountTable extends AbstractTable
                 label: __('Address'),
                 sortable: true)
             ->column(
-                key: 'otp_code',
-                label: __('Otp code'),
-                sortable: true)
-            ->column(
                 key: 'last_login',
                 label: __('Last login'),
-                sortable: true)
-            ->column(
-                key: 'agent',
-                label: __('Agent'),
-                sortable: true)
-            ->column(
-                key: 'host',
-                label: __('Host'),
-                sortable: true)
-            ->column(
-                key: 'attempts',
-                label: __('Attempts'),
-                sortable: true)
-            ->column(
-                key: 'login',
-                label: __('Login'),
                 sortable: true)
             ->column(
                 key: 'activated',

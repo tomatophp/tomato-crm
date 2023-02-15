@@ -22,6 +22,9 @@ class AccountsMeta extends Model
      */
     protected $fillable = ['account_id', 'model_id', 'model_type', 'key', 'value', 'created_at', 'updated_at'];
 
+    protected $casts = [
+        'value' => 'array',
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
