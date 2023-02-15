@@ -1,4 +1,6 @@
-# Tomato crm
+![Screenshot](https://github.com/tomatophp/tomato-crm/blob/master/art/screenshot.png)
+
+# Tomato CRM
 
 full accounts manager with API/Notifications/Contacts to manage your contacts and accounts
 
@@ -41,11 +43,11 @@ php artisan vendor:publish --tag="tomato-crm-migrations"
 
 ## Support
 
-you can join our discord server to get support [TomatoPHP](https://discord.gg/Xqmt35Uh)
+you can join our discord server to get support [TomatoPHP](https://discord.gg/VZc8nBJ3ZU)
 
 ## Docs
 
-you can check docs of this package on [Docs](https://docs.tomatophp.com/plugins/laravel-package-generator)
+you can check docs of this package on [Docs](https://docs.tomatophp.com/plugins/tomato-crm)
 
 ## Changelog
 

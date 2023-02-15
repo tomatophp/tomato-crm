@@ -34,6 +34,8 @@
     "require": {
         "php": "^8.0.2",
         "tomatophp/console-helpers": "^1.0",
+        "tomatophp/tomato-admin": "^1.0",
+        "tomatophp/tomato-components": "^1.0",
         "tomatophp/tomato-category": "^1.0"
     }
 }
