@@ -59,7 +59,7 @@ Please see [SECURITY](SECURITY.md) for more information about security.
 
 ## Credits
 
-- [Tomatophp](mailto:info@3x1.io)
+- [Fady Mondy](https://www.github.com/3x1io)
 
 ## License
 

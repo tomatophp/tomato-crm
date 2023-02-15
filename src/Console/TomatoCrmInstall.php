@@ -42,6 +42,6 @@ class TomatoCrmInstall extends Command
         $this->yarnCommand(['build']);
         $this->artisanCommand(["migrate"]);
         $this->artisanCommand(["optimize:clear"]);
-        $this->info('tomatoCrm installed successfully.');
+        $this->info('Tomato Crm installed successfully.');
     }
 }
