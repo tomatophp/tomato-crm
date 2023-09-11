@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('loginBy')->default('email')->nullable();
             $table->text('address')->nullable();
+            $table->string('lang', 10)->nullable();
 
             //Login
             $table->string('password')->nullable();
@@ -29,12 +30,14 @@ return new class extends Migration
             $table->dateTime('last_login')->nullable();
             $table->longText('agent')->nullable();
             $table->string('host')->nullable();
-            $table->integer('attempts')->default(0)->nullable();
 
             //Options
-            $table->boolean('login')->default(0)->nullable();
-            $table->boolean('activated')->default(0)->nullable();
-            $table->boolean('blocked')->default(0)->nullable();
+            $table->boolean('is_login')->default(0)->nullable();
+            $table->boolean('is_active')->default(false);
+            $table->boolean('is_notification_active')->default(true);
+
+            //Payments
+            $table->decimal('balance')->default(0.00);
 
             $table->softDeletes();
             $table->timestamps();

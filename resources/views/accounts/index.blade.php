@@ -1,34 +1,33 @@
 <x-tomato-admin-layout>
-    <x-slot name="header">
+    <x-slot:header>
         {{ __('Account') }}
-    </x-slot>
-    <x-slot name="headerBody">
-        <Link  href="/admin/accounts/create" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action">
+    </x-slot:header>
+    <x-slot:buttons>
+        <x-tomato-admin-button :modal="true" :href="route('admin.accounts.create')" type="link">
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Account')}}
-        </Link>
-    </x-slot>
+        </x-tomato-admin-button>
+    </x-slot:buttons>
 
 
     <div class="pb-12" v-cloak>
         <div class="mx-auto">
-            @if(\TomatoPHP\TomatoCrm\Models\Account::count())
             <x-splade-table :for="$table" striped>
+                <x-splade-cell username>
+                    @if($item->loginBy === 'email')
+                        <x-tomato-admin-row table type="email" :value="$item->username" />
+                    @else
+                        <x-tomato-admin-row table type="tel" :value="$item->username" />
+                    @endif
+                </x-splade-cell>
                 <x-splade-cell last_login>
                     @if($item->last_login)
-                       {{  $item->last_login->diffForHumans() }}
+                        {{  $item->last_login->diffForHumans() }}
                     @else
                         -
                     @endif
                 </x-splade-cell>
-                <x-splade-cell activated>
-                    @if($item->activated)
-                        <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
-                    @else
-                        <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
-                    @endif
-                </x-splade-cell>
-                <x-splade-cell blocked>
-                    @if($item->blocked)
+                <x-splade-cell is_active>
+                    @if($item->is_active)
                         <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
                     @else
                         <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
@@ -36,63 +35,36 @@
                 </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
-                        <Link href="/admin/accounts/{{ $item->id }}" class="px-2 text-blue-500" modal>
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-eye class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{trans('tomato-admin::global.crud.view')}}</span>
-                            </div>
-                        </Link>
-                        <Link href="/admin/accounts/{{ $item->id }}/edit" class="px-2 text-yellow-400">
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-pencil class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{trans('tomato-admin::global.crud.edit')}}</span>
-                            </div>
-                        </Link>
-                        <Link href="/admin/accounts/{{ $item->id }}"
-                              confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
-                              confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
-                              confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
-                              cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
-                              class="px-2 text-red-500"
-                              method="delete"
-
+                        <x-tomato-admin-button danger modal type="icon" :href="route('admin.accounts.password', $item->id)" title="{{__('Change Password')}}">
+                            <x-heroicon-s-lock-closed class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button  modal type="icon" :href="route('admin.accounts.notifications', $item->id)" title="{{__('Send Notification')}}">
+                            <x-heroicon-s-bell class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button warning  modal type="icon" :href="route('admin.locations.create',['account_id' =>  $item->id])" title="{{__('Add Address')}}">
+                            <x-heroicon-s-map-pin class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button success modal type="icon" :href="route('admin.accounts.show', $item->id)" title="{{trans('tomato-admin::global.crud.view')}}">
+                            <x-heroicon-s-eye class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button warning modal type="icon" :href="route('admin.accounts.edit', $item->id)" title="{{trans('tomato-admin::global.crud.edit')}}">
+                            <x-heroicon-s-pencil class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button type="icon"
+                                               :href="route('admin.accounts.destroy', $item->id)"
+                                               title="{{trans('tomato-admin::global.crud.edit')}}"
+                                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                                               class="px-2 text-red-500"
+                                               method="delete"
                         >
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-trash class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{trans('tomato-admin::global.crud.delete')}}</span>
-                            </div>
-                        </Link>
+                            <x-heroicon-s-trash class="h-6 w-6"/>
+                        </x-tomato-admin-button>
                     </div>
                 </x-splade-cell>
             </x-splade-table>
-            @else
-                <div class="relative text-center">
-                    <div class="flex items-center justify-center">
-                        <div
-                            class="flex flex-col items-center justify-center flex-1 p-6 mx-auto space-y-6 text-center bg-white filament-tables-empty-state dark:bg-gray-800 rounded-lg shadow-sm">
-                            <div
-                                class="flex items-center justify-center w-16 h-16 rounded-full text-primary-500 bg-primary-50 dark:bg-gray-700">
-                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                     stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </div>
-
-                            <div class="max-w-md space-y-1">
-                                <h2 class="text-xl font-bold tracking-tight filament-tables-empty-state-heading dark:text-white">
-                                    {{ trans('tomato-admin::global.empty') }}
-                                </h2>
-
-                                <p
-                                    class="text-sm font-medium text-gray-500 whitespace-normal filament-tables-empty-state-description dark:text-gray-400">
-
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 </x-tomato-admin-layout>

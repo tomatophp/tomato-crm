@@ -60,7 +60,9 @@ class LocationTable extends AbstractTable
             ->column(
                 key: 'id',
                 label: __('Id'),
-                sortable: true)
+                sortable: true,
+                hidden: true
+            )
             ->column(
                 key: 'account.name',
                 label: __('Account'),
@@ -71,48 +73,16 @@ class LocationTable extends AbstractTable
                 label: __('Street'),
                 sortable: true)
             ->column(
-                key: 'area',
+                key: 'area.name',
                 label: __('Area'),
                 sortable: true)
             ->column(
-                key: 'city',
+                key: 'city.name',
                 label: __('City'),
                 sortable: true)
             ->column(
-                key: 'country',
+                key: 'country.name',
                 label: __('Country'),
-                sortable: true)
-            ->column(
-                key: 'home_number',
-                label: __('Home number'),
-                sortable: true)
-            ->column(
-                key: 'flat_number',
-                label: __('Flat number'),
-                sortable: true)
-            ->column(
-                key: 'floor_number',
-                label: __('Floor number'),
-                sortable: true)
-            ->column(
-                key: 'mark',
-                label: __('Mark'),
-                sortable: true)
-            ->column(
-                key: 'map_url',
-                label: __('Map url'),
-                sortable: true)
-            ->column(
-                key: 'note',
-                label: __('Note'),
-                sortable: true)
-            ->column(
-                key: 'lat',
-                label: __('Lat'),
-                sortable: true)
-            ->column(
-                key: 'lng',
-                label: __('Lng'),
                 sortable: true)
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->paginate(15);

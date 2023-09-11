@@ -7,7 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use TomatoPHP\TomatoPHP\Services\Tomato;
+use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoCrm\Models\Activity;
 
 class ActivityController extends Controller
 {
@@ -15,10 +16,11 @@ class ActivityController extends Controller
      * @param Request $request
      * @return View
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
         return Tomato::index(
             request: $request,
+            model: Activity::class,
             view: 'tomato-crm::activities.index',
             table: \TomatoPHP\TomatoCrm\Tables\ActivityTable::class,
         );
@@ -50,7 +52,7 @@ class ActivityController extends Controller
      * @param \TomatoPHP\TomatoCrm\Http\Requests\Activity\ActivityStoreRequest $request
      * @return RedirectResponse
      */
-    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Activity\ActivityStoreRequest $request): RedirectResponse
+    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Activity\ActivityStoreRequest $request): RedirectResponse|JsonResponse
     {
         $response = Tomato::store(
             request: $request,
@@ -66,7 +68,7 @@ class ActivityController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Activity $model
      * @return View
      */
-    public function show(\TomatoPHP\TomatoCrm\Models\Activity $model): View
+    public function show(\TomatoPHP\TomatoCrm\Models\Activity $model): View|JsonResponse
     {
         return Tomato::get(
             model: $model,
@@ -91,7 +93,7 @@ class ActivityController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Activity $user
      * @return RedirectResponse
      */
-    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Activity\ActivityUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Activity $model): RedirectResponse
+    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Activity\ActivityUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Activity $model): RedirectResponse|JsonResponse
     {
         $response = Tomato::update(
             request: $request,
@@ -107,12 +109,14 @@ class ActivityController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Activity $model
      * @return RedirectResponse
      */
-    public function destroy(\TomatoPHP\TomatoCrm\Models\Activity $model): RedirectResponse
+    public function destroy(\TomatoPHP\TomatoCrm\Models\Activity $model): RedirectResponse|JsonResponse
     {
-        return Tomato::destroy(
+        $response = Tomato::destroy(
             model: $model,
             message: __('Activity deleted successfully'),
             redirect: 'admin.activities.index',
         );
+
+        return $response->redirect;
     }
 }

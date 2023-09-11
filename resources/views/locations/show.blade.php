@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.view')}} {{ __('Location') }} #{{$model->id}}</h1>
 
     <div class="flex flex-col space-y-4">
-        
+
           <div class="flex justify-between">
               <div>
                   <h3 class="text-lg font-bold">
@@ -37,7 +37,7 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->area}}
+                      {{ $model->area?->name}}
                   </h3>
               </div>
           </div>
@@ -50,7 +50,7 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->city}}
+                      {{ $model->city?->name}}
                   </h3>
               </div>
           </div>
@@ -63,7 +63,7 @@
               </div>
               <div>
                   <h3 class="text-lg">
-                      {{ $model->country}}
+                      {{ $model->country?->name}}
                   </h3>
               </div>
           </div>

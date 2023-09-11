@@ -30,9 +30,8 @@ class AccountStoreRequest extends FormRequest
             'loginBy' => 'required|max:255|string',
             'address' => 'nullable|max:65535',
             'password' => 'nullable|max:255|confirmed|min:6',
-            'login' => 'nullable|boolean',
-            'activated' => 'nullable|boolean',
-            'blocked' => 'nullable|boolean'
+            'is_login' => 'nullable|boolean',
+            'is_active' => 'nullable|boolean'
         ];
     }
 }

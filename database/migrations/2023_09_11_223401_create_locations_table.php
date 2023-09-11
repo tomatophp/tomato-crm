@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->string('street');
-            $table->string('area')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
+            $table->foreignId('area_id')->nullable()->constrained('areas')->onDelete('cascade');
+            $table->foreignId('city_id')->nullable()->constrained('cities')->onDelete('cascade');
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade');
             $table->unsignedInteger('home_number')->nullable();
             $table->unsignedInteger('flat_number')->nullable();
             $table->unsignedInteger('floor_number')->nullable();

@@ -70,24 +70,12 @@ class AccountTable extends AbstractTable
                 label: __('Username'),
                 sortable: true)
             ->column(
-                key: 'loginBy',
-                label: __('LoginBy'),
-                sortable: true)
-            ->column(
-                key: 'address',
-                label: __('Address'),
-                sortable: true)
-            ->column(
                 key: 'last_login',
                 label: __('Last login'),
                 sortable: true)
             ->column(
-                key: 'activated',
+                key: 'is_active',
                 label: __('Activated'),
-                sortable: true)
-            ->column(
-                key: 'blocked',
-                label: __('Blocked'),
                 sortable: true)
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->paginate(15);

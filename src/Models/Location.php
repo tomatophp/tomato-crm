@@ -3,6 +3,9 @@
 namespace TomatoPHP\TomatoCrm\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TomatoPHP\TomatoLocations\Models\Area;
+use TomatoPHP\TomatoLocations\Models\City;
+use TomatoPHP\TomatoLocations\Models\Country;
 
 /**
  * @property integer $id
@@ -28,7 +31,23 @@ class Location extends Model
     /**
      * @var array
      */
-    protected $fillable = ['account_id', 'street', 'area', 'city', 'country', 'home_number', 'flat_number', 'floor_number', 'mark', 'map_url', 'note', 'lat', 'lng', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'account_id',
+        'street',
+        'area_id',
+        'city_id',
+        'country_id',
+        'home_number',
+        'flat_number',
+        'floor_number',
+        'mark',
+        'map_url',
+        'note',
+        'lat',
+        'lng',
+        'created_at',
+        'updated_at'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,5 +55,17 @@ class Location extends Model
     public function account()
     {
         return $this->belongsTo('TomatoPHP\TomatoCrm\Models\Account');
+    }
+
+    public function city(){
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function area(){
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+
+    public function country(){
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 }

@@ -2,7 +2,12 @@
 
 namespace TomatoPHP\TomatoCrm\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property integer $id
@@ -29,8 +34,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property Model meta($key, $value)
  * @property Location[] $locations
  */
-class Account extends Model
+class Account extends Authenticatable
 {
+    use HasApiTokens, HasFactory, Notifiable;
+
     /**
      * @var array
      */
@@ -46,19 +53,16 @@ class Account extends Model
         'last_login',
         'agent',
         'host',
-        'attempts',
-        'login',
-        'activated',
-        'blocked',
+        'is_login',
+        'is_active',
         'deleted_at',
         'created_at',
         'updated_at'
     ];
 
     protected $casts = [
-        'login' => 'boolean',
-        'activated' => 'boolean',
-        'blocked' => 'boolean',
+        'is_login' => 'boolean',
+        'is_active' => 'boolean'
     ];
     protected $dates = [
         'deleted_at',
@@ -67,6 +71,35 @@ class Account extends Model
         'otp_activated_at',
         'last_login',
     ];
+
+
+    protected $appends = [
+        'email',
+        'phone',
+        'birthday',
+        'gender'
+    ];
+
+    public function getEmailAttribute()
+    {
+        return $this->meta('email') ?: null;
+    }
+
+    public function getPhoneAttribute()
+    {
+        return $this->meta('phone') ?: null;
+    }
+
+    public function getBirthdayAttribute()
+    {
+        return $this->meta('birthday') ?: null;
+    }
+
+    public function getGenderAttribute()
+    {
+        return $this->meta('gender') ?: null;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -80,7 +113,7 @@ class Account extends Model
      * @param string|null $value
      * @return Model|string
      */
-    public function meta(string $key, string|null $value=null): Model|string
+    public function meta(string $key, string|null $value=null): Model|string|null
     {
         if($value){
             return $this->accountsMetas()->updateOrCreate(['key' => $key], ['value' => $value]);

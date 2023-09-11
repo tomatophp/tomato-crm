@@ -24,7 +24,7 @@ class AccountUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-                        'name' => 'nullable|max:255|string',
+            'name' => 'nullable|max:255|string',
             'username' => 'sometimes|max:255|string',
             'loginBy' => 'nullable|max:255|string',
             'address' => 'nullable|max:65535',
@@ -33,10 +33,8 @@ class AccountUpdateRequest extends FormRequest
             'last_login' => 'nullable',
             'agent' => 'nullable',
             'host' => 'nullable|max:255|string',
-            'attempts' => 'nullable',
-            'login' => 'nullable',
-            'activated' => 'nullable',
-            'blocked' => 'nullable'
+            'is_login' => 'nullable',
+            'is_active' => 'nullable'
         ];
     }
 }

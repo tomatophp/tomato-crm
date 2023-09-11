@@ -7,7 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use TomatoPHP\TomatoPHP\Services\Tomato;
+use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoCrm\Models\Location;
 
 class LocationController extends Controller
 {
@@ -15,10 +16,11 @@ class LocationController extends Controller
      * @param Request $request
      * @return View
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
         return Tomato::index(
             request: $request,
+            model: Location::class,
             view: 'tomato-crm::locations.index',
             table: \TomatoPHP\TomatoCrm\Tables\LocationTable::class,
         );
@@ -39,10 +41,17 @@ class LocationController extends Controller
     /**
      * @return View
      */
-    public function create(): View
+    public function create(Request $request): View|JsonResponse
     {
+        $accountId = null;
+        if($request->has('account_id') && !empty($request->get('account_id'))){
+            $accountId = $request->get('account_id');
+        }
         return Tomato::create(
             view: 'tomato-crm::locations.create',
+            data: [
+                "account_id"=>  $accountId
+            ]
         );
     }
 
@@ -50,7 +59,7 @@ class LocationController extends Controller
      * @param \TomatoPHP\TomatoCrm\Http\Requests\Location\LocationStoreRequest $request
      * @return RedirectResponse
      */
-    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Location\LocationStoreRequest $request): RedirectResponse
+    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Location\LocationStoreRequest $request): RedirectResponse|JsonResponse
     {
         $response = Tomato::store(
             request: $request,
@@ -59,14 +68,14 @@ class LocationController extends Controller
             redirect: 'admin.locations.index',
         );
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
      * @param \TomatoPHP\TomatoCrm\Models\Location $model
      * @return View
      */
-    public function show(\TomatoPHP\TomatoCrm\Models\Location $model): View
+    public function show(\TomatoPHP\TomatoCrm\Models\Location $model): View|JsonResponse
     {
         return Tomato::get(
             model: $model,
@@ -91,7 +100,7 @@ class LocationController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Location $user
      * @return RedirectResponse
      */
-    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Location\LocationUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Location $model): RedirectResponse
+    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Location\LocationUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Location $model): RedirectResponse|JsonResponse
     {
         $response = Tomato::update(
             request: $request,
@@ -100,7 +109,7 @@ class LocationController extends Controller
             redirect: 'admin.locations.index',
         );
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
@@ -109,10 +118,12 @@ class LocationController extends Controller
      */
     public function destroy(\TomatoPHP\TomatoCrm\Models\Location $model): RedirectResponse
     {
-        return Tomato::destroy(
+        $response = Tomato::destroy(
             model: $model,
             message: __('Location deleted successfully'),
             redirect: 'admin.locations.index',
         );
+
+        return $response->redirect;
     }
 }

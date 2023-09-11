@@ -1,7 +1,4 @@
-<x-tomato-admin-layout>
-    <x-slot name="header">
-        {{trans('tomato-admin::global.crud.edit')}} {{__('Account')}} #{{$model->id}}
-    </x-slot>
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.edit')}} {{__('Account')}} #{{$model->id}}">
     <x-splade-form class="flex flex-col space-y-4" action="{{route('admin.accounts.update', $model->id)}}" method="post" :default="$model">
 
         <x-splade-select label="{{__('Content Type')}}" placeholder="Post, Page, Ads" name="type_id" choices>
@@ -11,29 +8,35 @@
         </x-splade-select>
 
 
-        <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="Name" />
-        <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="Email" />
-        <x-tomato-tel label="{{__('Phone')}}" name="phone" type="tel"  placeholder="Phone" />
-        <x-splade-select label="{{__('Login By')}}" name="loginBy" type="text"  placeholder="LoginBy">
-            <option value="email">Email</option>
-            <option value="phone">Phone</option>
-        </x-splade-select>
+        <div class="grid grid-cols-2 gap-4">
+            <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="Name" />
+            <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="Email" />
+            <x-splade-input label="{{__('Phone')}}" name="phone" type="tel"  placeholder="Phone" />
+            <x-splade-select choices label="{{__('Login By')}}" name="loginBy" type="text"  placeholder="LoginBy">
+                <option value="email">{{__('Email')}}</option>
+                <option value="phone">{{__('Phone')}}</option>
+            </x-splade-select>
+        </div>
         <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
 
-        <x-splade-checkbox label="{{  __('Login') }}" name="login" label="Login" />
+        <x-splade-checkbox label="{{  __('Activated') }}" name="is_active" label="Activated" />
 
-        <div v-if="form.login">
-            <div class="flex flex-col space-y-4">
-                <x-splade-input label="{{__('Password')}}" name="password" type="password"  placeholder="Password" />
-                <x-splade-input name="password_confirmation" type="password"  placeholder="Password Confirmation" />
-            </div>
+        <div class="flex justify-start gap-2 pt-3">
+            <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
+            <x-tomato-admin-button
+                danger
+                :href="route('admin.accounts.destroy', $model->id)"
+                title="{{trans('tomato-admin::global.crud.edit')}}"
+                confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                class="px-2 text-red-500"
+                method="delete"
+            >
+                {{__('Delete')}}
+            </x-tomato-admin-button>
+            <x-tomato-admin-button secondary :href="route('admin.accounts.index')" label="{{__('Cancel')}}"/>
         </div>
-
-
-
-        <x-splade-checkbox label="{{  __('Activated') }}" name="activated" label="Activated" />
-        <x-splade-checkbox label="{{  __('Blocked') }}" name="blocked" label="Blocked" />
-
-        <x-splade-submit label="{{trans('tomato-admin::global.crud.update')}} {{__('Account')}}" :spinner="true" />
     </x-splade-form>
-</x-tomato-admin-layout>
+</x-tomato-admin-container>

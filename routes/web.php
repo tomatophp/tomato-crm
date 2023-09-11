@@ -7,6 +7,12 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::get('admin/accounts', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'index'])->name('accounts.index');
     Route::get('admin/accounts/api', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'api'])->name('accounts.api');
     Route::get('admin/accounts/create', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'create'])->name('accounts.create');
+    Route::get('admin/accounts/{model}/password', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'password'])->name('accounts.password');
+    Route::post('admin/accounts/{model}/password', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'updatePassword'])->name('accounts.password.update');
+    Route::get('admin/accounts/{model}/notifications', [\TomatoPHP\TomatoCrm\Http\Controllers\NotificationsController::class, 'index'])->name('accounts.notifications');
+    Route::post('admin/accounts/{model}/notifications', [\TomatoPHP\TomatoCrm\Http\Controllers\NotificationsController::class, 'send'])->name('accounts.notifications.send');
+    Route::get('admin/accounts/{model}/address', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'addressView'])->name('accounts.address');
+    Route::post('admin/accounts/{model}/address', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'address'])->name('accounts.address.add');
     Route::post('admin/accounts', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'store'])->name('accounts.store');
     Route::get('admin/accounts/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'show'])->name('accounts.show');
     Route::get('admin/accounts/{model}/edit', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'edit'])->name('accounts.edit');
@@ -68,3 +74,22 @@ Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(f
     Route::post('admin/activities/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\ActivityController::class, 'update'])->name('activities.update');
     Route::delete('admin/activities/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\ActivityController::class, 'destroy'])->name('activities.destroy');
 });
+
+
+Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+    Route::get( 'admin/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'index'])
+        ->name('groups.index');
+    Route::get( 'admin/groups/api', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class,'api'])->name('groups.api');
+    Route::get( 'admin/groups/create', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'create'])->name('groups.create');
+    Route::post( 'admin/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'store'])->name('groups.store');
+    Route::get( 'admin/groups/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'show'])->name('groups.show');
+    Route::get( 'admin/groups/{model}/edit', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'edit'])->name('groups.edit');
+    Route::post( 'admin/groups/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'update'])->name('groups.update');
+    Route::delete( 'admin/groups/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'destroy'])->name('groups.destroy');
+});
+
+//
+//Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+//    Route::post('admin/accounts/groups', [AccountGroupController::class, 'index'])->name('accounts.groups');
+//    Route::post('admin/accounts/groups/assign', [AccountGroupController::class, 'assign'])->name('accounts.groups.assign');
+//});

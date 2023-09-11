@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Js;
 use Illuminate\View\View;
-use TomatoPHP\TomatoPHP\Services\Tomato;
+use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoCrm\Models\Contact;
 
 class ContactController extends Controller
 {
@@ -15,10 +17,11 @@ class ContactController extends Controller
      * @param Request $request
      * @return View
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
         return Tomato::index(
             request: $request,
+            model: Contact::class,
             view: 'tomato-crm::contacts.index',
             table: \TomatoPHP\TomatoCrm\Tables\ContactTable::class,
         );
@@ -39,7 +42,7 @@ class ContactController extends Controller
     /**
      * @return View
      */
-    public function create(): View
+    public function create(): View|JsonResponse
     {
         return Tomato::create(
             view: 'tomato-crm::contacts.create',
@@ -50,7 +53,7 @@ class ContactController extends Controller
      * @param \TomatoPHP\TomatoCrm\Http\Requests\Contact\ContactStoreRequest $request
      * @return RedirectResponse
      */
-    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Contact\ContactStoreRequest $request): RedirectResponse
+    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Contact\ContactStoreRequest $request): RedirectResponse|JsonResponse
     {
         $response = Tomato::store(
             request: $request,
@@ -59,14 +62,14 @@ class ContactController extends Controller
             redirect: 'admin.contacts.index',
         );
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
      * @param \TomatoPHP\TomatoCrm\Models\Contact $model
      * @return View
      */
-    public function show(\TomatoPHP\TomatoCrm\Models\Contact $model): View
+    public function show(\TomatoPHP\TomatoCrm\Models\Contact $model): View|JsonResponse
     {
         return Tomato::get(
             model: $model,
@@ -91,7 +94,7 @@ class ContactController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Contact $user
      * @return RedirectResponse
      */
-    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Contact\ContactUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Contact $model): RedirectResponse
+    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Contact\ContactUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Contact $model): RedirectResponse|JsonResponse
     {
         $response = Tomato::update(
             request: $request,
@@ -100,19 +103,21 @@ class ContactController extends Controller
             redirect: 'admin.contacts.index',
         );
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
      * @param \TomatoPHP\TomatoCrm\Models\Contact $model
      * @return RedirectResponse
      */
-    public function destroy(\TomatoPHP\TomatoCrm\Models\Contact $model): RedirectResponse
+    public function destroy(\TomatoPHP\TomatoCrm\Models\Contact $model): RedirectResponse|JsonResponse
     {
-        return Tomato::destroy(
+        $response = Tomato::destroy(
             model: $model,
             message: __('Contact deleted successfully'),
             redirect: 'admin.contacts.index',
         );
+
+        return $response->redirect;
     }
 }

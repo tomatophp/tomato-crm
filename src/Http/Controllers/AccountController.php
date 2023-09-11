@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use TomatoPHP\TomatoCrm\Models\Account;
 use ProtoneMedia\Splade\Facades\Toast;
-use TomatoPHP\TomatoPHP\Services\Tomato;
+use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoNotifications\Models\NotificationsTemplate;
+use TomatoPHP\TomatoNotifications\Models\UserNotification;
+use TomatoPHP\TomatoNotifications\Services\SendNotification;
 
 class AccountController extends Controller
 {
@@ -21,6 +24,7 @@ class AccountController extends Controller
     {
         return Tomato::index(
             request: $request,
+            model: Account::class,
             view: 'tomato-crm::accounts.index',
             table: \TomatoPHP\TomatoCrm\Tables\AccountTable::class,
         );
@@ -55,7 +59,7 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Http\Requests\Account\AccountStoreRequest $request
      * @return RedirectResponse
      */
-    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountStoreRequest $request): RedirectResponse
+    public function store(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountStoreRequest $request): RedirectResponse|JsonResponse
     {
         $request->validated();
 
@@ -77,6 +81,10 @@ class AccountController extends Controller
             $request->merge(['username' => $request->get('phone')]);
         }
 
+        $request->merge([
+            "password" => bcrypt($request->get('password'))
+        ]);
+
         $record = Account::create($request->all());
 
         $record->meta('email', $request->get('email'));
@@ -90,7 +98,7 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $model
      * @return View
      */
-    public function show(\TomatoPHP\TomatoCrm\Models\Account $model): View
+    public function show(\TomatoPHP\TomatoCrm\Models\Account $model): View|JsonResponse
     {
         $model->email = $model->meta('email');
         $model->phone = $model->meta('phone');
@@ -122,7 +130,7 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $user
      * @return RedirectResponse
      */
-    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Account $model): RedirectResponse
+    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Account $model): RedirectResponse|JsonResponse
     {
         if($request->get('loginBy') === 'email'){
             $checkUsername = Account::where('username', $request->get('email'))->where('id', '!=', $model->id)->first();
@@ -149,10 +157,10 @@ class AccountController extends Controller
             redirect: 'admin.accounts.index',
         );
 
-        $response['record']->meta('email', $request->get('email'));
-        $response['record']->meta('phone', $request->get('phone'));
+        $response->record->meta('email', $request->get('email'));
+        $response->record->meta('phone', $request->get('phone'));
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
@@ -161,10 +169,32 @@ class AccountController extends Controller
      */
     public function destroy(\TomatoPHP\TomatoCrm\Models\Account $model): RedirectResponse
     {
-        return Tomato::destroy(
+        $response = Tomato::destroy(
             model: $model,
             message: __('Account deleted successfully'),
             redirect: 'admin.accounts.index',
         );
+
+        return $response->redirect;
+    }
+
+
+    public function password(Account $model){
+        return view('tomato-crm::accounts.password', [
+            "model" => $model
+        ]);
+    }
+
+    public function updatePassword(Request $request, Account $model){
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $model->update([
+            "password" => bcrypt($request->get('password'))
+        ]);
+
+        Toast::success(__('Password Updated Successfully'))->autoDismiss(2);
+        return redirect()->back();
     }
 }
