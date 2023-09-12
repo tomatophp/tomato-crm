@@ -1,176 +1,34 @@
-<x-splade-modal class="font-main">
-    <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.view')}} {{ __('Location') }} #{{$model->id}}</h1>
-
-    <div class="flex flex-col space-y-4">
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Account')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->Account->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Street')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->street}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Area')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->area?->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('City')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->city?->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Country')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->country?->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Home number')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->home_number}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Flat number')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->flat_number}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Floor number')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->floor_number}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Mark')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->mark}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Map url')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->map_url}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Note')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->note}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Lat')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->lat}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Lng')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->lng}}
-                  </h3>
-              </div>
-          </div>
-
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{ __('Location') }} #{{$model->id}}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <x-tomato-admin-row :label="__('Account')" :value="$model->account->name"/>
+        <x-tomato-admin-row :label="__('Street')" :value="$model->street"/>
+        <x-tomato-admin-row :label="__('Area')" :value="$model->area?->name"/>
+        <x-tomato-admin-row :label="__('City')" :value="$model->city?->name"/>
+        <x-tomato-admin-row :label="__('Country')" :value="$model->country?->name"/>
+        <x-tomato-admin-row :label="__('Home number')" :value="$model->home_number"/>
+        <x-tomato-admin-row :label="__('Flat number')" :value="$model->flat_number"/>
+        <x-tomato-admin-row :label="__('Floor number')" :value="$model->floor_number"/>
+        <x-tomato-admin-row :label="__('Mark')" :value="$model->mark"/>
+        <x-tomato-admin-row :label="__('Map url')" :value="$model->map_url"/>
+        <x-tomato-admin-row :label="__('Note')" :value="$model->note"/>
+        <x-tomato-admin-row :label="__('Note')" :value="$model->note"/>
     </div>
-</x-splade-modal>
+
+    <div class="flex justify-start gap-2 pt-3">
+        <x-tomato-admin-button warning :href="route('admin.locations.edit', $model->id)" label="{{__('Edit')}}" />
+        <x-tomato-admin-button
+            danger
+            :href="route('admin.locations.destroy', $model->id)"
+            title="{{trans('tomato-admin::global.crud.edit')}}"
+            confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+            confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+            confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+            cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+            class="px-2 text-red-500"
+            method="delete"
+        >
+            {{__('Delete')}}
+        </x-tomato-admin-button>
+        <x-tomato-admin-button secondary :href="route('admin.locations.index')" label="{{__('Cancel')}}"/>
+    </div>
+</x-tomato-admin-container>

@@ -5,7 +5,9 @@
                 'providers' => ['email'],
                 'type' => 'alert',
                 'account_id' => $model->id ?? null,
-            ]" class="flex flex-col space-y-4" action="{{route('admin.accounts.notifications.send', $model->id)}}" method="post">
+            ]" action="{{route('admin.accounts.notifications.send', $model->id)}}" method="post">
+
+        <div  class="flex flex-col gap-4 mb-4">
         <x-splade-checkbox name="use_template" :label="__('Use Notification Template?')"></x-splade-checkbox>
         <x-splade-select v-if="form.use_template" :placeholder="trans('tomato-notifications::global.notifications.template_id')" name="template_id" :options="$templates" option-label="name" option-value="id" choices relation/>
         <div v-else class="flex flex-col gap-4">
@@ -37,6 +39,12 @@
             @endforeach
         </x-splade-select>
 
-        <x-splade-submit :label="__('Send Notification')" :spinner="true" />
+        </div>
+
+        <div class="flex justify-start gap-2 pt-3">
+            <x-tomato-admin-submit :label="__('Send Notification')" :spinner="true" />
+            <x-tomato-admin-button secondary :href="route('admin.accounts.index')" label="{{__('Cancel')}}"/>
+        </div>
+
     </x-splade-form>
 </x-tomato-admin-container>

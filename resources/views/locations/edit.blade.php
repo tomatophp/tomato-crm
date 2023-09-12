@@ -11,6 +11,23 @@
         <x-splade-textarea label="{{__('Map url')}}" name="map_url" placeholder="Map url" autosize />
         <x-splade-input label="{{__('Note')}}" name="note" type="text"  placeholder="Note" />
 
-        <x-splade-submit label="{{trans('tomato-admin::global.crud.update')}} {{__('Location')}}" :spinner="true" />
+
+        <div class="flex justify-start gap-2 pt-3">
+            <x-tomato-admin-submit :label="__('Save')" :spinner="true" />
+            <x-tomato-admin-button
+                danger
+                :href="route('admin.locations.destroy', $model->id)"
+                title="{{trans('tomato-admin::global.crud.edit')}}"
+                confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                class="px-2 text-red-500"
+                method="delete"
+            >
+                {{__('Delete')}}
+            </x-tomato-admin-button>
+            <x-tomato-admin-button secondary :href="route('admin.locations.index')" label="{{__('Cancel')}}"/>
+        </div>
     </x-splade-form>
 </x-tomato-admin-container>
