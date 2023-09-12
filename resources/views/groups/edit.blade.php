@@ -1,14 +1,18 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.edit')}} {{__('Group')}} #{{$model->id}}">
-    <x-splade-form class="grid grid-cols-2 gap-4" action="{{route('admin.groups.update', $model->id)}}" method="post" :default="$model">
+    <x-splade-form action="{{route('admin.groups.update', $model->id)}}" method="post" :default="$model">
 
-        <x-splade-input label="{{__('Name-en')}}" placeholder="{{__('Name-en')}}" name="name.en" type='text' />
-        <x-splade-input label="{{__('Name-ar')}}" placeholder="{{__('Name-ar')}}" name="name.ar" type='text' />
+        <div class="grid grid-cols-2 gap-4">
+            <x-tomato-translation label="{{__('Name')}}" placeholder="{{__('Name')}}" name="name" />
+            <x-tomato-translation label="{{__('Description')}}" placeholder="{{__('Description')}}" name="description" />
+        </div>
 
-        @if (auth()->user()->user_type === 'admin')
-            <x-splade-select class="col-span-2" name="vendor_id" :options="$vendors" option-value="id"
-                             option-label="name" label="{{ __('Site Vendor') }}" placeholder="{{ __('Select Vendor')
-                             }}"></x-splade-select>
-        @endif
+        <div class="flex justifiy-between gap-4 my-4">
+            <div class="w-full">
+                <x-splade-input label="{{__('Icon')}}" placeholder="{{__('Icon')}}" name="icon" />
+            </div>
+            <x-tomato-admin-color label="{{__('Color')}}" placeholder="{{__('Color')}}" name="color" />
+
+        </div>
 
         <x-splade-select class="col-span-2" name="accounts[]"
                          label="{{ __('Select Accounts') }}"
@@ -20,6 +24,22 @@
                          relation
         />
 
-        <x-splade-submit class="col-span-2" label="{{trans('tomato-admin::global.crud.update')}} {{__('Customer Group')}}" :spinner="true" />
+        <div class="flex justify-start gap-2 pt-3">
+            <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
+            <x-tomato-admin-button
+                danger
+                :href="route('admin.groups.destroy', $model->id)"
+                title="{{trans('tomato-admin::global.crud.edit')}}"
+                confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                class="px-2 text-red-500"
+                method="delete"
+            >
+                {{__('Delete')}}
+            </x-tomato-admin-button>
+            <x-tomato-admin-button secondary :href="route('admin.groups.index')" label="{{__('Cancel')}}"/>
+        </div>
     </x-splade-form>
 </x-tomato-admin-container>

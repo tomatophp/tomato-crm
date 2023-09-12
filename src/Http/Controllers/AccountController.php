@@ -22,11 +22,21 @@ class AccountController extends Controller
      */
     public function index(Request $request): View
     {
+        $query= Account::query();
+        if($request->get('type') && !empty($request->get('type'))){
+            $query->where('type', $request->get('type'));
+        }
+        if ($request->get('group_id') && !empty($request->get('group_id'))) {
+            $query->whereHas('groups', function ($q) use ($request) {
+                $q->where('group_id', $request->get('group_id'));
+            });
+        }
         return Tomato::index(
             request: $request,
             model: Account::class,
             view: 'tomato-crm::accounts.index',
             table: \TomatoPHP\TomatoCrm\Tables\AccountTable::class,
+            query: $query
         );
     }
 

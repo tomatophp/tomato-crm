@@ -62,6 +62,14 @@ class GroupTable extends AbstractTable
                 label: __('Name'),
                 sortable: true)
             ->column(
+                key: 'icon',
+                label: __('Icon'),
+                sortable: true)
+            ->column(
+                key: 'color',
+                label: __('Color'),
+                sortable: true)
+            ->column(
                 key: 'id',
                 label: __('ID'),
                 hidden: true,

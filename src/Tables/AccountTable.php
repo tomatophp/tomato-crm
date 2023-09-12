@@ -2,6 +2,7 @@
 
 namespace TomatoPHP\TomatoCrm\Tables;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -15,9 +16,13 @@ class AccountTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        public ?Builder $query
+    )
     {
-        //
+       if(!$this->query){
+           $this->query = \TomatoPHP\TomatoCrm\Models\Account::query();
+       }
     }
 
     /**
@@ -37,7 +42,7 @@ class AccountTable extends AbstractTable
      */
     public function for()
     {
-        return \TomatoPHP\TomatoCrm\Models\Account::query();
+        return $this->query;
     }
 
     /**

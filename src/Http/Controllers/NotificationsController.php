@@ -16,7 +16,12 @@ use TomatoPHP\TomatoNotifications\Services\SendNotification;
 
 class NotificationsController extends Controller
 {
-    public function index(Request $request, Account $model){
+    public function index(Request $request){
+        return view('tomato-crm::accounts.notifications', [
+            "templates" => NotificationsTemplate::where('action', 'manual')->get()
+        ]);
+    }
+    public function user(Request $request, Account $model){
         return view('tomato-crm::accounts.notifications', [
             "templates" => NotificationsTemplate::where('action', 'manual')->get(),
             "model" => $model

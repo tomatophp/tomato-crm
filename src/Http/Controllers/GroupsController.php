@@ -9,13 +9,17 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\View\View;
+use TomatoPHP\TomatoCrm\Http\Requests\Group\GroupUpdateRequest;
 use TomatoPHP\TomatoCrm\Models\Account;
 use TomatoPHP\TomatoCrm\Models\Group;
 use TomatoPHP\TomatoCrm\Http\Requests\Group\GroupStoreRequest;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoTranslations\Services\HandelTranslationInput;
 
 class GroupsController extends Controller
 {
+
+    use HandelTranslationInput;
 
     public function index(Request $request): View
     {
@@ -47,6 +51,7 @@ class GroupsController extends Controller
 
     public function store(GroupStoreRequest $request): RedirectResponse
     {
+        $this->translate($request);
         $response = Tomato::store(
             request: $request,
             model: Group::class,
@@ -69,21 +74,31 @@ class GroupsController extends Controller
 
     public function edit(Group $model): View
     {
+        $this->loadTranslation($model, [
+            'name',
+            'description'
+        ]);
         return Tomato::get(
             model: $model,
-            view: 'tomato-crm::groups.edit'
+            view: 'tomato-crm::groups.edit',
+            data: [
+                'accounts' => Account::all(),
+            ]
         );
     }
 
 
-    public function update(GroupStoreRequest $request, Group $model): RedirectResponse
+    public function update(GroupUpdateRequest $request, Group $model): RedirectResponse
     {
+        $this->translate($request);
         $response = Tomato::update(
             request: $request,
             model: $model,
             message: __('Group updated successfully'),
             redirect: 'admin.groups.index',
         );
+
+        $response->record->accounts()->sync(array_values($request->accounts));
 
         return back();
     }

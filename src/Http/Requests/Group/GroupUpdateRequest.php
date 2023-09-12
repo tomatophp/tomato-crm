@@ -1,6 +1,6 @@
 <?php
 
-namespace TomatoPHP\TomatoCRM\Http\Requests\Group;
+namespace TomatoPHP\TomatoCrm\Http\Requests\Group;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -25,22 +25,14 @@ class GroupUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|array',
-            'name.en' => ['required', 'string', 'max:255'],
-            'name.ar' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'array'],
+            'name' => ['sometimes', 'array'],
+            'name.en' => ['sometimes', 'string', 'max:255'],
+            'name.ar' => ['sometimes', 'string', 'max:255'],
+            'description' => ['sometimes', 'array'],
+            'description.en' => ['sometimes', 'string', 'max:255'],
+            'description.en' => ['sometimes', 'string', 'max:255'],
             'color' => ['nullable', 'string', 'max:255'],
             'icon' => ['nullable', 'string', 'max:255'],
-            'description.ar' => ['nullable', 'string'],
-            'description.en' => ['nullable', 'string'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'name.en.required' => __('English name field is required'),
-            'name.ar.required' => __('Arabic name field is required'),
         ];
     }
 }

@@ -65,55 +65,69 @@ class TomatoCrmServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        TomatoMenu::register([
-            Menu::make()
-                ->group(__('CRM'))
-                ->label(__('Types'))
-                ->route('admin.types.index')
-                ->icon('bx bx-category'),
-           Menu::make()
+        $menus = [];
+        if(config('tomato-crm.features.accounts')){
+            $menus[] = Menu::make()
                 ->group(__('CRM'))
                 ->label(__('Accounts'))
                 ->route('admin.accounts.index')
-                ->icon('bx bx-user'),
-            Menu::make()
-                ->group(__('CRM'))
-                ->label(__('Locations'))
-                ->route('admin.locations.index')
-                ->icon('bx bx-map'),
-           Menu::make()
+                ->icon('bx bx-user');
+        }
+        if(config('tomato-crm.features.groups')){
+            $menus[] = Menu::make()
                 ->group(__('CRM'))
                 ->label(__('Groups'))
                 ->route('admin.groups.index')
-                ->icon('bx bx-group'),
-            Menu::make()
+                ->icon('bx bx-group');
+        }
+        if(config('tomato-crm.features.locations')){
+            $menus[] = Menu::make()
+                ->group(__('CRM'))
+                ->label(__('Locations'))
+                ->route('admin.locations.index')
+                ->icon('bx bx-map');
+        }
+        if (config('tomato-crm.features.contacts')){
+            $menus[] =  Menu::make()
                 ->group(__('CRM'))
                 ->label(__('Contact Us'))
                 ->route('admin.contacts.index')
-                ->icon('bx bx-phone'),
-            Menu::make()
+                ->icon('bx bx-phone');
+        }
+        if (config('tomato-crm.features.activites')){
+            $menus[] = Menu::make()
                 ->group(__('CRM'))
                 ->label(__('Activites'))
                 ->route('admin.activities.index')
-                ->icon('bx bx-history')
-        ]);
+                ->icon('bx bx-history');
+        }
+        if (config('tomato-crm.features.notifications')){
+            $menus[] = Menu::make()
+                ->group(__('CRM'))
+                ->label(__('Send Notification'))
+                ->route('admin.accounts.notifications.index')
+                ->icon('bx bx-bell');
+        }
+        if (config('tomato-crm.features.apis')){
+            Event::listen([
+                SendOTP::class
+            ], function ($data) {
+                $user = $data->model::find($data->modelId);
 
-        Event::listen([
-            SendOTP::class
-        ], function ($data) {
-            $user = $data->model::find($data->modelId);
+                SendNotification::make(['email'])
+                    ->title('OTP')
+                    ->message('Your OTP is '.$user->otp_code)
+                    ->type('info')
+                    ->database(false)
+                    ->model(Account::class)
+                    ->id($user->id)
+                    ->privacy('private')
+                    ->icon('bx bx-user')
+                    ->url(url('/'))
+                    ->fire();
+            });
+        }
 
-            SendNotification::make(['email'])
-                ->title('OTP')
-                ->message('Your OTP is '.$user->otp_code)
-                ->type('info')
-                ->database(false)
-                ->model(Account::class)
-                ->id($user->id)
-                ->privacy('private')
-                ->icon('bx bx-user')
-                ->url(url('/'))
-                ->fire();
-        });
+        TomatoMenu::register($menus);
     }
 }

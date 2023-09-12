@@ -145,4 +145,8 @@ class Account extends Authenticatable
     {
         return $this->hasMany('TomatoPHP\TomatoCrm\Models\Location');
     }
+
+    public function groups(){
+        return $this->belongsToMany(Group::class, 'account_groups', 'account_id', 'group_id');
+    }
 }

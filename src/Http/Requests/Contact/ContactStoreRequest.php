@@ -24,8 +24,8 @@ class ContactStoreRequest extends FormRequest
     public function rules()
     {
         return [
-                        'type_id' => 'required|exists:types,id',
-            'status_id' => 'required|exists:status,id',
+            'type_id' => 'required|exists:types,id',
+            'status_id' => 'required|exists:types,id',
             'name' => 'required|max:255|string',
             'email' => 'nullable|max:255|string|email',
             'phone' => 'nullable|max:255|min:12',

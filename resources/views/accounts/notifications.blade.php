@@ -1,11 +1,11 @@
 <x-tomato-admin-container label="{{__('Send Notification')}}">
     <x-splade-form :default="[
                 'use_template' => true,
-                'privacy' => $model? 'customer':'public',
+                'privacy' => isset($model) ? 'customer':'public',
                 'providers' => ['email'],
                 'type' => 'alert',
                 'account_id' => $model->id ?? null,
-            ]" action="{{route('admin.accounts.notifications.send', $model->id)}}" method="post">
+            ]" action="{{route('admin.accounts.notifications.send')}}" method="post">
 
         <div  class="flex flex-col gap-4 mb-4">
         <x-splade-checkbox name="use_template" :label="__('Use Notification Template?')"></x-splade-checkbox>
@@ -31,7 +31,7 @@
         </div>
 
         <x-splade-select v-if="form.privacy === 'customer'" choices name="account_id" remote-url="/admin/accounts/api" remote-root="data" option-label="name" option-value="id"  :options="[]"  :label="__('Select Customer')" :placeholder="__('Select Customer from list')"/>
-        <x-splade-select v-if="form.privacy === 'group'" choices name="group_id" remote-url="/admin/groups/api" remote-root="model.data" option-label="name.{{app()->getLocale()}}" option-value="id"  :options="[]"  :label="__('Select Group')" :placeholder="__('Select Customer Group from list')" />
+        <x-splade-select v-if="form.privacy === 'group'" choices name="group_id" remote-url="/admin/groups/api" remote-root="data" option-label="name.{{app()->getLocale()}}" option-value="id"  :options="[]"  :label="__('Select Group')" :placeholder="__('Select Customer Group from list')" />
 
         <x-splade-select class="w-full" name="providers[]" label="{{__('Send Notification By')}}" :placeholder="__('Email, FCM')"   required multiple choices>
             @foreach(config('tomato-notifications.providers') as $provider)

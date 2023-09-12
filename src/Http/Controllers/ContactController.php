@@ -62,6 +62,10 @@ class ContactController extends Controller
             redirect: 'admin.contacts.index',
         );
 
+        if($response instanceof JsonResponse){
+            return $response;
+        }
+
         return $response->redirect;
     }
 

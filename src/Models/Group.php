@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use TomatoPHP\TomatoCrm\Account;
+use TomatoPHP\TomatoCrm\Models\Account;
 use Spatie\Translatable\HasTranslations;
 
 /**
@@ -36,6 +36,6 @@ class Group extends Model
 
     public function accounts(): BelongsToMany
     {
-        return $this->belongsToMany(Account::class, 'account_groups')->withTimestamps();
+        return $this->belongsToMany(Account::class, 'account_groups', 'group_id', 'account_id');
     }
 }

@@ -38,12 +38,16 @@
                         <x-tomato-admin-button danger modal type="icon" :href="route('admin.accounts.password', $item->id)" title="{{__('Change Password')}}">
                             <x-heroicon-s-lock-closed class="h-6 w-6"/>
                         </x-tomato-admin-button>
+                        @if(config('tomato-crm.features.notifications'))
                         <x-tomato-admin-button  modal type="icon" :href="route('admin.accounts.notifications', $item->id)" title="{{__('Send Notification')}}">
                             <x-heroicon-s-bell class="h-6 w-6"/>
                         </x-tomato-admin-button>
+                        @endif
+                        @if(config('tomato-crm.features.locations'))
                         <x-tomato-admin-button warning  modal type="icon" :href="route('admin.locations.create',['account_id' =>  $item->id])" title="{{__('Add Address')}}">
                             <x-heroicon-s-map-pin class="h-6 w-6"/>
                         </x-tomato-admin-button>
+                        @endif
                         <x-tomato-admin-button success modal type="icon" :href="route('admin.accounts.show', $item->id)" title="{{trans('tomato-admin::global.crud.view')}}">
                             <x-heroicon-s-eye class="h-6 w-6"/>
                         </x-tomato-admin-button>

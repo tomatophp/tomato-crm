@@ -25,22 +25,12 @@ class GroupStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|array',
-            'name.en' => ['required', 'string', 'max:255'],
-            'name.ar' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'array'],
+            'name_tomato_translations_ar' => ['required', 'string', 'max:255'],
+            'name_tomato_translations_en' => ['required', 'string', 'max:255'],
+            'description_tomato_translations_en' => ['required', 'string', 'max:255'],
+            'description_tomato_translations_en' => ['required', 'string', 'max:255'],
             'color' => ['nullable', 'string', 'max:255'],
-            'icon' => ['nullable', 'string', 'max:255'],
-            'description.ar' => ['nullable', 'string'],
-            'description.en' => ['nullable', 'string'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'name.en.required' => __('English name field is required'),
-            'name.ar.required' => __('Arabic name field is required'),
+            'icon' => ['nullable', 'string', 'max:255']
         ];
     }
 }

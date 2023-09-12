@@ -13,10 +13,10 @@
         <div class="mx-auto">
             <x-splade-table :for="$table" striped>
                 <x-splade-cell name>
-                    <x-splade-link modal href="{{url('admin/accounts?group_id='. $item->id)}}" class="text-primary-500">
+                    <x-splade-link modal href="{{url('admin/accounts?group_id='. $item->id)}}" style="color: {{$item->color}}">
                         <div class="flex justify-start gap-2">
                             <div>
-                                <i class="bx bxs-user"></i>
+                                <i class="{{$item->icon}}"></i>
                             </div>
                             <div>
                                 {{$item->name}}
@@ -26,10 +26,10 @@
                 </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start qts_tooltip">
-                        <x-tomato-admin-button type="icon" modal title="{{trans('tomato-admin::global.crud.view')}}" href="{{ route('admin.groups.show', $item->id) }}">
+                        <x-tomato-admin-button type="icon" success modal title="{{trans('tomato-admin::global.crud.view')}}" href="{{ route('admin.groups.show', $item->id) }}">
                             <x-heroicon-s-eye class="h-6 w-6"/>
                         </x-tomato-admin-button>
-                        <x-tomato-admin-button type="icon" modal title="{{trans('tomato-admin::global.crud.edit')}}" href="{{ route('admin.groups.edit', $item->id) }}">
+                        <x-tomato-admin-button type="icon" warning modal title="{{trans('tomato-admin::global.crud.edit')}}" href="{{ route('admin.groups.edit', $item->id) }}">
                             <x-heroicon-s-pencil class="h-6 w-6"/>
                         </x-tomato-admin-button>
 
