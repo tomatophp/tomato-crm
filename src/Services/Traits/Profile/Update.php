@@ -44,8 +44,8 @@ trait Update
             $getUserModel->meta($key, $item);
         }
 
-        if($resource){
-            $getUserModel = $resource::make($getUserModel);
+        if($this->resource){
+            $getUserModel = $this->resource::make($getUserModel);
         }
 
         return ApiResponse::data( $getUserModel, __("Profile Data Updated"));

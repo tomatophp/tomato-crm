@@ -12,14 +12,19 @@ use Illuminate\Support\Facades\Facade;
  * @method static model(string $model)
  * @method static loginBy(string $loginBy)
  * @method static loginType(string $loginType)
- * @method static validation(array $validation)
- * @method \Illuminate\Http\JsonResponse login(\Illuminate\Http\Request $request, ?string $resource=null)
+ * @method static resource(string $resource)
+ * @method static createValidation(array $createValidation)
+ * @method static updateValidation(array $updateValidation)
+ * @method \Illuminate\Http\JsonResponse login(\Illuminate\Http\Request $request)
+ * @method \Illuminate\Http\JsonResponse logout(\Illuminate\Http\Request $request)
  * @method \Illuminate\Http\JsonResponse otp(\Illuminate\Http\Request $request)
  * @method \Illuminate\Http\JsonResponse register(\Illuminate\Http\Request $request, array $validation=[])
  * @method \Illuminate\Http\JsonResponse reset(\Illuminate\Http\Request $request)
  * @method \Illuminate\Http\JsonResponse password(\Illuminate\Http\Request $request)
  * @method \Illuminate\Http\JsonResponse resend(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse profile(\Illuminate\Http\Request $request, ?string $resource=null)
+ * @method \Illuminate\Http\JsonResponse profile(\Illuminate\Http\Request $request)
+ * @method \Illuminate\Http\JsonResponse update(\Illuminate\Http\Request $request, array $validation=[])
+ * @method \Illuminate\Http\JsonResponse destroy(\Illuminate\Http\Request $request)
  */
 class TomatoAuth extends Facade
 {

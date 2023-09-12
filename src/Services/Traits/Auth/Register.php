@@ -55,8 +55,8 @@ trait Register
             $user->token = $token;
 
             AccountRegistered::dispatch($this->model, $user->id);
-            if($resource){
-                $user = $resource::make($user);
+            if($this->resource){
+                $user = $this->resource::make($user);
             }
             return ApiResponse::data($user, __('User registration success'));
         }

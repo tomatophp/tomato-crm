@@ -14,7 +14,7 @@ trait Delete
     public function destroy(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
-        $this->model::where("username", $user->{$this->loginBy})->delete();
+        $this->model::where("username", $user->username)->delete();
         return ApiResponse::success('Account Has Been Deleted');
     }
 }

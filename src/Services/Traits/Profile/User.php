@@ -11,11 +11,11 @@ trait User
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function profile(\Illuminate\Http\Request $request, ?string $resource=null): \Illuminate\Http\JsonResponse
+    public function profile(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $request->user();
-        if($resource){
-            $user = $resource::make($user);
+        if($this->resource){
+            $user = $this->resource::make($user);
         }
         return ApiResponse::data($user, __("Profile Data Load"));
     }

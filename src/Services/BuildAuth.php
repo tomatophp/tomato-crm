@@ -43,6 +43,7 @@ class BuildAuth
          * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
          */
         public ?string $loginType='email',
+        public ?string $resource=null,
         /**
          * @var array|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
          */
@@ -79,6 +80,12 @@ class BuildAuth
     public function loginType(string $loginType): static
     {
         $this->loginType = $loginType;
+        return $this;
+    }
+
+    public function resource(string $resource): static
+    {
+        $this->resource = $resource;
         return $this;
     }
 
