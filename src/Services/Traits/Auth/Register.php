@@ -13,7 +13,7 @@ trait Register
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(\Illuminate\Http\Request $request, array $validation=[], ?string $resource): \Illuminate\Http\JsonResponse
+    public function register(\Illuminate\Http\Request $request, array $validation=[], ?string $resource=null): \Illuminate\Http\JsonResponse
     {
         $request->validate(
             array_merge([
