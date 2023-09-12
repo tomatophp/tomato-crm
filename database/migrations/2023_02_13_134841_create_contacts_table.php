@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('type_id')->references('id')->on('types');
-            $table->foreignId('status_id')->references('id')->on('status');
+            $table->foreignId('status_id')->references('id')->on('types');
             $table->string('name')->index();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

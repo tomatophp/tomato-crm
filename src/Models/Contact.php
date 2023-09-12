@@ -32,7 +32,7 @@ class Contact extends Model
      */
     public function status()
     {
-        return $this->belongsTo('TomatoPHP\TomatoCategory\Models\Status');
+        return $this->belongsTo('TomatoPHP\TomatoCategory\Models\Type');
     }
 
     /**
