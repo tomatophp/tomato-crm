@@ -7,60 +7,17 @@ use TomatoPHP\TomatoCrm\Models\Account;
 
 class TomatoCRM
 {
-    public function isHasMedia(): bool
-    {
-        return $this->has_media;
-    }
 
-    public function getMedia(): array
-    {
-        return $this->media;
-    }
+    /**
+     * @var array
+     */
+    public array $api_validation_create = [];
 
-    public function getFilters(): array
-    {
-        return $this->filters;
-    }
+    /**
+     * @var array
+     */
+    public array $api_validation_edit = [];
 
-    public function getTableCells(): ?string
-    {
-        return $this->table_cells;
-    }
-
-    public function getTableCols(): array
-    {
-        return $this->table_cols;
-    }
-
-    public function getCreateForm(): ?string
-    {
-        return $this->create_form;
-    }
-
-    public function getEditForm(): ?string
-    {
-        return $this->edit_form;
-    }
-
-    public function getShow(): array
-    {
-        return $this->show;
-    }
-
-    public function getValidationCreate(): array
-    {
-        return $this->validation_create;
-    }
-
-    public function getValidationEdit(): array
-    {
-        return $this->validation_edit;
-    }
-
-    public function getAttachedItems(): array
-    {
-        return $this->attached_items;
-    }
     //Media
     /**
      * @var bool
@@ -116,37 +73,13 @@ class TomatoCRM
      */
     public array $validation_edit = [];
 
-    /**
-     * @var array
-     */
-    public array $api_validation_create = [];
-
-    public function getApiValidationCreate(): array
-    {
-        return $this->api_validation_create;
-    }
-
-    public function getApiValidationEdit(): array
-    {
-        return $this->api_validation_edit;
-    }
-    /**
-     * @var array
-     */
-    public array $api_validation_edit = [];
-
-    public function getCreateInputs(): array
-    {
-        return $this->createInputs;
-    }
-
-    public function getEditInputs(): array
-    {
-        return $this->editInputs;
-    }
 
     public array $createInputs = [];
     public array $editInputs = [];
+
+
+
+
 
     /**
      * @param string|null $form
@@ -245,8 +178,10 @@ class TomatoCRM
         string $key,
         string $label,
         string $type='text',
-        ?string $create_valdation=null,
-        ?string $update_valdation=null,
+        string|array|null $create_validation=null,
+        string|array|null $update_validation=null,
+        string|array|null $api_create_validation=null,
+        string|array|null $api_update_validation=null,
         bool $show_on_view = true,
         bool $show_on_create = true,
         bool $show_on_edit = true,
@@ -257,12 +192,20 @@ class TomatoCRM
     {
         $this->attached_items[$key] = $key;
 
-        if($create_valdation){
-            $this->validation_create[$key] = $create_valdation;
+        if($create_validation){
+            $this->validation_create[$key] = $create_validation;
         }
-        if($update_valdation){
-            $this->validation_edit[$key] = $update_valdation;
+        if($update_validation){
+            $this->validation_edit[$key] = $update_validation;
         }
+
+        if($api_create_validation){
+            $this->api_validation_create[$key] = $api_create_validation;
+        }
+        if($update_validation){
+            $this->api_validation_edit[$key] = $api_update_validation;
+        }
+
         if($show_on_view){
             $this->show[$key] = [
                 'label' => $label,
@@ -294,4 +237,83 @@ class TomatoCRM
 
         return $this;
     }
+
+
+    public function isHasMedia(): bool
+    {
+        return $this->has_media;
+    }
+
+    public function getMedia(): array
+    {
+        return $this->media;
+    }
+
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    public function getTableCells(): ?string
+    {
+        return $this->table_cells;
+    }
+
+    public function getTableCols(): array
+    {
+        return $this->table_cols;
+    }
+
+    public function getCreateForm(): ?string
+    {
+        return $this->create_form;
+    }
+
+    public function getEditForm(): ?string
+    {
+        return $this->edit_form;
+    }
+
+    public function getShow(): array
+    {
+        return $this->show;
+    }
+
+    public function getValidationCreate(): array
+    {
+        return $this->validation_create;
+    }
+
+    public function getValidationEdit(): array
+    {
+        return $this->validation_edit;
+    }
+
+    public function getAttachedItems(): array
+    {
+        return $this->attached_items;
+    }
+
+
+    public function getApiValidationCreate(): array
+    {
+        return $this->api_validation_create;
+    }
+
+    public function getApiValidationEdit(): array
+    {
+        return $this->api_validation_edit;
+    }
+
+
+    public function getCreateInputs(): array
+    {
+        return $this->createInputs;
+    }
+
+    public function getEditInputs(): array
+    {
+        return $this->editInputs;
+    }
+
 }
