@@ -16,16 +16,9 @@
                 <option value="phone">{{__('Phone')}}</option>
             </x-splade-select>
         </div>
-        <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
-
-        <x-splade-checkbox label="{{  __('Login') }}" name="is_login" label="Login" />
-
-        <div v-if="form.is_login">
-            <div class="flex flex-col space-y-4">
-                <x-splade-input label="{{__('Password')}}" name="password" type="password"  placeholder="Password" />
-                <x-splade-input name="password_confirmation" type="password"  placeholder="Password Confirmation" />
-            </div>
-        </div>
+        @if(config('tomato-crm.features.locations'))
+            <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
+        @endif
 
         @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateForm())
             @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateForm())
@@ -46,6 +39,16 @@
                 <x-splade-input :type="$item['type']" label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
              @endif
         @endforeach
+
+        <x-splade-checkbox label="{{  __('Login') }}" name="is_login" label="Login" />
+
+        <div v-if="form.is_login">
+            <div class="flex flex-col space-y-4">
+                <x-splade-input label="{{__('Password')}}" name="password" type="password"  placeholder="Password" />
+                <x-splade-input name="password_confirmation" type="password"  placeholder="Password Confirmation" />
+            </div>
+        </div>
+
 
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />

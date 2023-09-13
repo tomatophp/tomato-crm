@@ -17,9 +17,9 @@
                 <option value="phone">{{__('Phone')}}</option>
             </x-splade-select>
         </div>
-        <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
-
-        <x-splade-checkbox label="{{  __('Activated') }}" name="is_active" label="Activated" />
+        @if(config('tomato-crm.features.locations'))
+            <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
+        @endif
 
         @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditForm())
             @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditForm())
@@ -42,6 +42,10 @@
                 <x-splade-input :type="$item['type']" label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
             @endif
         @endforeach
+
+
+        <x-splade-checkbox label="{{  __('Activated') }}" name="is_active" label="Activated" />
+
 
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />

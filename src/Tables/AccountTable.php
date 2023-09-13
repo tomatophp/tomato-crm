@@ -55,7 +55,7 @@ class AccountTable extends AbstractTable
     {
 
         $table
-            ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','username',])
+            ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','username','email', 'phone'])
             ->bulkAction(
                 label: trans('tomato-admin::global.crud.delete'),
                 each: fn (\TomatoPHP\TomatoCrm\Models\Account $model) => $model->delete(),

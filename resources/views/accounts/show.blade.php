@@ -3,12 +3,12 @@
 
         <x-tomato-admin-row :label="__('Name')" :value="$model->name" type="text" />
         <x-tomato-admin-row :label="__('Username')" :value="$model->username" type="text" />
+        <x-tomato-admin-row :label="__('Email')" :value="$model->email" type="email" />
+        <x-tomato-admin-row :label="__('Phone')" :value="$model->phone" type="tel" />
         <x-tomato-admin-row :label="__('Login By')" :value="$model->loginBy" type="text" />
         <x-tomato-admin-row :label="__('Address')" :value="$model->address" type="text" />
         <x-tomato-admin-row :label="__('Last login')" :value="$model->last_login?->diffForHumans()" type="text" />
         <x-tomato-admin-row :label="__('Host')" :value="$model->host" type="text" />
-        <x-tomato-admin-row :label="__('Login')" :value="$model->is_login" type="bool" />
-        <x-tomato-admin-row :label="__('Activated')" :value="$model->is_active" type="bool" />
         @foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item)
             @if(is_array($item))
                 @if($item['type'] === 'media')
@@ -20,6 +20,8 @@
                 <x-tomato-admin-row :label="$item" :value="$model->meta($key)" />
             @endif
         @endforeach
+        <x-tomato-admin-row :label="__('Login')" :value="$model->is_login" type="bool" />
+        <x-tomato-admin-row :label="__('Activated')" :value="$model->is_active" type="bool" />
     </div>
 
     <div class="flex justify-start gap-2 pt-3">

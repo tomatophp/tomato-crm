@@ -152,8 +152,6 @@ class AccountController extends Controller
      */
     public function edit(\TomatoPHP\TomatoCrm\Models\Account $model): View
     {
-        $model->email = $model->meta('email');
-        $model->phone = $model->meta('phone');
         foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item){
             $model->{$key} = $model->meta($key);
         }
