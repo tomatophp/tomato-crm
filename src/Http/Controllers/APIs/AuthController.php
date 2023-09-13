@@ -89,12 +89,12 @@ class AuthController extends Controller
                  * A user resource with Token.
                  *
                  * @status 200
-                 * @body array{status: false, message: "Your account is not active yet"}
+                 * @body array{status: true, message: "Data Retrieved Successfully", data: array{token: string}}
                  */
                 return response()->json([
                     'message'=> __("Data Retrieved Successfully"),
-                    'data' => $data,
-                    'status' => $user
+                    'data' => $user,
+                    'status' => true
                 ], 200);
             }
             else if(!$user->is_active && $this->otp){
