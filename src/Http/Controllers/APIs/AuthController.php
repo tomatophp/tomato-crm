@@ -73,6 +73,9 @@ class AuthController extends Controller
             if($user->is_active && $this->otp){
                 $token = $user->createToken($this->guard)->plainTextToken;
                 $user->token = $token;
+
+                AccountLogged::dispatch($this->model, $user->id);
+
                 if($this->resource){
                     $user = $this->resource::make($user);
                 }
@@ -82,7 +85,6 @@ class AuthController extends Controller
                     ];
                 }
 
-                AccountLogged::dispatch($this->model, $user->id);
                 /**
                  * A user resource with Token.
                  *
@@ -110,6 +112,9 @@ class AuthController extends Controller
             else if(!$this->otp) {
                 $token = $user->createToken($this->guard)->plainTextToken;
                 $user->token = $token;
+
+                AccountLogged::dispatch($this->model, $user->id);
+
                 if($this->resource){
                     $user = $this->resource::make($user);
                 }
@@ -119,7 +124,6 @@ class AuthController extends Controller
                     ];
                 }
 
-                AccountLogged::dispatch($this->model, $user->id);
                 /**
                  * A user resource with Token.
                  *
