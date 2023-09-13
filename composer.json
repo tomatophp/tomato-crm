@@ -24,7 +24,7 @@
                 "TomatoPHP\\TomatoCrm\\TomatoCrmServiceProvider"
             ],
             "aliases": {
-                "TomatoCrm": "TomatoPHP\\TomatoCrm\\Facades\\TomatoCrm",
+                "TomatoCrm": "TomatoPHP\\TomatoCrm\\Facades\\TomatoCrm"
             }
         }
     },
