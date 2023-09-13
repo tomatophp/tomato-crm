@@ -167,7 +167,6 @@ class AuthController extends Controller
                 'name' => "required|string|max:255",
                 "phone" => "required|string|max:14|unique:accounts,phone",
                 "email" => "required|string|email|max:255|unique:accounts,email",
-                "username" => "required|string|max:255|unique:accounts,username",
                 "password" => "required|confirmed|min:6|max:191"
             ], TomatoCrm::getApiValidationCreate())
         );
