@@ -104,7 +104,7 @@ class ProfileController extends Controller
 
             $getUserModel->update($data);
 
-            foreach (TomatoCrm::getUpdateInputs() as $key => $value) {
+            foreach (TomatoCrm::getAttachedItems() as $key => $value) {
                 $user->meta($key, $request->get($key));
             }
 

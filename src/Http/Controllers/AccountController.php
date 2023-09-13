@@ -123,9 +123,10 @@ class AccountController extends Controller
         $response->record->meta('email', $request->get('email'));
         $response->record->meta('phone', $request->get('phone'));
 
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateInputs() as $key=>$item){
-            if($request->has($key) && !empty($request->get($key)))
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key=>$item){
+            if($request->has($key) && !empty($request->get($key))){
                 $response->record->meta($key, $request->get($key));
+            }
         }
 
         return $response->redirect;
@@ -156,7 +157,7 @@ class AccountController extends Controller
     {
         $model->email = $model->meta('email');
         $model->phone = $model->meta('phone');
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditInputs() as $key=>$item){
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item){
             $model->{$key} = $model->meta($key);
         }
         return Tomato::get(
@@ -207,9 +208,10 @@ class AccountController extends Controller
         $response->record->meta('email', $request->get('email'));
         $response->record->meta('phone', $request->get('phone'));
 
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditInputs() as $key=>$item){
-            if($request->has($key) && !empty($request->get($key)))
-            $response->record->meta($key, $request->get($key));
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key=>$item){
+            if($request->has($key) && !empty($request->get($key))){
+                $response->record->meta($key, $request->get($key));
+            }
         }
 
         return $response->redirect;

@@ -182,7 +182,7 @@ class AuthController extends Controller
 
         if ($user) {
             //Set More Data to Meta
-            foreach (TomatoCrm::getCreateInputs() as $key => $value) {
+            foreach (TomatoCrm::getAttachedItems() as $key => $value) {
                 $user->meta($key, $request->get($key));
             }
             if($this->otp){
@@ -208,8 +208,8 @@ class AuthController extends Controller
             $user->token = $token;
 
             AccountRegistered::dispatch($this->model, $user->id);
-            if($resource){
-                $user = $resource::make($user);
+            if($this->resource){
+                $user = $this->resource::make($user);
             }
             else {
                 $user = [

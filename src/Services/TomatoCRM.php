@@ -56,6 +56,11 @@ class TomatoCRM
     {
         return $this->validation_edit;
     }
+
+    public function getAttachedItems(): array
+    {
+        return $this->attached_items;
+    }
     //Media
     /**
      * @var bool
@@ -81,6 +86,7 @@ class TomatoCRM
      * @var array
      */
     public array $table_cols = [];
+    public array $attached_items = [];
 
     //Create
     /**
@@ -249,6 +255,8 @@ class TomatoCRM
 
     ): static
     {
+        $this->attached_items[$key] = $key;
+
         if($create_valdation){
             $this->validation_create[$key] = $create_valdation;
         }
