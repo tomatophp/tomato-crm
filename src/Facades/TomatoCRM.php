@@ -21,8 +21,8 @@ use TomatoPHP\TomatoCrm\Models\Account;
  */
 class TomatoCrm extends Facade
 {
-    CONST LOGIN_BY_EMAIL = 'email';
-    CONST LOGIN_BY_PHONE = 'phone';
+    public const LOGIN_BY_EMAIL = 'email';
+    public const LOGIN_BY_PHONE = 'phone';
 
     public static function getFacadeAccessor(): string
     {
