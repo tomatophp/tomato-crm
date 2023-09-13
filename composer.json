@@ -22,7 +22,10 @@
         "laravel": {
             "providers": [
                 "TomatoPHP\\TomatoCrm\\TomatoCrmServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "TomatoCrm": "TomatoPHP\\TomatoCrm\\Facades\\TomatoCrm",
+            }
         }
     },
     "authors": [
