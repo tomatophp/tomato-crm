@@ -94,15 +94,24 @@ class ProfileController extends Controller
             $request->validate(array_merge(
                 [
                     'name' => 'sometimes|string|max:255',
-                    'email' => 'sometimes|string|email|max:255|unique:accounts,username',
-                    'phone' => 'sometimes|string|max:255|unique:accounts,username',
+                    'username' => 'sometimes|string|email|max:255|unique:accounts,username,id,'.$user->id,
+                    'email' => 'sometimes|string|email|max:255|unique:accounts,email,id,'.$user->id,
+                    'phone' => 'sometimes|string|max:255|unique:accounts,phone,id,'.$user->id,
                 ], TomatoCrm::getApiValidationUpdate()
             ));
 
             $getUserModel = $this->model::find($user->id);
             $data = $request->all();
 
+            if($this->loginBy === 'phone'){
+                $data['username'] = $request->get('phone');
+            }
+            elseif($this->loginBy === 'email'){
+                $data['username'] = $request->get('email');
+            }
+
             $getUserModel->update($data);
+
 
             foreach (TomatoCrm::getAttachedItems() as $key => $value) {
                 if($value === 'media'){

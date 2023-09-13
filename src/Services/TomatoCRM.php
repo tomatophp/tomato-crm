@@ -139,11 +139,15 @@ class TomatoCRM
      */
     public function validation(
         array $create = [],
-        array $edit = []
+        array $edit = [],
+        array $api_create = [],
+        array $api_edit = [],
     ): static
     {
         $this->validation_create = $create;
         $this->validation_edit = $edit;
+        $this->api_validation_create = $edit;
+        $this->api_validation_edit = $edit;
         return $this;
     }
 

@@ -165,8 +165,9 @@ class AuthController extends Controller
         $request->validate(
             array_merge([
                 'name' => "required|string|max:255",
-                "phone" => "required|string|max:14|unique:accounts,username",
-                "email" => "required|string|email|max:255|unique:accounts,username",
+                "phone" => "required|string|max:14|unique:accounts,phone",
+                "email" => "required|string|email|max:255|unique:accounts,email",
+                "username" => "required|string|max:255|unique:accounts,username",
                 "password" => "required|confirmed|min:6|max:191"
             ], TomatoCrm::getApiValidationCreate())
         );
