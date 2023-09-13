@@ -190,7 +190,7 @@ class TomatoCRM
 
     ): static
     {
-        $this->attached_items[$key] = $key;
+        $this->attached_items[$key] = $type;
 
         if($create_validation){
             $this->validation_create[$key] = $create_validation;

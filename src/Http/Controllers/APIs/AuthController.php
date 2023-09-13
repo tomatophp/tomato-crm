@@ -181,9 +181,20 @@ class AuthController extends Controller
         $user = app($this->model)->create($data);
 
         if ($user) {
+            $user->meta("email", $request->get("email"));
+            $user->meta("phone", $request->get("phone"));
             //Set More Data to Meta
             foreach (TomatoCrm::getAttachedItems() as $key => $value) {
-                $user->meta($key, $request->get($key));
+                if($value === 'media'){
+                    if($request->hasFile($key)){
+                        $record->addMedia($request->{$key})
+                            ->preservingOriginal()
+                            ->toMediaCollection($key);
+                    }
+                }
+                else {
+                    $user->meta($key, $request->get($key));
+                }
             }
             if($this->otp){
                 $user->otp_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);

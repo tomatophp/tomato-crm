@@ -105,8 +105,20 @@ class ProfileController extends Controller
             $getUserModel->update($data);
 
             foreach (TomatoCrm::getAttachedItems() as $key => $value) {
-                $user->meta($key, $request->get($key));
+                if($value === 'media'){
+                    if($request->hasFile($key)){
+                        $record->addMedia($request->{$key})
+                            ->preservingOriginal()
+                            ->toMediaCollection($key);
+                    }
+                }
+                else {
+                    $user->meta($key, $request->get($key));
+                }
             }
+
+            $request->has('email') ?? $user->meta('email', $request->get('email'));
+            $request->has('phone') ?? $user->meta('phone', $request->get('phone'));
 
             if($this->resource){
                 $getUserModel = $this->resource::make($getUserModel);
