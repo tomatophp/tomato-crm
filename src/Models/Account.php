@@ -46,6 +46,8 @@ class Account extends Authenticatable implements HasMedia
      * @var array
      */
     protected $fillable = [
+        'email',
+        'phone',
         'parent_id',
         'type_id',
         'name',
@@ -79,8 +81,6 @@ class Account extends Authenticatable implements HasMedia
 
 
     protected $appends = [
-        'email',
-        'phone',
         'birthday',
         'gender',
         'more'
@@ -90,17 +90,6 @@ class Account extends Authenticatable implements HasMedia
     {
         $metas = $this->accountsMetas()->get()->pluck('value', 'key')->toArray();
         return $metas;
-    }
-
-
-    public function getEmailAttribute()
-    {
-        return $this->meta('email') ?: null;
-    }
-
-    public function getPhoneAttribute()
-    {
-        return $this->meta('phone') ?: null;
     }
 
     public function getBirthdayAttribute()

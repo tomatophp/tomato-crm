@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->string('name')->nullable();
             $table->string('username')->unique();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->string('loginBy')->default('email')->nullable();
             $table->text('address')->nullable();
             $table->string('lang', 10)->nullable();

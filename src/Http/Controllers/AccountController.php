@@ -120,9 +120,6 @@ class AccountController extends Controller
             collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
 
-        $response->record->meta('email', $request->get('email'));
-        $response->record->meta('phone', $request->get('phone'));
-
         foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key=>$item){
             if($request->has($key) && !empty($request->get($key))){
                 $response->record->meta($key, $request->get($key));
@@ -204,9 +201,6 @@ class AccountController extends Controller
             hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
             collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
-
-        $response->record->meta('email', $request->get('email'));
-        $response->record->meta('phone', $request->get('phone'));
 
         foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key=>$item){
             if($request->has($key) && !empty($request->get($key))){

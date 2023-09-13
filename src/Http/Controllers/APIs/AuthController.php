@@ -185,8 +185,6 @@ class AuthController extends Controller
         $user = app($this->model)->create($data);
 
         if ($user) {
-            $user->meta("email", $request->get("email"));
-            $user->meta("phone", $request->get("phone"));
             //Set More Data to Meta
             foreach (TomatoCrm::getAttachedItems() as $key => $value) {
                 if($value === 'media'){
@@ -319,7 +317,6 @@ class AuthController extends Controller
                 $user->otp_code = null;
                 $user->is_active = true;
                 $user->save();
-
 
                 /**
                  *  OTP is vaild and the account has been activated.

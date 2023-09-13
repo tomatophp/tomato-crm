@@ -117,9 +117,6 @@ class ProfileController extends Controller
                 }
             }
 
-            $request->has('email') ?? $user->meta('email', $request->get('email'));
-            $request->has('phone') ?? $user->meta('phone', $request->get('phone'));
-
             if($this->resource){
                 $getUserModel = $this->resource::make($getUserModel);
             }
