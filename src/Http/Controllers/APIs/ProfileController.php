@@ -107,7 +107,7 @@ class ProfileController extends Controller
             foreach (TomatoCrm::getAttachedItems() as $key => $value) {
                 if($value === 'media'){
                     if($request->hasFile($key)){
-                        $record->addMedia($request->{$key})
+                        $user->addMedia($request->{$key})
                             ->preservingOriginal()
                             ->toMediaCollection($key);
                     }
