@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Js;
 use TomatoPHP\TomatoAdmin\Helpers\ApiResponse;
+use TomatoPHP\TomatoCrm\Events\AccountLogged;
 use TomatoPHP\TomatoCrm\Events\SendOTP;
 use TomatoPHP\TomatoCrm\Events\AccountRegistered;
 use TomatoPHP\TomatoCrm\Facades\TomatoAuth;
+use TomatoPHP\TomatoCrm\Facades\TomatoCrm;
 use TomatoPHP\TomatoCrm\Models\Account;
 use App\Http\Controllers\Controller;
 
@@ -79,6 +81,8 @@ class AuthController extends Controller
                         "token" => $user->token
                     ];
                 }
+
+                AccountLogged::dispatch($this->model, $user->id);
                 /**
                  * A user resource with Token.
                  *
@@ -114,6 +118,8 @@ class AuthController extends Controller
                         "token" => $user->token
                     ];
                 }
+
+                AccountLogged::dispatch($this->model, $user->id);
                 /**
                  * A user resource with Token.
                  *
@@ -153,12 +159,12 @@ class AuthController extends Controller
     public function register(Request $request): JsonResponse
     {
         $request->validate(
-            [
+            array_merge([
                 'name' => "required|string|max:255",
                 "phone" => "required|string|max:14|unique:accounts,username",
                 "email" => "required|string|email|max:255|unique:accounts,username",
                 "password" => "required|confirmed|min:6|max:191"
-            ]
+            ], TomatoCrm::getApiValidationCreate())
         );
 
         $data = $request->all();
@@ -176,10 +182,8 @@ class AuthController extends Controller
 
         if ($user) {
             //Set More Data to Meta
-            foreach ($request->all() as $key => $value) {
-                if (!in_array($key, ['password', 'password_confirmation', 'username', 'name'])) {
-                    $user->meta($key, $value);
-                }
+            foreach (TomatoCrm::getCreateInputs() as $key => $value) {
+                $user->meta($key, $request->get($key));
             }
             if($this->otp){
                 $user->otp_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);

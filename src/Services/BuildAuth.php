@@ -2,6 +2,7 @@
 
 namespace TomatoPHP\TomatoCrm\Services;
 
+use Spatie\Macroable\Macroable;
 use TomatoPHP\TomatoCrm\Services\Traits\Auth\Login;
 use TomatoPHP\TomatoCrm\Services\Traits\Auth\Otp;
 use TomatoPHP\TomatoCrm\Services\Traits\Auth\ResetPassword;
@@ -21,6 +22,7 @@ class BuildAuth
     use Logout;
     use Update;
     use User;
+    use Macroable;
 
     public function __construct(
         /**

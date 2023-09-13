@@ -9,6 +9,17 @@
         <x-tomato-admin-row :label="__('Host')" :value="$model->host" type="text" />
         <x-tomato-admin-row :label="__('Login')" :value="$model->is_login" type="bool" />
         <x-tomato-admin-row :label="__('Activated')" :value="$model->is_active" type="bool" />
+        @foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item)
+            @if(is_array($item))
+                @if($item['type'] === 'media')
+                    <x-tomato-admin-row :label="$item['label']" type="image" :value="$model->getMedia($key)?->first()?->getUrl()" />
+                @else
+                    <x-tomato-admin-row :label="$item['label']" :type="$item['type']" :value="$model->meta($key)" />
+                @endif
+            @else
+                <x-tomato-admin-row :label="$item" :value="$model->meta($key)" />
+            @endif
+        @endforeach
     </div>
 
     <div class="flex justify-start gap-2 pt-3">

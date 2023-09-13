@@ -10,6 +10,7 @@ use TomatoPHP\TomatoCrm\Events\SendOTP;
 use TomatoPHP\TomatoCrm\Menus\AccountMenu;
 use TomatoPHP\TomatoCrm\Models\Account;
 use TomatoPHP\TomatoCrm\Services\BuildAuth;
+use TomatoPHP\TomatoCrm\Services\TomatoCRM;
 use TomatoPHP\TomatoNotifications\Services\SendNotification;
 use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
 
@@ -61,6 +62,10 @@ class TomatoCrmServiceProvider extends ServiceProvider
         $this->app->bind('tomato-auth',function(){
             return new BuildAuth();
         });
+
+        $this->app->bind('tomato-crm',function(){
+            return new TomatoCRM();
+        });
     }
 
     public function boot(): void
@@ -108,7 +113,7 @@ class TomatoCrmServiceProvider extends ServiceProvider
                 ->route('admin.accounts.notifications.index')
                 ->icon('bx bx-bell');
         }
-        if (config('tomato-crm.features.apis')){
+        if (config('tomato-crm.features.send_otp')){
             Event::listen([
                 SendOTP::class
             ], function ($data) {

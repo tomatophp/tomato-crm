@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('type_id')->nullable()->constrained('types');
+            $table->unsignedBigInteger('parent_id')->nullable();
 
             $table->string('name')->nullable();
             $table->string('username')->unique();

@@ -23,7 +23,7 @@ class AccountUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        return array_merge([
             'name' => 'nullable|max:255|string',
             'username' => 'sometimes|max:255|string',
             'loginBy' => 'nullable|max:255|string',
@@ -35,6 +35,6 @@ class AccountUpdateRequest extends FormRequest
             'host' => 'nullable|max:255|string',
             'is_login' => 'nullable',
             'is_active' => 'nullable'
-        ];
+        ], \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getValidationEdit());
     }
 }

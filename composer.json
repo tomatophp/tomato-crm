@@ -38,6 +38,7 @@
         "tomatophp/tomato-category": "^1.1",
         "tomatophp/tomato-locations": "^1.1",
         "tomatophp/tomato-notifications": "^1.1",
-        "tomatophp/tomato-translations": "^1.1"
+        "tomatophp/tomato-translations": "^1.1",
+        "spatie/macroable": "^2.0"
     }
 }

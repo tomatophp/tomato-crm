@@ -23,7 +23,7 @@ class AccountStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        return array_merge([
             'name' => 'required|max:255|string',
             'phone' => 'required|max:255|string',
             'email' => 'required|max:255|string|email',
@@ -32,6 +32,6 @@ class AccountStoreRequest extends FormRequest
             'password' => 'nullable|max:255|confirmed|min:6',
             'is_login' => 'nullable|boolean',
             'is_active' => 'nullable|boolean'
-        ];
+        ], \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getValidationCreate());
     }
 }

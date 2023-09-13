@@ -21,6 +21,28 @@
 
         <x-splade-checkbox label="{{  __('Activated') }}" name="is_active" label="Activated" />
 
+        @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditForm())
+            @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditForm())
+        @endif
+
+        @foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditInputs() as $key=>$item)
+            @if($item['type'] === 'date')
+                <x-splade-input date label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'datetime')
+                <x-splade-input date time label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'time')
+                <x-splade-input time label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'textarea')
+                <x-splade-textarea label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'checkbox')
+                <x-splade-checkbox label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'media')
+                <x-splade-file filepond preview label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @else
+                <x-splade-input :type="$item['type']" label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @endif
+        @endforeach
+
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
             <x-tomato-admin-button

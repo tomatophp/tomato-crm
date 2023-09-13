@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Macroable\Macroable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -34,14 +37,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Model meta($key, $value)
  * @property Location[] $locations
  */
-class Account extends Authenticatable
+class Account extends Authenticatable implements HasMedia
 {
+    use InteractsWithMedia;
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * @var array
      */
     protected $fillable = [
+        'parent_id',
         'type_id',
         'name',
         'username',
@@ -77,8 +82,16 @@ class Account extends Authenticatable
         'email',
         'phone',
         'birthday',
-        'gender'
+        'gender',
+        'more'
     ];
+
+    public function getMoreAttribute()
+    {
+        $metas = $this->accountsMetas()->get()->pluck('value', 'key')->toArray();
+        return $metas;
+    }
+
 
     public function getEmailAttribute()
     {

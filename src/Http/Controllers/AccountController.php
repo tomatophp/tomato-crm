@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use TomatoPHP\TomatoCrm\Models\Account;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -31,12 +32,27 @@ class AccountController extends Controller
                 $q->where('group_id', $request->get('group_id'));
             });
         }
+        $filters = \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getFilters();
+        $setFiltersArray = [];
+        foreach ($filters as $item){
+            if(Schema::hasColumn('accounts', $item)){
+                $setFiltersArray[$item] = $item;
+            }
+            else {
+                if($request->has($item) && !empty($request->has($item))){
+                    $query->whereHas('accountsMetas', function ($q) use ($item, $request){
+                        $q->where('key', $item)->where('value', $request->get($item));
+                    });
+                }
+            }
+        }
         return Tomato::index(
             request: $request,
             model: Account::class,
             view: 'tomato-crm::accounts.index',
             table: \TomatoPHP\TomatoCrm\Tables\AccountTable::class,
-            query: $query
+            query: $query,
+            filters: $setFiltersArray,
         );
     }
 
@@ -95,13 +111,24 @@ class AccountController extends Controller
             "password" => bcrypt($request->get('password'))
         ]);
 
-        $record = Account::create($request->all());
+        $response = Tomato::store(
+            request: $request,
+            model: \TomatoPHP\TomatoCrm\Models\Account::class,
+            message: __('Account created successfully'),
+            redirect: 'admin.accounts.index',
+            hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
+            collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
+        );
 
-        $record->meta('email', $request->get('email'));
-        $record->meta('phone', $request->get('phone'));
+        $response->record->meta('email', $request->get('email'));
+        $response->record->meta('phone', $request->get('phone'));
 
-        Toast::title('Account created successfully')->success()->autoDismiss(2);
-        return redirect()->route('admin.accounts.index');
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateInputs() as $key=>$item){
+            if($request->has($key) && !empty($request->get($key)))
+                $response->record->meta($key, $request->get($key));
+        }
+
+        return $response->redirect;
     }
 
     /**
@@ -112,6 +139,9 @@ class AccountController extends Controller
     {
         $model->email = $model->meta('email');
         $model->phone = $model->meta('phone');
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item){
+            $model->{$key} = $model->meta($key);
+        }
         return Tomato::get(
             model: $model,
             view: 'tomato-crm::accounts.show',
@@ -126,12 +156,17 @@ class AccountController extends Controller
     {
         $model->email = $model->meta('email');
         $model->phone = $model->meta('phone');
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditInputs() as $key=>$item){
+            $model->{$key} = $model->meta($key);
+        }
         return Tomato::get(
             model: $model,
             view: 'tomato-crm::accounts.edit',
             data: [
                 'types' => \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get(),
             ],
+            hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
+            collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
     }
 
@@ -165,10 +200,17 @@ class AccountController extends Controller
             model: $model,
             message: __('Account updated successfully'),
             redirect: 'admin.accounts.index',
+            hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
+            collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
 
         $response->record->meta('email', $request->get('email'));
         $response->record->meta('phone', $request->get('phone'));
+
+        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditInputs() as $key=>$item){
+            if($request->has($key) && !empty($request->get($key)))
+            $response->record->meta($key, $request->get($key));
+        }
 
         return $response->redirect;
     }

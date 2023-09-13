@@ -27,6 +27,26 @@
             </div>
         </div>
 
+        @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateForm())
+            @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateForm())
+        @endif
+
+        @foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateInputs() as $key=>$item)
+            @if($item['type'] === 'date')
+                <x-splade-input date label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'datetime')
+                <x-splade-input date time label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'time')
+                <x-splade-input time label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'textarea')
+                <x-splade-textarea label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @elseif($item['type'] === 'checkbox')
+                <x-splade-checkbox label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+            @else
+                <x-splade-input :type="$item['type']" label="{{$item['label']}}" name="{{$key}}" placeholder="{{$item['label']}}" />
+             @endif
+        @endforeach
+
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
             <x-tomato-admin-button secondary :href="route('admin.accounts.index')" label="{{__('Cancel')}}"/>

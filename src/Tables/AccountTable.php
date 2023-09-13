@@ -53,6 +53,7 @@ class AccountTable extends AbstractTable
      */
     public function configure(SpladeTable $table)
     {
+
         $table
             ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','username',])
             ->bulkAction(
@@ -81,8 +82,18 @@ class AccountTable extends AbstractTable
             ->column(
                 key: 'is_active',
                 label: __('Activated'),
-                sortable: true)
-            ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
-            ->paginate(15);
+                sortable: true);
+
+
+        foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCols() as $key=>$item){
+            $table->column(
+                key: $key,
+                label: $item,
+                sortable: false,
+            );
+        }
+
+        $table->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
+        ->paginate(15);
     }
 }

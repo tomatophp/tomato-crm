@@ -12,6 +12,9 @@
     <div class="pb-12" v-cloak>
         <div class="mx-auto">
             <x-splade-table :for="$table" striped>
+                @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
+                    @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
+                @endif
                 <x-splade-cell username>
                     @if($item->loginBy === 'email')
                         <x-tomato-admin-row table type="email" :value="$item->username" />

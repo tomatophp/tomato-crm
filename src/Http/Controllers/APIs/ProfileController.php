@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use TomatoPHP\TomatoAdmin\Helpers\ApiResponse;
 use TomatoPHP\TomatoCrm\Facades\TomatoAuth;
+use TomatoPHP\TomatoCrm\Facades\TomatoCrm;
 use TomatoPHP\TomatoCRM\Helpers\Response;
 use TomatoPHP\TomatoCrm\Models\Account;
 
@@ -90,28 +91,21 @@ class ProfileController extends Controller
         $user = $request->user();
 
         if($user){
-            $request->validate([
-                'name' => 'sometimes|string|max:255',
-                'email' => 'sometimes|string|email|max:255|unique:accounts,username',
-                'phone' => 'sometimes|string|max:255|unique:accounts,username',
-            ]);
+            $request->validate(array_merge(
+                [
+                    'name' => 'sometimes|string|max:255',
+                    'email' => 'sometimes|string|email|max:255|unique:accounts,username',
+                    'phone' => 'sometimes|string|max:255|unique:accounts,username',
+                ], TomatoCrm::getApiValidationUpdate()
+            ));
 
             $getUserModel = $this->model::find($user->id);
             $data = $request->all();
 
-            $meta = [];
-            foreach ($data as $key=>$value){
-                $onTable = Schema::hasColumn(app($this->model)->getTable(), $key);
-                if(!$onTable){
-                    $meta[$key] = $value;
-                    unset($data[$key]);
-                }
-            }
-
             $getUserModel->update($data);
 
-            foreach ($meta as $key=>$item){
-                $getUserModel->meta($key, $item);
+            foreach (TomatoCrm::getUpdateInputs() as $key => $value) {
+                $user->meta($key, $request->get($key));
             }
 
             if($this->resource){
