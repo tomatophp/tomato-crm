@@ -319,7 +319,7 @@ class AuthController extends Controller
                 $user->is_active = true;
                 $user->save();
 
-                AccountOTPCheck::dispatch(config('tomato-crm.model'), $checkIfEx->id);
+                AccountOTPCheck::dispatch(config('tomato-crm.model'), $user->id);
 
                 /**
                  *  OTP is vaild and the account has been activated.
