@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Js;
 use TomatoPHP\TomatoAdmin\Helpers\ApiResponse;
 use TomatoPHP\TomatoCrm\Events\AccountLogged;
+use TomatoPHP\TomatoCrm\Events\AccountOTPCheck;
 use TomatoPHP\TomatoCrm\Events\SendOTP;
 use TomatoPHP\TomatoCrm\Events\AccountRegistered;
 use TomatoPHP\TomatoCrm\Facades\TomatoAuth;
@@ -317,6 +318,8 @@ class AuthController extends Controller
                 $user->otp_code = null;
                 $user->is_active = true;
                 $user->save();
+
+                AccountOTPCheck::dispatch(config('tomato-crm.model'), $checkIfEx->id);
 
                 /**
                  *  OTP is vaild and the account has been activated.
