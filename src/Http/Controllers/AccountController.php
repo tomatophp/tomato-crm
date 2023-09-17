@@ -3,28 +3,36 @@
 namespace TomatoPHP\TomatoCrm\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
-use TomatoPHP\TomatoCrm\Models\Account;
 use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
-use TomatoPHP\TomatoNotifications\Models\NotificationsTemplate;
-use TomatoPHP\TomatoNotifications\Models\UserNotification;
-use TomatoPHP\TomatoNotifications\Services\SendNotification;
+use TomatoPHP\TomatoCrm\Models\Account;
 
 class AccountController extends Controller
 {
+    private string $loginBy = 'email';
+
+    /**
+     * @param $loginBy
+     */
+    public function __construct()
+    {
+        $this->loginBy = config('tomato-crm.login_by');
+    }
+
+
     /**
      * @param Request $request
      * @return View
      */
     public function index(Request $request): View
     {
-        $query= Account::query();
-        if($request->get('type') && !empty($request->get('type'))){
+        $query = Account::query();
+        if ($request->get('type') && !empty($request->get('type'))) {
             $query->where('type', $request->get('type'));
         }
         if ($request->get('group_id') && !empty($request->get('group_id'))) {
@@ -34,13 +42,12 @@ class AccountController extends Controller
         }
         $filters = \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getFilters();
         $setFiltersArray = [];
-        foreach ($filters as $item){
-            if(Schema::hasColumn('accounts', $item)){
+        foreach ($filters as $item) {
+            if (Schema::hasColumn('accounts', $item)) {
                 $setFiltersArray[$item] = $item;
-            }
-            else {
-                if($request->has($item) && !empty($request->has($item))){
-                    $query->whereHas('accountsMetas', function ($q) use ($item, $request){
+            } else {
+                if ($request->has($item) && !empty($request->has($item))) {
+                    $query->whereHas('accountsMetas', function ($q) use ($item, $request) {
                         $q->where('key', $item)->where('value', $request->get($item));
                     });
                 }
@@ -89,18 +96,18 @@ class AccountController extends Controller
     {
         $request->validated();
 
-        if($request->get('loginBy') === 'email'){
+        if ($this->loginBy === 'email') {
             $checkUsername = Account::where('username', $request->get('email'))->first();
-            if($checkUsername){
+            if ($checkUsername) {
                 Toast::title('Sorry This Email is Exists')->danger()->autoDismiss(2);
                 return back();
             }
 
             $request->merge(['username' => $request->get('email')]);
         }
-        if($request->get('loginBy') === 'phone'){
+        if ($this->loginBy === 'phone') {
             $checkUsername = Account::where('username', $request->get('phone'))->first();
-            if($checkUsername){
+            if ($checkUsername) {
                 Toast::title('Sorry This Phone is Exists')->danger()->autoDismiss(2);
                 return back();
             }
@@ -120,8 +127,8 @@ class AccountController extends Controller
             collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
 
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key=>$item){
-            if($request->has($key) && !empty($request->get($key))){
+        foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key => $item) {
+            if ($request->has($key) && !empty($request->get($key))) {
                 $response->record->meta($key, $request->get($key));
             }
         }
@@ -137,7 +144,7 @@ class AccountController extends Controller
     {
         $model->email = $model->meta('email');
         $model->phone = $model->meta('phone');
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item){
+        foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
         }
         return Tomato::get(
@@ -152,7 +159,7 @@ class AccountController extends Controller
      */
     public function edit(\TomatoPHP\TomatoCrm\Models\Account $model): View
     {
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item){
+        foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
         }
         return Tomato::get(
@@ -173,18 +180,18 @@ class AccountController extends Controller
      */
     public function update(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Account $model): RedirectResponse|JsonResponse
     {
-        if($request->get('loginBy') === 'email'){
+        if ($this->loginBy === 'email') {
             $checkUsername = Account::where('username', $request->get('email'))->where('id', '!=', $model->id)->first();
-            if($checkUsername){
+            if ($checkUsername) {
                 Toast::title('Sorry This Email is Exists')->danger()->autoDismiss(2);
                 return back();
             }
 
             $request->merge(['username' => $request->get('email')]);
         }
-        if($request->get('loginBy') === 'phone'){
+        if ($this->loginBy === 'phone') {
             $checkUsername = Account::where('username', $request->get('phone'))->where('id', '!=', $model->id)->first();
-            if($checkUsername){
+            if ($checkUsername) {
                 Toast::title('Sorry This Phone is Exists')->danger()->autoDismiss(2);
                 return back();
             }
@@ -200,8 +207,8 @@ class AccountController extends Controller
             collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
 
-        foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key=>$item){
-            if($request->has($key) && !empty($request->get($key))){
+        foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getAttachedItems() as $key => $item) {
+            if ($request->has($key) && !empty($request->get($key))) {
                 $response->record->meta($key, $request->get($key));
             }
         }
@@ -225,13 +232,15 @@ class AccountController extends Controller
     }
 
 
-    public function password(Account $model){
+    public function password(Account $model)
+    {
         return view('tomato-crm::accounts.password', [
             "model" => $model
         ]);
     }
 
-    public function updatePassword(Request $request, Account $model){
+    public function updatePassword(Request $request, Account $model)
+    {
         $request->validate([
             'password' => 'required|string|min:8|confirmed',
         ]);
