@@ -271,11 +271,6 @@ class AuthController extends Controller
             config('tomato-crm.login_by') => "required|exists:".app(config('tomato-crm.model'))->getTable().",username",
         ]);
 
-        $checkIfActive = config('tomato-crm.model')::where("username", $request->get(config('tomato-crm.login_by')))->whereNotNull('otp_activated_at')->first();
-        if ($checkIfActive) {
-            return ApiResponse::errors(__('Your Account is already activated'));
-        }
-
         $checkIfEx = config('tomato-crm.model')::where("username", $request->get(config('tomato-crm.login_by')))->first();
         $checkIfEx->otp_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
         $checkIfEx->save();
