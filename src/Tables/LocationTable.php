@@ -14,9 +14,13 @@ class LocationTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        public  $query = null
+    )
     {
-        //
+        if(!$query){
+            $this->query = \TomatoPHP\TomatoCrm\Models\Location::query();
+        }
     }
 
     /**
@@ -36,7 +40,7 @@ class LocationTable extends AbstractTable
      */
     public function for()
     {
-        return \TomatoPHP\TomatoCrm\Models\Location::query();
+        return $this->query;
     }
 
     /**

@@ -15,9 +15,11 @@ class GroupTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public $query = null)
     {
-        //
+        if(!$query){
+            $this->query = Group::query();
+        }
     }
 
     /**
@@ -37,7 +39,7 @@ class GroupTable extends AbstractTable
      */
     public function for()
     {
-        return Group::query();
+        return $this->query;
     }
 
     /**

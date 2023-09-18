@@ -14,9 +14,13 @@ class ContactTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        public $query = null
+    )
     {
-        //
+        if(!$query){
+            $this->query = \TomatoPHP\TomatoCrm\Models\Contact::query();
+        }
     }
 
     /**
@@ -36,7 +40,7 @@ class ContactTable extends AbstractTable
      */
     public function for()
     {
-        return \TomatoPHP\TomatoCrm\Models\Contact::query();
+        return $this->query;
     }
 
     /**

@@ -14,9 +14,13 @@ class ActivityTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        public $query = null
+    )
     {
-        //
+        if(!$query){
+            $this->query = \TomatoPHP\TomatoCrm\Models\Activity::query();
+        }
     }
 
     /**
@@ -36,7 +40,7 @@ class ActivityTable extends AbstractTable
      */
     public function for()
     {
-        return \TomatoPHP\TomatoCrm\Models\Activity::query();
+        return $this->query;
     }
 
     /**
