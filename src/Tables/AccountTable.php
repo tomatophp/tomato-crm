@@ -64,8 +64,13 @@ class AccountTable extends AbstractTable
             )
             ->export()
             ->selectFilter('type_id',
-                options:Type::where('for', 'accounts')->get()->pluck('name', 'id')->toArray(),
+                remote_url: route('admin.types.api'),
+                option_label: 'name.'.app()->getLocale(),
                 label: __('Type'))
+            ->boolFilter(
+                key: 'is_active',
+                label: __('Activated')
+            )
             ->defaultSort('id')
             ->column(
                 key: 'name',

@@ -34,7 +34,7 @@
                 </x-splade-cell>
                 <x-splade-cell last_login>
                     @if($item->last_login)
-                        {{  $item->last_login->diffForHumans() }}
+                        {{  Carbon\Carbon::parse($item->last_login)->diffForHumans() }}
                     @else
                         -
                     @endif

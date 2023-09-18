@@ -72,6 +72,9 @@ class AuthController extends Controller
         if($check){
             $user = auth($this->guard)->user();
             if($user->is_active && $this->otp){
+                $user->last_login = Carbon::now();
+                $user->save();
+
                 $token = $user->createToken($this->guard)->plainTextToken;
                 $user->token = $token;
 
@@ -85,6 +88,7 @@ class AuthController extends Controller
                         "token" => $user->token
                     ];
                 }
+
 
                 /**
                  * A user resource with Token.
@@ -111,10 +115,16 @@ class AuthController extends Controller
                 ],400);
             }
             else if(!$this->otp) {
+                $user->last_login = Carbon::now();
+                $user->save();
+
                 $token = $user->createToken($this->guard)->plainTextToken;
                 $user->token = $token;
 
                 AccountLogged::dispatch($this->model, $user->id);
+
+
+
 
                 if($this->resource){
                     $user = $this->resource::make($user);
