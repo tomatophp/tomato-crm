@@ -85,19 +85,5 @@ return [
          "path" => "groups"
      ]
      */
-    "relations" => [
-        [
-            "name" => "properties",
-            "label" => [
-                "ar" => "Properties",
-                "en" => "Properties"
-            ],
-            "table" => \Modules\Unites\Tables\PropertyTable::class,
-            "view" => null,
-            "show" => true,
-            "edit" => true,
-            "delete" => true,
-            "path" => "properties"
-        ]
-    ]
+    "relations" => []
 ];
