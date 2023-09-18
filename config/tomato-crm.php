@@ -50,5 +50,54 @@ return [
      *
      * guard: Auth Guard
      */
-    "guard" => "accounts"
+    "guard" => "accounts",
+
+    /*
+     * Attachments Configurations
+     *
+     * You Can Add More Actions And Buttons To Accounts View
+     */
+    "views" => [
+        "accounts" => [
+            "buttons" => null,
+            "actions" => null
+        ]
+    ],
+
+    /*
+     * Attachment Relations
+     *
+     * You can use this config to attach relation manager to the view accounts
+     *
+     * Example:
+     *
+     [
+         "name" => "groups",
+         "label" => [
+           "ar" => "Group",
+           "en" => "Group"
+         ],
+         "table" => \TomatoPHP\TomatoCrm\Tables\GroupTable::class,
+         "view" => "tomato-crm::components.relations",
+         "show" => true,
+         "edit" => true,
+         "delete" => true,
+         "path" => "groups"
+     ]
+     */
+    "relations" => [
+        [
+            "name" => "properties",
+            "label" => [
+                "ar" => "Properties",
+                "en" => "Properties"
+            ],
+            "table" => \Modules\Unites\Tables\PropertyTable::class,
+            "view" => null,
+            "show" => true,
+            "edit" => true,
+            "delete" => true,
+            "path" => "properties"
+        ]
+    ]
 ];

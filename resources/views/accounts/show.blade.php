@@ -43,4 +43,42 @@
         </x-tomato-admin-button>
         <x-tomato-admin-button secondary :href="route('admin.accounts.index')" label="{{__('Cancel')}}"/>
     </div>
+
+    @php
+        $groups = [];
+        $groups['groups'] = __('Groups');
+        if(config('tomato-crm.features.locations')){
+            $groups['locations'] = __('Locations');
+        }
+        foreach (config('tomato-crm.relations') as $item){
+            $groups[$item['name']] = $item['label'][app()->getLocale()];
+        }
+    @endphp
+    <x-tomato-admin-relations-group :relations="$groups">
+        <x-tomato-admin-relations
+            :model="$model"
+            name="groups"
+            :table="\TomatoPHP\TomatoCrm\Tables\GroupTable::class"
+        />
+        @if(config('tomato-crm.features.locations'))
+            <x-tomato-admin-relations
+                :model="$model"
+                name="locations"
+                :table="\TomatoPHP\TomatoCrm\Tables\LocationTable::class"
+            />
+        @endif
+        @foreach (config('tomato-crm.relations') as $item)
+            <x-tomato-admin-relations
+                :model="$model"
+                name="{{$item['name']}}"
+                :table="$item['table']"
+                :show="$item['show']"
+                :edit="$item['edit']"
+                :delete="$item['delete']"
+                :path="$item['path']"
+                :view="$item['view'] ?: 'tomato-admin::components.relations'"
+            />
+        @endforeach
+    </x-tomato-admin-relations-group>
+
 </x-tomato-admin-container>

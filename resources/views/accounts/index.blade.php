@@ -6,6 +6,9 @@
         <x-tomato-admin-button :modal="true" :href="route('admin.accounts.create')" type="link">
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Account')}}
         </x-tomato-admin-button>
+        @if(config('tomato-crm.views.accounts.buttons', null))
+            @include(config('tomato-crm.views.accounts.buttons'))
+        @endif
     </x-slot:buttons>
 
 
@@ -38,6 +41,9 @@
                 </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
+                        @if(config('tomato-crm.views.accounts.actions', null))
+                            @include(config('tomato-crm.views.accounts.actions'))
+                        @endif
                         <x-tomato-admin-button danger modal type="icon" :href="route('admin.accounts.password', $item->id)" title="{{__('Change Password')}}">
                             <x-heroicon-s-lock-closed class="h-6 w-6"/>
                         </x-tomato-admin-button>
@@ -51,7 +57,7 @@
                             <x-heroicon-s-map-pin class="h-6 w-6"/>
                         </x-tomato-admin-button>
                         @endif
-                        <x-tomato-admin-button success modal type="icon" :href="route('admin.accounts.show', $item->id)" title="{{trans('tomato-admin::global.crud.view')}}">
+                        <x-tomato-admin-button success type="icon" :href="route('admin.accounts.show', $item->id)" title="{{trans('tomato-admin::global.crud.view')}}">
                             <x-heroicon-s-eye class="h-6 w-6"/>
                         </x-tomato-admin-button>
                         <x-tomato-admin-button warning modal type="icon" :href="route('admin.accounts.edit', $item->id)" title="{{trans('tomato-admin::global.crud.edit')}}">
