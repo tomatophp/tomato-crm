@@ -84,6 +84,14 @@ class AccountTable extends AbstractTable
                 label: __('Activated'),
                 sortable: true);
 
+        if(config('tomato-crm.features.groups')){
+            $table->column(
+                key: 'groups',
+                label: __('Groups'),
+                sortable: false
+            );
+        }
+
 
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCols() as $key=>$item){
             $table->column(

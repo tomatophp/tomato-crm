@@ -9,16 +9,15 @@
 
 
         <div class="grid grid-cols-2 gap-4">
-            <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="Name" />
-            <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="Email" />
-            <x-splade-input label="{{__('Phone')}}" name="phone" type="tel"  placeholder="Phone" />
-            <x-splade-select choices label="{{__('Login By')}}" name="loginBy" type="text"  placeholder="LoginBy">
-                <option value="email">{{__('Email')}}</option>
-                <option value="phone">{{__('Phone')}}</option>
-            </x-splade-select>
+            <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="{{__('Name')}}" />
+            <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="{{__('Email')}}" />
+            <x-splade-input class="col-span-2" label="{{__('Phone')}}" name="phone" type="tel"  placeholder="{{__('Phone')}}" />
         </div>
         @if(config('tomato-crm.features.locations'))
-            <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
+            <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="{{__('Address')}}" autosize />
+        @endif
+        @if(config('tomato-crm.features.groups'))
+            <x-splade-select choices multiple :options="$groups" option-value="id" option-label="name"  label="{{__('Groups')}}" name="groups" placeholder="{{__('Groups')}}" autosize />
         @endif
 
         @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getEditForm())
@@ -44,7 +43,7 @@
         @endforeach
 
 
-        <x-splade-checkbox label="{{  __('Activated') }}" name="is_active" label="Activated" />
+        <x-splade-checkbox label="{{  __('Activated') }}" name="is_active" label="{{  __('Activated') }}" />
 
 
         <div class="flex justify-start gap-2 pt-3">

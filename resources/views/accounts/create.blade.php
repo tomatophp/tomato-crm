@@ -1,5 +1,5 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.create')}} {{__('Account')}}">
-    <x-splade-form :default="['loginBy' => 'email']" class="flex flex-col space-y-4" action="{{route('admin.accounts.store')}}" method="post">
+    <x-splade-form :default="['loginBy' => config('tomato-crm.login_by')]" class="flex flex-col space-y-4" action="{{route('admin.accounts.store')}}" method="post">
 
         <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type_id" choices>
             @foreach($types as $type)
@@ -7,17 +7,17 @@
             @endforeach
         </x-splade-select>
 
+
         <div class="grid grid-cols-2 gap-4">
-            <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="Name" />
-            <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="Email" />
-            <x-splade-input label="{{__('Phone')}}" name="phone" type="tel"  placeholder="Phone" />
-            <x-splade-select choices label="{{__('Login By')}}" name="loginBy" type="text"  placeholder="LoginBy">
-                <option value="email">{{__('Email')}}</option>
-                <option value="phone">{{__('Phone')}}</option>
-            </x-splade-select>
+            <x-splade-input label="{{__('Name')}}" name="name" type="text"  placeholder="{{__('Name')}}" />
+            <x-splade-input label="{{__('Email')}}" name="email" type="email"  placeholder="{{__('Email')}}" />
+            <x-splade-input class="col-span-2" label="{{__('Phone')}}" name="phone" type="tel"  placeholder="{{__('Phone')}}" />
         </div>
         @if(config('tomato-crm.features.locations'))
-            <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="Address" autosize />
+            <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="{{__('Address')}}" autosize />
+        @endif
+        @if(config('tomato-crm.features.groups'))
+            <x-splade-select choices multiple :options="$groups" option-value="id" option-label="name.{{app()->getLocale()}}"  label="{{__('Groups')}}" name="groups" placeholder="{{__('Groups')}}" autosize />
         @endif
 
         @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateForm())

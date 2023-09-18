@@ -24,6 +24,8 @@
                         </div>
                     </x-splade-link>
                 </x-splade-cell>
+                <x-splade-cell color><x-tomato-admin-row table type="color" value="{{$item->color}}" /></x-splade-cell>
+                <x-splade-cell icon><x-tomato-admin-row table type="icon" value="{{$item->icon}}" /></x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start qts_tooltip">
                         <x-tomato-admin-button type="icon" success modal title="{{trans('tomato-admin::global.crud.view')}}" href="{{ route('admin.groups.show', $item->id) }}">

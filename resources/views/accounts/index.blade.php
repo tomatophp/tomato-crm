@@ -18,6 +18,13 @@
                 @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
                     @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
                 @endif
+                <x-splade-cell groups>
+                    @if(config('tomato-crm.features.groups'))
+                        @foreach($item->groups as $group)
+                            <x-tomato-admin-row type="badge" href="{{url()->current().'?group_id='.$group->id}}" icon="{{$group->icon}}" color="{{$group->color}}" table value="{{$group->name}}" />
+                        @endforeach
+                    @endif
+                </x-splade-cell>
                 <x-splade-cell username>
                     @if($item->loginBy === 'email')
                         <x-tomato-admin-row table type="email" :value="$item->username" />

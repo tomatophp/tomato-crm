@@ -11,6 +11,7 @@ use Illuminate\View\View;
 use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
 use TomatoPHP\TomatoCrm\Models\Account;
+use TomatoPHP\TomatoCrm\Models\Group;
 
 class AccountController extends Controller
 {
@@ -80,11 +81,14 @@ class AccountController extends Controller
      */
     public function create(): View
     {
+        $data = [];
+        $data['types'] = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get();
+        if(config('tomato-crm.features.groups')){
+            $data['groups'] = Group::all();
+        }
         return Tomato::create(
             view: 'tomato-crm::accounts.create',
-            data: [
-                'types' => \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get(),
-            ],
+            data: $data,
         );
     }
 
@@ -133,6 +137,12 @@ class AccountController extends Controller
             }
         }
 
+        if(config('tomato-crm.features.groups')){
+            if($request->has('groups') && count($request->get('groups'))){
+                $response->record->groups()->attach(array_values($request->get('groups')));
+            }
+        }
+
         return $response->redirect;
     }
 
@@ -146,6 +156,9 @@ class AccountController extends Controller
         $model->phone = $model->meta('phone');
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
+        }
+        if(config('tomato-crm.features.groups')){
+            $model->groups = $model->groups()->pluck('group_id')->toArray();
         }
         return Tomato::get(
             model: $model,
@@ -162,12 +175,18 @@ class AccountController extends Controller
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
         }
+        if(config('tomato-crm.features.groups')){
+            $model->groups = $model->groups()->pluck('group_id')->toArray();
+        }
+        $data = [];
+        $data['types'] = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get();
+        if(config('tomato-crm.features.groups')){
+            $data['groups'] = Group::all();
+        }
         return Tomato::get(
             model: $model,
             view: 'tomato-crm::accounts.edit',
-            data: [
-                'types' => \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get(),
-            ],
+            data: $data,
             hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
             collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
@@ -211,6 +230,10 @@ class AccountController extends Controller
             if ($request->has($key) && !empty($request->get($key))) {
                 $response->record->meta($key, $request->get($key));
             }
+        }
+
+        if(config('tomato-crm.features.groups')){
+            $response->record->groups()->sync($request->get('groups') ? array_values($request->get('groups')) : []);
         }
 
         return $response->redirect;
