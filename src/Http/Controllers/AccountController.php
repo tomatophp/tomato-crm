@@ -82,7 +82,7 @@ class AccountController extends Controller
     public function create(): View
     {
         $data = [];
-        $data['types'] = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get();
+        $data['types'] = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->where('type', 'type')->get();
         if(config('tomato-crm.features.groups')){
             $data['groups'] = Group::all();
         }
@@ -179,7 +179,7 @@ class AccountController extends Controller
             $model->groups = $model->groups()->pluck('group_id')->toArray();
         }
         $data = [];
-        $data['types'] = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->get();
+        $data['types'] = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->where('type', 'type')->get();
         if(config('tomato-crm.features.groups')){
             $data['groups'] = Group::all();
         }
