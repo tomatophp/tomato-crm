@@ -138,7 +138,7 @@ class AccountController extends Controller
         }
 
         if(config('tomato-crm.features.groups')){
-            if($request->has('groups') && count($request->get('groups'))){
+            if($request->has('groups') && is_array($request->get('groups')) && count($request->get('groups'))){
                 $response->record->groups()->attach(array_values($request->get('groups')));
             }
         }
