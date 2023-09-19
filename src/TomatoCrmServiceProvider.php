@@ -36,6 +36,11 @@ class TomatoCrmServiceProvider extends ServiceProvider
             __DIR__ . '/../config/tomato-crm.php' => config_path('tomato-crm.php'),
         ], 'tomato-crm-config');
 
+        //Publish Model
+        $this->publishes([
+            __DIR__ . '/../publish/Account.php' => app_path('Models/Account.php'),
+        ], 'tomato-crm-model');
+
         //Register Migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 

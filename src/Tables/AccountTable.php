@@ -21,7 +21,7 @@ class AccountTable extends AbstractTable
     )
     {
        if(!$this->query){
-           $this->query = \TomatoPHP\TomatoCrm\Models\Account::query();
+           $this->query = config('tomato-crm.model')::query();
        }
     }
 
@@ -58,7 +58,10 @@ class AccountTable extends AbstractTable
             ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','username','email', 'phone'])
             ->bulkAction(
                 label: trans('tomato-admin::global.crud.delete'),
-                each: fn (\TomatoPHP\TomatoCrm\Models\Account $model) => $model->delete(),
+                each: function ($model){
+                    $model = config('tomato-crm.model')::find($model->id);
+                    $model->delete();
+                },
                 after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
                 confirm: true
             )

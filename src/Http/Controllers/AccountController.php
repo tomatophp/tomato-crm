@@ -72,7 +72,7 @@ class AccountController extends Controller
     {
         return Tomato::json(
             request: $request,
-            model: \TomatoPHP\TomatoCrm\Models\Account::class,
+            model: config('tomato-crm.model'),
         );
     }
 
@@ -101,7 +101,7 @@ class AccountController extends Controller
         $request->validated();
 
         if ($this->loginBy === 'email') {
-            $checkUsername = Account::where('username', $request->get('email'))->first();
+            $checkUsername = config('tomato-crm.model')::where('username', $request->get('email'))->first();
             if ($checkUsername) {
                 Toast::title('Sorry This Email is Exists')->danger()->autoDismiss(2);
                 return back();
@@ -110,7 +110,7 @@ class AccountController extends Controller
             $request->merge(['username' => $request->get('email')]);
         }
         if ($this->loginBy === 'phone') {
-            $checkUsername = Account::where('username', $request->get('phone'))->first();
+            $checkUsername = config('tomato-crm.model')::where('username', $request->get('phone'))->first();
             if ($checkUsername) {
                 Toast::title('Sorry This Phone is Exists')->danger()->autoDismiss(2);
                 return back();
@@ -124,7 +124,7 @@ class AccountController extends Controller
 
         $response = Tomato::store(
             request: $request,
-            model: \TomatoPHP\TomatoCrm\Models\Account::class,
+            model: config('tomato-crm.model'),
             message: __('Account created successfully'),
             redirect: 'admin.accounts.index',
             hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
@@ -138,7 +138,7 @@ class AccountController extends Controller
         }
 
         if(config('tomato-crm.features.groups')){
-            if($request->has('groups') && is_array($request->get('groups')) && count($request->get('groups'))){
+            if($request->has('groups') && is_array($request->has('groups')) && count($request->get('groups'))){
                 $response->record->groups()->attach(array_values($request->get('groups')));
             }
         }
@@ -150,8 +150,9 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $model
      * @return View
      */
-    public function show(\TomatoPHP\TomatoCrm\Models\Account $model): View|JsonResponse
+    public function show($model): View|JsonResponse
     {
+        $model = config('tomato-crm.model')::find($model);
         $model->email = $model->meta('email');
         $model->phone = $model->meta('phone');
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
@@ -170,8 +171,9 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $model
      * @return View
      */
-    public function edit(\TomatoPHP\TomatoCrm\Models\Account $model): View
+    public function edit($model): View
     {
+        $model = config('tomato-crm.model')::find($model);
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
         }
@@ -197,10 +199,11 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $user
      * @return RedirectResponse
      */
-    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountUpdateRequest $request, \TomatoPHP\TomatoCrm\Models\Account $model): RedirectResponse|JsonResponse
+    public function update(\TomatoPHP\TomatoCrm\Http\Requests\Account\AccountUpdateRequest $request, $model): RedirectResponse|JsonResponse
     {
+        $model = config('tomato-crm.model')::find($model);
         if ($this->loginBy === 'email') {
-            $checkUsername = Account::where('username', $request->get('email'))->where('id', '!=', $model->id)->first();
+            $checkUsername = config('tomato-crm.model')::where('username', $request->get('email'))->where('id', '!=', $model->id)->first();
             if ($checkUsername) {
                 Toast::title('Sorry This Email is Exists')->danger()->autoDismiss(2);
                 return back();
@@ -209,7 +212,7 @@ class AccountController extends Controller
             $request->merge(['username' => $request->get('email')]);
         }
         if ($this->loginBy === 'phone') {
-            $checkUsername = Account::where('username', $request->get('phone'))->where('id', '!=', $model->id)->first();
+            $checkUsername = config('tomato-crm.model')::where('username', $request->get('phone'))->where('id', '!=', $model->id)->first();
             if ($checkUsername) {
                 Toast::title('Sorry This Phone is Exists')->danger()->autoDismiss(2);
                 return back();
@@ -243,8 +246,9 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $model
      * @return RedirectResponse
      */
-    public function destroy(\TomatoPHP\TomatoCrm\Models\Account $model): RedirectResponse
+    public function destroy($model): RedirectResponse
     {
+        $model = config('tomato-crm.model')::find($model);
         $response = Tomato::destroy(
             model: $model,
             message: __('Account deleted successfully'),
@@ -255,15 +259,17 @@ class AccountController extends Controller
     }
 
 
-    public function password(Account $model)
+    public function password($model)
     {
+        $model = config('tomato-crm.model')::find($model);
         return view('tomato-crm::accounts.password', [
             "model" => $model
         ]);
     }
 
-    public function updatePassword(Request $request, Account $model)
+    public function updatePassword(Request $request,$model)
     {
+        $model = config('tomato-crm.model')::find($model);
         $request->validate([
             'password' => 'required|string|min:8|confirmed',
         ]);

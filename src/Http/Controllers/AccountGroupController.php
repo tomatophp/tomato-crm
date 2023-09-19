@@ -18,7 +18,7 @@ class AccountGroupController extends Controller
 
         // TODO:: check vendor here
         return view('tomato-crm::groups.index', [
-            'accounts' => Account::whereIn('id', $request->ids)->select('id', 'name')->get(),
+            'accounts' => config('tomato-crm.model')::whereIn('id', $request->ids)->select('id', 'name')->get(),
             'groups' => Group::all(),
             'ids' => $request->ids,
         ]);

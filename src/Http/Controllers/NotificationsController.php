@@ -21,7 +21,10 @@ class NotificationsController extends Controller
             "templates" => NotificationsTemplate::where('action', 'manual')->get()
         ]);
     }
-    public function user(Request $request, Account $model){
+
+    public function user(Request $request, $model){
+        $model = config('tomato-crm.model')::find($model);
+
         return view('tomato-crm::accounts.notifications', [
             "templates" => NotificationsTemplate::where('action', 'manual')->get(),
             "model" => $model
@@ -42,7 +45,7 @@ class NotificationsController extends Controller
             if($request->get('privacy') === 'customer'){
                 SendNotification::make($request->get('providers'))
                     ->template($template->key)
-                    ->model(Account::class)
+                    ->model(config('tomato-crm.model')::class)
                     ->id($request->get('account_id'))
                     ->icon('bx bx-user')
                     ->url(url('/'))
@@ -52,14 +55,14 @@ class NotificationsController extends Controller
             }
             else if($request->get('privacy') === 'group'){
                 $group = $request->get('group_id');
-                $accounts = Account::whereHas('groups', function ($q) use ($group){
+                $accounts = config('tomato-crm.model')::whereHas('groups', function ($q) use ($group){
                     $q->where('id', $group);
                 })->get();
 
                 foreach($accounts as $account){
                     SendNotification::make($request->get('providers'))
                         ->template($template->key)
-                        ->model(Account::class)
+                        ->model(config('tomato-crm.model')::class)
                         ->id($account->id)
                         ->icon('bx bx-user')
                         ->url(url('/'))
@@ -71,7 +74,7 @@ class NotificationsController extends Controller
             else {
                 SendNotification::make($request->get('providers'))
                     ->template($template->key)
-                    ->model(Account::class)
+                    ->model(config('tomato-crm.model')::class)
                     ->privacy('public')
                     ->database(true)
                     ->icon('bx bx-user')
@@ -104,7 +107,7 @@ class NotificationsController extends Controller
                     ->type($request->get('type'))
                     ->database(true)
                     ->image($path)
-                    ->model(Account::class)
+                    ->model(config('tomato-crm.model')::class)
                     ->id($request->get('account_id'))
                     ->privacy('private')
                     ->icon('bx bx-user')
@@ -113,7 +116,7 @@ class NotificationsController extends Controller
             }
             else if($request->get('privacy') === 'group'){
                 $group = $request->get('group_id');
-                $accounts = Account::whereHas('groups', function ($q) use ($group){
+                $accounts = config('tomato-crm.model')::whereHas('groups', function ($q) use ($group){
                     $q->where('id', $group);
                 })->get();
 
@@ -123,7 +126,7 @@ class NotificationsController extends Controller
                         ->message($request->get('body'))
                         ->type($request->get('type'))
                         ->image($path)
-                        ->model(Account::class)
+                        ->model(config('tomato-crm.model')::class)
                         ->database(true)
                         ->id($account->id)
                         ->icon('bx bx-user')
@@ -138,7 +141,7 @@ class NotificationsController extends Controller
                     ->message($request->get('body'))
                     ->type($request->get('type'))
                     ->image($path)
-                    ->model(Account::class)
+                    ->model(config('tomato-crm.model')::class)
                     ->icon('bx bx-user')
                     ->url(url('/'))
                     ->database(true)
