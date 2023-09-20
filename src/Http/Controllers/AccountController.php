@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
-use TomatoPHP\TomatoCrm\Models\Account;
 use TomatoPHP\TomatoCrm\Models\Group;
 
 class AccountController extends Controller
@@ -32,7 +31,7 @@ class AccountController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Account::query();
+        $query = app(config('tomato-crm.model'))::query();
         if ($request->get('type') && !empty($request->get('type'))) {
             $query->where('type', $request->get('type'));
         }
@@ -56,7 +55,7 @@ class AccountController extends Controller
         }
         return Tomato::index(
             request: $request,
-            model: Account::class,
+            model: app(config('tomato-crm.model'))::class,
             view: 'tomato-crm::accounts.index',
             table: \TomatoPHP\TomatoCrm\Tables\AccountTable::class,
             query: $query,
@@ -70,9 +69,25 @@ class AccountController extends Controller
      */
     public function api(Request $request): JsonResponse
     {
+        $filters = \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getFilters();
+        $setFiltersArray = [];
+        foreach ($filters as $item) {
+            if (Schema::hasColumn('accounts', $item)) {
+                $setFiltersArray[$item] = $item;
+            } else {
+                if ($request->has($item) && !empty($request->has($item))) {
+                    $query->whereHas('accountsMetas', function ($q) use ($item, $request) {
+                        $q->where('key', $item)->where('value', $request->get($item));
+                    });
+                }
+            }
+        }
+
         return Tomato::json(
             request: $request,
             model: config('tomato-crm.model'),
+            query: config('tomato-crm.model')::query(),
+            filters: $setFiltersArray
         );
     }
 
@@ -153,8 +168,6 @@ class AccountController extends Controller
     public function show($model): View|JsonResponse
     {
         $model = config('tomato-crm.model')::find($model);
-        $model->email = $model->meta('email');
-        $model->phone = $model->meta('phone');
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
         }
@@ -164,6 +177,7 @@ class AccountController extends Controller
         return Tomato::get(
             model: $model,
             view: 'tomato-crm::accounts.show',
+            query: config('tomato-crm.model')::query()
         );
     }
 
@@ -173,7 +187,7 @@ class AccountController extends Controller
      */
     public function edit($model): View
     {
-        $model = config('tomato-crm.model')::find($model);
+        $model = app(config('tomato-crm.model'))::find($model);
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
             $model->{$key} = $model->meta($key);
         }
@@ -191,6 +205,7 @@ class AccountController extends Controller
             data: $data,
             hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
             collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
+            query: app(config('tomato-crm.model'))::query()
         );
     }
 

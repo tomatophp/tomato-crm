@@ -106,13 +106,13 @@ class AuthController extends Controller
                 /**
                  * A user resource.
                  *
-                 * @status 400
+                 * @status 401
                  * @body array{status: false, message: "Your account is not active yet"}
                  */
                 return response()->json([
                     'status' => false,
                     'message' => __("Your account is not active yet")
-                ],400);
+                ],401);
             }
             else if(!$this->otp) {
                 $user->last_login = Carbon::now();

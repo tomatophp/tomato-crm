@@ -1,6 +1,5 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{ __('Account') }} #{{$model->id}}">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
         <x-tomato-admin-row :label="__('Name')" :value="$model->name" type="text" />
         <x-tomato-admin-row :label="__('Username')" :value="$model->username" type="text" />
         <x-tomato-admin-row :label="__('Email')" :value="$model->email" type="email" />
@@ -22,6 +21,11 @@
         @endforeach
         <x-tomato-admin-row :label="__('Login')" :value="$model->is_login" type="bool" />
         <x-tomato-admin-row :label="__('Activated')" :value="$model->is_active" type="bool" />
+
+        @if(class_exists(\Bavix\Wallet\Models\Wallet::class))
+            <x-tomato-admin-row :label="__('Balance')" value="{!! dollar($model->balance) !!}" type="text" />
+        @endif
+
     </div>
 
     <div class="flex justify-start gap-2 pt-3">

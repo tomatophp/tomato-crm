@@ -51,6 +51,11 @@
                         @if(config('tomato-crm.views.accounts.actions', null))
                             @include(config('tomato-crm.views.accounts.actions'))
                         @endif
+                        @if(class_exists(\Bavix\Wallet\Models\Wallet::class))
+                            <x-tomato-admin-button modal type="icon" :href="route('admin.wallets.balance', $item->id)" title="{{__('Charge Balance')}}">
+                                <x-heroicon-s-currency-dollar class="h-6 w-6"/>
+                            </x-tomato-admin-button>
+                        @endif
                         <x-tomato-admin-button danger modal type="icon" :href="route('admin.accounts.password', $item->id)" title="{{__('Change Password')}}">
                             <x-heroicon-s-lock-closed class="h-6 w-6"/>
                         </x-tomato-admin-button>
