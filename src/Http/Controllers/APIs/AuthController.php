@@ -309,6 +309,63 @@ class AuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    public function otpCheck(Request $request){
+        $request->validate([
+            config('tomato-crm.login_by') => 'required|string|max:255',
+            'otp_code' => 'required|string|max:6',
+        ]);
+
+        $user = app(config('tomato-crm.model'))->where("username", $request->get(config('tomato-crm.login_by')))->first();
+
+        if ($user) {
+            if ((!empty($user->otp_code)) && ($user->otp_code === $request->get('otp_code'))) {
+                /**
+                 *  OTP is vaild and the account has been activated.
+                 *
+                 * @status 200
+                 * @body array{status: true, message: 'your Account has been activated'}
+                 */
+                return response()->json([
+                    "status" => true,
+                    "message" => __('valid OTP Code'),
+                ], 200);
+
+            }
+
+            /**
+             *  Sorry OTP is not vaild or expired you can generate new one by resend.
+             *
+             * @status 400
+             * @body array{status: false, message: 'sorry this code is not valid or expired'}
+             */
+            return response()->json([
+                "status" => false,
+                "message" => __('sorry this code is not valid or expired'),
+            ], 400);
+        }
+
+        /**
+         *  There is not account releated to this email/phone.
+         *
+         * @status 404
+         * @body array{status: false, message: 'user not found'}
+         */
+        return response()->json([
+            "status" => false,
+            "message" => __('user not found'),
+        ], 404);
+    }
+
+
+    /**
+     * Check OTP & Active Account.
+     *
+     * You can check OTP is vaild by use this API and active the user if it's vaild.
+     *
+     * @tags Auth
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function otp(Request $request){
         $request->validate([
             config('tomato-crm.login_by') => 'required|string|max:255',

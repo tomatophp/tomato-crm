@@ -9,6 +9,7 @@ if(config('tomato-crm.features.apis')){
         Route::post('reset',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'reset'])->name('reset');
         Route::post('resend',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'resend'])->name('resend');
         Route::post('otp',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'otp'])->name('otp');
+        Route::post('otp-check',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'otpCheck'])->name('otp.check');
         Route::post('password',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'password'])->name('password');
 
         Route::middleware(['auth:sanctum'])->group(function (){
