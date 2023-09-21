@@ -6,7 +6,7 @@
         <x-tomato-admin-row :label="__('Phone')" :value="$model->phone" type="tel" />
         <x-tomato-admin-row :label="__('Login By')" :value="$model->loginBy" type="text" />
         <x-tomato-admin-row :label="__('Address')" :value="$model->address" type="text" />
-        <x-tomato-admin-row :label="__('Last login')" :value="$model->last_login?->diffForHumans()" type="text" />
+        <x-tomato-admin-row :label="__('Last login')" :value="\Carbon\Carbon::parse($model->last_login)?->diffForHumans()" type="text" />
         <x-tomato-admin-row :label="__('Host')" :value="$model->host" type="text" />
         @foreach(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key=>$item)
             @if(is_array($item))
