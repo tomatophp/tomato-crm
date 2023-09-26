@@ -67,7 +67,10 @@ class AccountTable extends AbstractTable
             )
             ->export()
             ->selectFilter('type_id',
-                remote_url: route('admin.types.api'),
+                remote_url: route('admin.types.api', [
+                    "for" => "accounts",
+                    "type" => "type"
+                ]),
                 option_label: 'name.'.app()->getLocale(),
                 label: __('Type'))
             ->boolFilter(
