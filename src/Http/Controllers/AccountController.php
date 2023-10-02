@@ -71,14 +71,22 @@ class AccountController extends Controller
     {
         $filters = \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getFilters();
         $setFiltersArray = [];
-        foreach ($filters as $item) {
-            if (Schema::hasColumn('accounts', $item)) {
-                $setFiltersArray[$item] = $item;
-            } else {
-                if ($request->has($item) && !empty($request->has($item))) {
-                    $query->whereHas('accountsMetas', function ($q) use ($item, $request) {
-                        $q->where('key', $item)->where('value', $request->get($item));
-                    });
+
+        $query = config('tomato-crm.model')::query();
+        if($request->has('search') & !empty($request->get('search'))){
+            $query->where('name', 'LIKE', '%'.$request->get('search').'%');
+        }
+        else {
+
+            foreach ($filters as $item) {
+                if (Schema::hasColumn('accounts', $item)) {
+                    $setFiltersArray[$item] = $item;
+                } else {
+                    if ($request->has($item) && !empty($request->has($item))) {
+                        $query->whereHas('accountsMetas', function ($q) use ($item, $request) {
+                            $q->where('key', $item)->where('value', $request->get($item));
+                        });
+                    }
                 }
             }
         }
@@ -86,7 +94,7 @@ class AccountController extends Controller
         return Tomato::json(
             request: $request,
             model: config('tomato-crm.model'),
-            query: config('tomato-crm.model')::query(),
+            query: $query,
             filters: $setFiltersArray
         );
     }
@@ -165,7 +173,7 @@ class AccountController extends Controller
      * @param \TomatoPHP\TomatoCrm\Models\Account $model
      * @return View
      */
-    public function show($model): View|JsonResponse
+    public function show(Request $request, $model): View|JsonResponse
     {
         $model = config('tomato-crm.model')::find($model);
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getShow() as $key => $item) {
