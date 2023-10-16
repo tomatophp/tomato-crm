@@ -3,7 +3,7 @@
 use \Illuminate\Support\Facades\Route;
 
 if(config('tomato-crm.features.apis')){
-    Route::name('api.')->middleware(['throttle:5'])->prefix('api')->group(function (){
+    Route::name('api.')->middleware(['throttle:500'])->prefix('api')->group(function (){
         Route::post('login',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'login'])->name('login');
         Route::post('register',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'register'])->name('register');
         Route::post('reset',[\TomatoPHP\TomatoCrm\Http\Controllers\APIs\AuthController::class,'reset'])->name('reset');

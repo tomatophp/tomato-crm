@@ -94,12 +94,14 @@ class ProfileController extends Controller
             $request->validate(array_merge(
                 [
                     'name' => 'sometimes|string|max:255',
-                    'email' => 'sometimes|string|email|max:255|unique:accounts,email,id,'.$user->id,
-                    'phone' => 'sometimes|string|max:255|unique:accounts,phone,id,'.$user->id,
+                    'email' => 'sometimes|string|email|max:255|unique:accounts,email,'.$user->id,
+                    'phone' => 'sometimes|string|max:255|unique:accounts,phone,'.$user->id,
                 ], TomatoCrm::getApiValidationEdit()
             ));
 
+
             $getUserModel = $this->model::find($user->id);
+
             $data = $request->all();
 
             if($this->loginBy === 'phone'){
