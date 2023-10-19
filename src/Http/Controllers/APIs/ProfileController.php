@@ -111,6 +111,8 @@ class ProfileController extends Controller
                 $data['username'] = $request->get('email');
             }
 
+            $data['password'] = $getUserModel->password;
+
             $getUserModel->update($data);
 
 
