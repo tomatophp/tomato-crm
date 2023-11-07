@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        if(Schema::hasColumn('tables', 'balance')){
-            Schema::dropColumns('tables', ['balance']);
+        if(Schema::hasColumn('accounts', 'balance')){
+            Schema::dropColumns('accounts', ['balance']);
         }
     }
 
