@@ -5,6 +5,7 @@ namespace TomatoPHP\TomatoCrm\Facades;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
+use TomatoPHP\TomatoCrm\Services\Contracts\WebResponse;
 
 /**
  * @method static guard(string $guard)
@@ -15,16 +16,16 @@ use Illuminate\Support\Facades\Facade;
  * @method static resource(string $resource)
  * @method static createValidation(array $createValidation)
  * @method static updateValidation(array $updateValidation)
- * @method \Illuminate\Http\JsonResponse login(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse logout(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse otp(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse register(\Illuminate\Http\Request $request, array $validation=[])
- * @method \Illuminate\Http\JsonResponse reset(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse password(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse resend(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse profile(\Illuminate\Http\Request $request)
- * @method \Illuminate\Http\JsonResponse update(\Illuminate\Http\Request $request, array $validation=[])
- * @method \Illuminate\Http\JsonResponse destroy(\Illuminate\Http\Request $request)
+ * @method \Illuminate\Http\JsonResponse|WebResponse login(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse logout(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse otp(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse register(\Illuminate\Http\Request $request, array $validation=[], string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse reset(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse password(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse resend(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse profile(\Illuminate\Http\Request $request, string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse update(\Illuminate\Http\Request $request, array $validation=[], string $type = "api")
+ * @method \Illuminate\Http\JsonResponse|WebResponse destroy(\Illuminate\Http\Request $request, string $type = "api")
  */
 class TomatoAuth extends Facade
 {

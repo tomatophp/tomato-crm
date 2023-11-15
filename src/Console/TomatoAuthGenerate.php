@@ -1,6 +1,6 @@
 <?php
 
-namespace TomatoPHP\TomatoCRM\Console;
+namespace TomatoPHP\TomatoCrm\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;

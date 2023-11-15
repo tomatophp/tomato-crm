@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use TomatoPHP\TomatoAdmin\Facade\TomatoMenu;
 use TomatoPHP\TomatoAdmin\Services\Contracts\Menu;
+use TomatoPHP\TomatoCrm\Console\TomatoAuthGenerate;
 use TomatoPHP\TomatoCrm\Events\SendOTP;
 use TomatoPHP\TomatoCrm\Menus\AccountMenu;
 use TomatoPHP\TomatoCrm\Models\Account;
@@ -25,7 +26,7 @@ class TomatoCrmServiceProvider extends ServiceProvider
 
         //Register generate command
         $this->commands([
-            \TomatoPHP\TomatoCrm\Console\TomatoCrmInstall::class,
+            \TomatoPHP\TomatoCrm\Console\TomatoCrmInstall::class
         ]);
 
         //Register Config file

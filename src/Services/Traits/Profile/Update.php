@@ -5,6 +5,7 @@ namespace TomatoPHP\TomatoCrm\Services\Traits\Profile;
 use Illuminate\Support\Facades\Schema;
 use TomatoPHP\TomatoAdmin\Helpers\ApiResponse;
 use TomatoPHP\TomatoCRM\Helpers\Response;
+use TomatoPHP\TomatoCrm\Services\Contracts\WebResponse;
 
 trait Update
 {
@@ -12,7 +13,7 @@ trait Update
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(\Illuminate\Http\Request $request, array $validation=[], ?string $resource=null): \Illuminate\Http\JsonResponse
+    public function update(\Illuminate\Http\Request $request, array $validation=[], ?string $resource=null,string $type="api"): \Illuminate\Http\JsonResponse|WebResponse
     {
 
         $user = $request->user();
@@ -48,6 +49,13 @@ trait Update
             $getUserModel = $this->resource::make($getUserModel);
         }
 
-        return ApiResponse::data( $getUserModel, __("Profile Data Updated"));
+        if($type === 'api'){
+            return ApiResponse::data( $getUserModel, __("Profile Data Updated"));
+        }
+        else {
+            return WebResponse::make(__("Profile Data Updated"))->success();
+        }
+
+
     }
 }

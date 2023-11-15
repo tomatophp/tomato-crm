@@ -4,7 +4,9 @@ namespace TomatoPHP\TomatoCrm\Services\Traits\Auth;
 
 use TomatoPHP\TomatoAdmin\Helpers\ApiResponse;
 use TomatoPHP\TomatoCrm\Events\SendOTP;
+use TomatoPHP\TomatoCrm\Events\AccountRegistered;
 use TomatoPHP\TomatoCrm\Helpers\Response;
+use TomatoPHP\TomatoCrm\Services\Contracts\WebResponse;
 
 trait Register
 {
@@ -13,7 +15,7 @@ trait Register
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(\Illuminate\Http\Request $request, array $validation=[], ?string $resource=null): \Illuminate\Http\JsonResponse
+    public function register(\Illuminate\Http\Request $request, array $validation=[], ?string $resource=null,string $type="api"): \Illuminate\Http\JsonResponse|WebResponse
     {
         $request->validate(
             array_merge([
@@ -48,7 +50,12 @@ trait Register
                 SendOTP::dispatch($this->model, $user->id);
                 AccountRegistered::dispatch($this->model, $user->id);
 
-                return ApiResponse::success('An OTP Has been send to your '.$this->loginType . ' please check it');
+                if($type === 'api'){
+                    return ApiResponse::success('An OTP Has been send to your '.$this->loginType . ' please check it');
+                }
+                else {
+                    return WebResponse::make('An OTP Has been send to your '.$this->loginType . ' please check it')->success();
+                }
             }
 
             $token = $user->createToken($this->guard)->plainTextToken;
@@ -58,10 +65,22 @@ trait Register
             if($this->resource){
                 $user = $this->resource::make($user);
             }
-            return ApiResponse::data($user, __('User registration success'));
+            if($type === 'api'){
+                return ApiResponse::data($user, __('User registration success'));
+            }
+            else {
+                return WebResponse::make(__('User registration success'))->success();
+            }
+
         }
 
-        return ApiResponse::errors('User registration failed');
+        if($type === 'api'){
+            return ApiResponse::errors('User registration failed');
+        }
+        else {
+            return WebResponse::make(__('User registration failed'))->success();
+        }
+
     }
 
 }

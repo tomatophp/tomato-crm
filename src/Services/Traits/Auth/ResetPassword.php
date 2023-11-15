@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use TomatoPHP\TomatoAdmin\Helpers\ApiResponse;
 use TomatoPHP\TomatoCrm\Events\SendOTP;
 use TomatoPHP\TomatoCRM\Helpers\Response;
+use TomatoPHP\TomatoCrm\Services\Contracts\WebResponse;
 
 trait ResetPassword
 {
@@ -13,7 +14,7 @@ trait ResetPassword
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function reset(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    public function reset(\Illuminate\Http\Request $request,string $type="api"): \Illuminate\Http\JsonResponse|WebResponse
     {
         $request->validate([
             $this->loginBy => "required|exists:".app($this->model)->getTable().",username",
@@ -26,10 +27,21 @@ trait ResetPassword
 
             SendOTP::dispatch($this->model, $checkIfActive->id);
 
-            return ApiResponse::success('An OTP Has been send to your '.$this->loginType . ' please check it');
+            if($type === 'api'){
+                return ApiResponse::success(__('An OTP Has been send to your ').$this->loginType . __(' please check it'));
+            }
+            else {
+                return WebResponse::make(__('An OTP Has been send to your ').$this->loginType . __(' please check it'))->success();
+            }
+
         }
 
-        return ApiResponse::errors(__('user not found'), 404);
+        if($type === 'api'){
+            return ApiResponse::errors(__('user not found'), 404);
+        }
+        else {
+            return WebResponse::make(__('user not found'))->error();
+        }
     }
 
 
@@ -37,7 +49,7 @@ trait ResetPassword
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function password(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    public function password(\Illuminate\Http\Request $request,string $type="api"): \Illuminate\Http\JsonResponse|WebResponse
     {
         $user = $request->user();
 
@@ -49,7 +61,13 @@ trait ResetPassword
             $user->password = bcrypt($request->get('password'));
             $user->save();
 
-            return ApiResponse::success("Password Updated");
+            if($type === 'api'){
+                return ApiResponse::success(__("Password Updated"));
+            }
+            else {
+                return WebResponse::make(__("Password Updated"))->success();
+            }
+
         }
         else {
             $request->validate([
@@ -67,13 +85,30 @@ trait ResetPassword
                     $user->password = bcrypt($request->get('password'));
                     $user->save();
 
-                    return ApiResponse::success("Password Updated");
+                    if($type === 'api'){
+                        return ApiResponse::success(__("Password Updated"));
+                    }
+                    else {
+                        return WebResponse::make(__("Password Updated"))->success();
+                    }
                 }
 
-                return ApiResponse::errors(__('sorry this code is not valid or expired'));
+                if($type === 'api'){
+                    return ApiResponse::errors(__('sorry this code is not valid or expired'));
+                }
+                else {
+                    return WebResponse::make(__('sorry this code is not valid or expired'));
+                }
+
             }
 
-            return ApiResponse::errors(__('user not found'), 404);
+            if($type === 'api'){
+                return ApiResponse::errors(__('user not found'), 404);
+            }
+            else {
+                return WebResponse::make(__('user not found'));
+            }
+
         }
     }
 }
