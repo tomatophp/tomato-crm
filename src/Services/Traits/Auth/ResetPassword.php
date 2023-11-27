@@ -51,7 +51,12 @@ trait ResetPassword
      */
     public function password(\Illuminate\Http\Request $request,string $type="api"): \Illuminate\Http\JsonResponse|WebResponse
     {
-        $user = $request->user();
+        if($type === 'web'){
+            $user = auth($this->guard)->user();
+        }
+        else {
+            $user = $request->user();
+        }
 
         if($user){
             $request->validate([

@@ -68,16 +68,6 @@ trait Otp
             $this->loginBy => "required|exists:".app($this->model)->getTable().",username",
         ]);
 
-        $checkIfActive = $this->model::where("username", $request->get($this->loginBy))->whereNotNull('otp_activated_at')->first();
-        if ($checkIfActive) {
-            if($type === 'api') {
-                return ApiResponse::errors(__('Your Account is already activated'));
-            }
-            else {
-                return WebResponse::make(__('Your Account is already activated'));
-            }
-        }
-
         $checkIfEx = $this->model::where("username", $request->get($this->loginBy))->first();
         $checkIfEx->otp_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
         $checkIfEx->save();

@@ -32,7 +32,13 @@ trait Login
             if($user->is_active && $this->otp){
                 $token = $user->createToken($this->guard)->plainTextToken;
                 $user->token = $token;
-                return $user;
+
+                if($type === 'api'){
+                    return $user;
+                }
+                else {
+                    return WebResponse::make(__("Login Success"))->success();
+                }
             }
             else if(!$user->is_active && $this->otp){
                 if($type === 'api'){
