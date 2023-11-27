@@ -22,6 +22,7 @@ trait Login
             "remember_me" => "nullable|bool",
         ]);
 
+
         $check = auth($this->guard)->attempt([
             "username" => $request->get($this->loginBy),
             "password" => $request->get('password')
@@ -41,6 +42,8 @@ trait Login
                 }
             }
             else if(!$user->is_active && $this->otp){
+                auth($this->guard)->logout();
+
                 if($type === 'api'){
                     return ApiResponse::errors(__("Your account is not active yet"));
                 }
