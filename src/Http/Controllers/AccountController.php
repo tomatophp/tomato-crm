@@ -8,8 +8,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoCrm\Import\ImportAccounts;
+use TomatoPHP\TomatoCrm\Models\Account;
 use TomatoPHP\TomatoCrm\Models\Group;
 
 class AccountController extends Controller
@@ -303,5 +306,58 @@ class AccountController extends Controller
 
         Toast::success(__('Password Updated Successfully'))->autoDismiss(2);
         return redirect()->back();
+    }
+
+
+    public function import()
+    {
+        $types = \TomatoPHP\TomatoCategory\Models\Type::where('for', 'accounts')->where('type', 'type')->get();
+        $groups = [];
+        if(config('tomato-crm.features.groups')){
+            $groups = Group::all();
+        }
+        return view('tomato-crm::accounts.import', [
+            "types" => $types,
+            "groups" => $groups
+        ]);
+    }
+
+    public function importStore(Request $request){
+        $request->validate([
+            "file" => "required|file|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp",
+            "type_id" => "required|exists:types,id"
+        ]);
+
+        $collection = Excel::toArray(new ImportAccounts(), $request->file('file'));
+        unset($collection[0][0]);
+        foreach ($collection[0] as $item){
+            $checkIfExists = Account::where('username', $item[1])->first();
+            if($checkIfExists){
+                $checkIfExists->update([
+                    "name" => $item[0],
+                    "phone" => $item[2],
+                    "address" => $item[3],
+                    "type_id" => $request->get('type_id'),
+                ]);
+
+                $checkIfExists->groups()->sync($request->get('groups'));
+            }
+            else {
+                $account = config('tomato-crm.model')::create([
+                    "name" => $item[0],
+                    "email" => $item[1],
+                    "username" => $item[1],
+                    "phone" => $item[2],
+                    "address" => $item[3],
+                    "type_id" => $request->get('type_id'),
+                ]);
+
+                $account->groups()->sync($request->get('groups'));
+            }
+        }
+
+
+        Toast::success(__('Your File Has Been Imported Successfully'))->autoDismiss(2);
+        return back();
     }
 }

@@ -78,6 +78,8 @@ class TomatoCRM
     public array $editInputs = [];
 
 
+    public array $relations = [];
+
 
 
 
@@ -318,6 +320,17 @@ class TomatoCRM
     public function getEditInputs(): array
     {
         return $this->editInputs;
+    }
+
+
+    public function registerAccountReleation(array $relation): void
+    {
+        $this->relations[] = $relation;
+    }
+
+    public function loadRelation():array
+    {
+        return $this->relations;
     }
 
 }

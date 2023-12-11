@@ -54,7 +54,7 @@
         if(config('tomato-crm.features.locations')){
             $groups['locations'] = __('Locations');
         }
-        foreach (config('tomato-crm.relations') as $item){
+        foreach (array_merge(config('tomato-crm.relations'), \TomatoPHP\TomatoCrm\Facades\TomatoCrm::loadRelation()) as $item){
             $groups[$item['name']] = $item['label'][app()->getLocale()];
         }
     @endphp
@@ -71,7 +71,7 @@
                 :table="\TomatoPHP\TomatoCrm\Tables\LocationTable::class"
             />
         @endif
-        @foreach (config('tomato-crm.relations') as $item)
+        @foreach (array_merge(config('tomato-crm.relations'), \TomatoPHP\TomatoCrm\Facades\TomatoCrm::loadRelation()) as $item)
             <x-tomato-admin-relations
                 :model="$model"
                 name="{{$item['name']}}"

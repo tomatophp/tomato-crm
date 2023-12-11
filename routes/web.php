@@ -8,6 +8,8 @@ if(config('tomato-crm.features.accounts')){
         Route::get('admin/accounts', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'index'])->name('accounts.index');
         Route::get('admin/accounts/api', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'api'])->name('accounts.api');
         Route::get('admin/accounts/create', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'create'])->name('accounts.create');
+        Route::get('admin/accounts/import', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'import'])->name('accounts.import');
+        Route::post('admin/accounts/import', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'importStore'])->name('accounts.import.store');
         Route::get('admin/accounts/{model}/password', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'password'])->name('accounts.password');
         Route::post('admin/accounts/{model}/password', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'updatePassword'])->name('accounts.password.update');
         if(config('tomato-crm.features.notifications')) {

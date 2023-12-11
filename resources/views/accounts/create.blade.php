@@ -17,7 +17,7 @@
             <x-splade-textarea label="{{__('Address')}}" name="address" placeholder="{{__('Address')}}" autosize />
         @endif
         @if(config('tomato-crm.features.groups'))
-            <x-splade-select choices multiple :options="$groups" option-value="id" option-label="name.{{app()->getLocale()}}"  label="{{__('Groups')}}" name="groups" placeholder="{{__('Groups')}}" autosize />
+            <x-splade-select choices multiple :options="$groups" option-value="id" option-label="name"  label="{{__('Groups')}}" name="groups" placeholder="{{__('Groups')}}" autosize />
         @endif
 
         @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getCreateForm())

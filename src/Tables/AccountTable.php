@@ -17,7 +17,7 @@ class AccountTable extends AbstractTable
      * @return void
      */
     public function __construct(
-        public ?Builder $query
+        public mixed $query
     )
     {
        if(!$this->query){
@@ -83,8 +83,12 @@ class AccountTable extends AbstractTable
                 label: __('Name'),
                 sortable: true)
             ->column(
-                key: 'username',
-                label: __('Username'),
+                key: 'email',
+                label: __('Email'),
+                sortable: true)
+            ->column(
+                key: 'phone',
+                label: __('Phone'),
                 sortable: true)
             ->column(
                 key: 'last_login',

@@ -18,6 +18,8 @@ use TomatoPHP\TomatoCrm\Models\Account;
  * @method static \TomatoPHP\TomatoCrm\Services\TomatoCRM attach(string $key,string $label,string $type='text',string|array|null $create_validation=null,string|array|null $update_validation=null, string|array|null $api_create_validation=null,string|array|null $api_update_validation=null,bool $show_on_view = true,bool $show_on_create = true,bool $show_on_edit = true,bool $show_on_table = false,bool $allow_filter = false,)
  * @const string LOGIN_BY_EMAIL
  * @const string LOGIN_BY_PHONE
+ * @method void  registerAccountReleation(array $relation)
+ * @method array loadRelation()
  */
 class TomatoCrm extends Facade
 {

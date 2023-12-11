@@ -15,6 +15,9 @@
     <div class="pb-12" v-cloak>
         <div class="mx-auto">
             <x-splade-table :for="$table" striped>
+                <x-slot:actions>
+                    <x-tomato-admin-table-action secondary modal href="{{route('admin.accounts.import')}}" label="{{__('Import Accounts')}}" icon="bx bx-import" />
+                </x-slot:actions>
                 @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
                     @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
                 @endif
@@ -25,12 +28,11 @@
                         @endforeach
                     @endif
                 </x-splade-cell>
-                <x-splade-cell username>
-                    @if($item->loginBy === 'email')
-                        <x-tomato-admin-row table type="email" :value="$item->username" />
-                    @else
-                        <x-tomato-admin-row table type="tel" :value="$item->username" />
-                    @endif
+                <x-splade-cell email>
+                    <x-tomato-admin-row table type="email" :value="$item->email" />
+                </x-splade-cell>
+                <x-splade-cell phone>
+                    <x-tomato-admin-row table type="tel" :value="$item->phone" />
                 </x-splade-cell>
                 <x-splade-cell last_login>
                     @if($item->last_login)
