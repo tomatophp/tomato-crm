@@ -8,6 +8,7 @@ use ProtoneMedia\Splade\AbstractTable;
 use ProtoneMedia\Splade\Facades\Toast;
 use ProtoneMedia\Splade\SpladeTable;
 use TomatoPHP\TomatoCategory\Models\Type;
+use TomatoPHP\TomatoRoles\Services\TomatoRoles;
 
 class AccountTable extends AbstractTable
 {
@@ -32,7 +33,12 @@ class AccountTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            return auth('web')->user()->can('admin.accounts.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -56,16 +62,6 @@ class AccountTable extends AbstractTable
 
         $table
             ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','username','email', 'phone'])
-            ->bulkAction(
-                label: trans('tomato-admin::global.crud.delete'),
-                each: function ($model){
-                    $model = config('tomato-crm.model')::find($model->id);
-                    $model->delete();
-                },
-                after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
-                confirm: true
-            )
-            ->export()
             ->selectFilter('type_id',
                 remote_url: route('admin.types.api', [
                     "for" => "accounts",
@@ -118,5 +114,34 @@ class AccountTable extends AbstractTable
 
         $table->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
         ->paginate(15);
+
+        if(auth('web')->user() && class_exists(TomatoRoles::class)){
+            if(auth('web')->user()->can('admin.accounts.export')){
+                $table->export();
+            }
+            if(auth('web')->user()->can('admin.accounts.destroy')){
+                $table->bulkAction(
+                    label: trans('tomato-admin::global.crud.delete'),
+                    each: function ($model){
+                        $model = config('tomato-crm.model')::find($model->id);
+                        $model->delete();
+                    },
+                    after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
+                    confirm: true
+                );
+            }
+        }
+        else {
+            $table->bulkAction(
+                label: trans('tomato-admin::global.crud.delete'),
+                each: function ($model){
+                    $model = config('tomato-crm.model')::find($model->id);
+                    $model->delete();
+                },
+                after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
+                confirm: true
+            );
+            $table->export();
+        }
     }
 }

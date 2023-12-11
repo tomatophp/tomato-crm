@@ -15,7 +15,7 @@ class LocationTable extends AbstractTable
      * @return void
      */
     public function __construct(
-        public  $query = null
+        public mixed $query = null
     )
     {
         if(!$query){
@@ -30,7 +30,12 @@ class LocationTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user()){
+            return auth('web')->user()->can('admin.locations.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -59,6 +64,13 @@ class LocationTable extends AbstractTable
                 after: fn () => Toast::danger(__('Location Has Been Deleted'))->autoDismiss(2),
                 confirm: true
             )
+            ->selectFilter(
+                key:'account_id',
+                option_label: "name",
+                option_value: "id",
+                remote_root: "data",
+                remote_url: route('admin.accounts.api')
+            )
             ->export()
             ->defaultSort('id')
             ->column(
@@ -70,7 +82,7 @@ class LocationTable extends AbstractTable
             ->column(
                 key: 'account.name',
                 label: __('Account'),
-                sortable: true,
+                sortable: false,
                 searchable: true)
             ->column(
                 key: 'street',
@@ -79,15 +91,15 @@ class LocationTable extends AbstractTable
             ->column(
                 key: 'area.name',
                 label: __('Area'),
-                sortable: true)
+                sortable: false)
             ->column(
                 key: 'city.name',
                 label: __('City'),
-                sortable: true)
+                sortable: false)
             ->column(
                 key: 'country.name',
                 label: __('Country'),
-                sortable: true)
+                sortable: false)
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->paginate(15);
     }

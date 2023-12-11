@@ -23,6 +23,9 @@ class LocationController extends Controller
             model: Location::class,
             view: 'tomato-crm::locations.index',
             table: \TomatoPHP\TomatoCrm\Tables\LocationTable::class,
+            filters: [
+                "account_id"
+            ]
         );
     }
 
@@ -35,6 +38,9 @@ class LocationController extends Controller
         return Tomato::json(
             request: $request,
             model: \TomatoPHP\TomatoCrm\Models\Location::class,
+            filters: [
+                "account_id"
+            ]
         );
     }
 
@@ -68,7 +74,7 @@ class LocationController extends Controller
             redirect: 'admin.locations.index',
         );
 
-        return $response->redirect;
+        return back();
     }
 
     /**
@@ -109,7 +115,7 @@ class LocationController extends Controller
             redirect: 'admin.locations.index',
         );
 
-        return $response->redirect;
+        return back();
     }
 
     /**

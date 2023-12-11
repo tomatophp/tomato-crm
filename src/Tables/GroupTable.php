@@ -15,7 +15,7 @@ class GroupTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct(public $query = null)
+    public function __construct(public mixed $query = null)
     {
         if(!$query){
             $this->query = Group::query();
@@ -29,7 +29,12 @@ class GroupTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user()){
+            return auth('web')->user()->can('admin.groups.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**

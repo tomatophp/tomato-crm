@@ -16,6 +16,8 @@ use TomatoPHP\TomatoCrm\Supports\Action;
 use TomatoPHP\TomatoCrm\Supports\Filter;
 use TomatoPHP\TomatoNotifications\Services\SendNotification;
 use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
+use TomatoPHP\TomatoRoles\Services\Permission;
+use TomatoPHP\TomatoRoles\Services\TomatoRoles;
 
 
 class TomatoCrmServiceProvider extends ServiceProvider
@@ -155,5 +157,6 @@ class TomatoCrmServiceProvider extends ServiceProvider
         }
 
         TomatoMenu::register($menus);
+
     }
 }

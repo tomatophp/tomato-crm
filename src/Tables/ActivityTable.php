@@ -15,7 +15,7 @@ class ActivityTable extends AbstractTable
      * @return void
      */
     public function __construct(
-        public $query = null
+        public mixed $query = null
     )
     {
         if(!$query){
@@ -30,7 +30,12 @@ class ActivityTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user()){
+            return auth('web')->user()->can('admin.activaites.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**

@@ -275,6 +275,8 @@ class AccountController extends Controller
     public function destroy($model): RedirectResponse
     {
         $model = config('tomato-crm.model')::find($model);
+        $model->groups()->sync([]);
+        $model->locations()->delete();
         $response = Tomato::destroy(
             model: $model,
             message: __('Account deleted successfully'),

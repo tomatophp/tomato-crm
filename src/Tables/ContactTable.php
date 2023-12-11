@@ -15,7 +15,7 @@ class ContactTable extends AbstractTable
      * @return void
      */
     public function __construct(
-        public $query = null
+        public mixed $query = null
     )
     {
         if(!$query){
@@ -30,7 +30,12 @@ class ContactTable extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        return true;
+        if(auth('web')->user()){
+            return auth('web')->user()->can('admin.contacts.index');
+        }
+        else {
+            return true;
+        }
     }
 
     /**
@@ -64,12 +69,12 @@ class ContactTable extends AbstractTable
             ->column(
                 key: 'type.name',
                 label: __('Type'),
-                sortable: true,
+                sortable: false,
                 searchable: true)
             ->column(
                 key: 'status.name',
                 label: __('Status'),
-                sortable: true,
+                sortable: false,
                 searchable: true)
             ->column(
                 key: 'name',

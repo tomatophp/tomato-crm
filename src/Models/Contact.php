@@ -3,6 +3,7 @@
 namespace TomatoPHP\TomatoCrm\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kirschbaum\PowerJoins\PowerJoins;
 
 /**
  * @property integer $id

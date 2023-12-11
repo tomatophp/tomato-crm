@@ -27,7 +27,7 @@
             >
                 {{__('Delete')}}
             </x-tomato-admin-button>
-            <x-tomato-admin-button secondary :href="route('admin.locations.index')" label="{{__('Cancel')}}"/>
+            <x-tomato-admin-button secondary type="button" @click.prevent="modal.close" label="{{__('Cancel')}}"/>
         </div>
     </x-splade-form>
 </x-tomato-admin-container>
