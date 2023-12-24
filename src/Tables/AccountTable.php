@@ -18,7 +18,7 @@ class AccountTable extends AbstractTable
      * @return void
      */
     public function __construct(
-        public mixed $query
+        public mixed $query = null
     )
     {
        if(!$this->query){
@@ -62,7 +62,7 @@ class AccountTable extends AbstractTable
 
         $table
             ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','username','email', 'phone'])
-            ->selectFilter('type_id',
+            ->selectFilter('type',
                 remote_url: route('admin.types.api', [
                     "for" => "accounts",
                     "type" => "type"
@@ -81,27 +81,19 @@ class AccountTable extends AbstractTable
             ->column(
                 key: 'email',
                 label: __('Email'),
-                sortable: true)
+                sortable: true,
+                hidden: true
+            )
             ->column(
                 key: 'phone',
                 label: __('Phone'),
-                sortable: true)
-            ->column(
-                key: 'last_login',
-                label: __('Last login'),
-                sortable: true)
+                sortable: true,
+                hidden: true
+            )
             ->column(
                 key: 'is_active',
                 label: __('Activated'),
                 sortable: true);
-
-        if(config('tomato-crm.features.groups')){
-            $table->column(
-                key: 'groups',
-                label: __('Groups'),
-                sortable: false
-            );
-        }
 
 
         foreach (\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCols() as $key=>$item){
@@ -124,10 +116,18 @@ class AccountTable extends AbstractTable
                     label: trans('tomato-admin::global.crud.delete'),
                     each: function ($model){
                         $model = config('tomato-crm.model')::find($model->id);
+                        $model->groups()->detach();
                         $model->delete();
                     },
                     after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
-                    confirm: true
+                    confirm: true,
+                    style: "danger"
+                );
+
+                $table->bulkAction(
+                    label: __('Attach to group'),
+                    type: 'modal',
+                    href: route('admin.accounts.groups')
                 );
             }
         }
@@ -136,10 +136,17 @@ class AccountTable extends AbstractTable
                 label: trans('tomato-admin::global.crud.delete'),
                 each: function ($model){
                     $model = config('tomato-crm.model')::find($model->id);
+                    $model->groups()->detach();
                     $model->delete();
                 },
                 after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
-                confirm: true
+                confirm: true,
+                style: "danger"
+            );
+            $table->bulkAction(
+                label: __('Attach to group'),
+                type: 'modal',
+                href: route('admin.accounts.groups')
             );
             $table->export();
         }

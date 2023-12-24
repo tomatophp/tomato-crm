@@ -49,7 +49,7 @@ class Account extends Authenticatable implements HasMedia
         'email',
         'phone',
         'parent_id',
-        'type_id',
+        'type',
         'name',
         'username',
         'loginBy',

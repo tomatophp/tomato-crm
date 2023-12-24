@@ -4,6 +4,7 @@ namespace TomatoPHP\TomatoCrm\Console;
 
 use Illuminate\Console\Command;
 use TomatoPHP\ConsoleHelpers\Traits\RunCommand;
+use TomatoPHP\TomatoCategory\Models\Type;
 
 class TomatoCrmInstall extends Command
 {
@@ -40,6 +41,41 @@ class TomatoCrmInstall extends Command
         $this->callSilent('optimize:clear');
         $this->artisanCommand(["migrate"]);
         $this->artisanCommand(["optimize:clear"]);
+        $typesArray = [
+            [
+                "name" => [
+                    "ar" => "عميل",
+                    "en" => "Customer"
+                ],
+                "key" => "customer",
+                "for" => "accounts",
+                "type" => "type"
+            ],
+            [
+                "name" => [
+                    "ar" => "مورد",
+                    "en" => "Supplier"
+                ],
+                "key" => "supplier",
+                "for" => "accounts",
+                "type" => "type"
+            ],
+            [
+                "name" => [
+                    "ar" => "زائر",
+                    "en" => "Lead"
+                ],
+                "key" => "lead",
+                "for" => "accounts",
+                "type" => "type"
+            ]
+        ];
+        foreach ($typesArray as $item){
+            $checkFirst = Type::query()->where('key',$item['key'])->first();
+            if(!$checkFirst){
+                Type::query()->create($item);
+            }
+        }
         $this->info('Tomato Crm installed successfully.');
     }
 }

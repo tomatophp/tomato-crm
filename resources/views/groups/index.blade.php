@@ -7,7 +7,9 @@
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Group')}}
         </x-tomato-admin-button>
     </x-slot:buttons>
-
+    <x-slot:icon>
+        bx bxs-group
+    </x-slot:icon>
 
     <div class="pb-12" v-cloak>
         <div class="mx-auto">

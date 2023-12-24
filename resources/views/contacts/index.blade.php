@@ -2,6 +2,9 @@
     <x-slot:header>
         {{ __('Contact') }}
     </x-slot:header>
+    <x-slot:icon>
+        bx bxs-phone
+    </x-slot:icon>
 
 
     <div class="pb-12" v-cloak>

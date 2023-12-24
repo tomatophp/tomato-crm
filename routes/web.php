@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 if(config('tomato-crm.features.accounts')){
     Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
         Route::get('admin/accounts', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'index'])->name('accounts.index');
+        Route::get('admin/accounts/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'groups'])->name('accounts.groups');
+        Route::post('admin/accounts/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'groupsStore'])->name('accounts.groups.store');
         Route::get('admin/accounts/api', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'api'])->name('accounts.api');
         Route::get('admin/accounts/create', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'create'])->name('accounts.create');
         Route::get('admin/accounts/import', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'import'])->name('accounts.import');

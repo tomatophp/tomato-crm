@@ -2,6 +2,9 @@
     <x-slot:header>
         {{ __('Location') }}
     </x-slot:header>
+    <x-slot:icon>
+        bx bxs-map
+    </x-slot:icon>
 
     <div class="pb-12" v-cloak>
         <div class="mx-auto">

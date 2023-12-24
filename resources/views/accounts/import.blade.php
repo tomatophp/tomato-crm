@@ -5,9 +5,9 @@
         </a>
         <x-splade-file filepond name="file" label="{{__('Please add your XLSX file')}}" />
 
-        <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type_id" choices>
+        <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type" choices>
             @foreach($types as $type)
-                <option value="{{$type->id}}">{{$type->name}}</option>
+                <option value="{{$type->key}}">{{$type->name}}</option>
             @endforeach
         </x-splade-select>
 

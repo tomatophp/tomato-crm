@@ -25,7 +25,8 @@ class AccountUpdateRequest extends FormRequest
     {
         return array_merge([
             'name' => 'nullable|max:255|string',
-            'username' => 'sometimes|max:255|string',
+            'phone' => 'sometimes|max:255|string|unique:accounts,phone,'. $this->route('model'),
+            'email' => 'sometimes|max:255|string|email|unique:accounts,email,'.$this->route('model'),
             'loginBy' => 'nullable|max:255|string',
             'address' => 'nullable|max:65535',
             'password' => 'nullable|max:255|confirmed|min:6',

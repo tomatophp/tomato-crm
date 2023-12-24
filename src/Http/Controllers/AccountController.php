@@ -66,6 +66,37 @@ class AccountController extends Controller
         );
     }
 
+    public function groups(Request $request)
+    {
+        $request->validate([
+            "ids" => "required|string"
+        ]);
+
+        $ids= explode(",", $request->get('ids'));
+
+        $groups = Group::all();
+        return view('tomato-crm::accounts.groups', [
+            "groups" => $groups,
+            "ids" => $ids
+        ]);
+    }
+
+
+    public function groupsStore(Request $request)
+    {
+        $request->validate([
+            "ids" => "required|array|min:1",
+        ]);
+
+        $accounts = config('tomato-crm.model')::whereIn('id', $request->get('ids'))->get();
+        foreach ($accounts as $account){
+            $account->groups()->sync($request->get('groups'));
+        }
+
+        Toast::success(__('Groups Updated Successfully'))->autoDismiss(2);
+        return back();
+    }
+
     /**
      * @param Request $request
      * @return JsonResponse
@@ -188,7 +219,9 @@ class AccountController extends Controller
         return Tomato::get(
             model: $model,
             view: 'tomato-crm::accounts.show',
-            query: config('tomato-crm.model')::query()
+            query: config('tomato-crm.model')::query(),
+            hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
+            collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
     }
 
@@ -281,6 +314,8 @@ class AccountController extends Controller
             model: $model,
             message: __('Account deleted successfully'),
             redirect: 'admin.accounts.index',
+            hasMedia: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::isHasMedia(),
+            collection: \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getMedia(),
         );
 
         return $response->redirect;
@@ -327,7 +362,7 @@ class AccountController extends Controller
     public function importStore(Request $request){
         $request->validate([
             "file" => "required|file|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp",
-            "type_id" => "required|exists:types,id"
+            "type" => "required|exists:types,key"
         ]);
 
         $collection = Excel::toArray(new ImportAccounts(), $request->file('file'));
@@ -339,7 +374,7 @@ class AccountController extends Controller
                     "name" => $item[0],
                     "phone" => $item[2],
                     "address" => $item[3],
-                    "type_id" => $request->get('type_id'),
+                    "type" => $request->get('type'),
                 ]);
 
                 $checkIfExists->groups()->sync($request->get('groups'));
@@ -351,7 +386,7 @@ class AccountController extends Controller
                     "username" => $item[1],
                     "phone" => $item[2],
                     "address" => $item[3],
-                    "type_id" => $request->get('type_id'),
+                    "type" => $request->get('type'),
                 ]);
 
                 $account->groups()->sync($request->get('groups'));
@@ -362,4 +397,5 @@ class AccountController extends Controller
         Toast::success(__('Your File Has Been Imported Successfully'))->autoDismiss(2);
         return back();
     }
+
 }

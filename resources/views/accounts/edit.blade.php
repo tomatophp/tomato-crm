@@ -1,9 +1,9 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.edit')}} {{__('Account')}} #{{$model->id}}">
     <x-splade-form class="flex flex-col space-y-4" action="{{route('admin.accounts.update', $model->id)}}" method="post" :default="$model">
-
-        <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type_id" choices>
+        <x-splade-file filepond preview name="avatar" label="{{__('Account Avatar')}}" />
+        <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type" choices>
             @foreach($types as $type)
-                <option value="{{$type->id}}">{{$type->name}}</option>
+                <option value="{{$type->key}}">{{$type->name}}</option>
             @endforeach
         </x-splade-select>
 

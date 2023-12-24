@@ -5,7 +5,7 @@
 
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
-            <x-tomato-admin-button secondary :href="route('admin.accounts.index')" label="{{__('Cancel')}}"/>
+            <x-tomato-admin-button secondary @click.prevent="modal.close" type="button" label="{{__('Cancel')}}"/>
         </div>
     </x-splade-form>
 </x-tomato-admin-container>

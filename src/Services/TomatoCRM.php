@@ -22,11 +22,13 @@ class TomatoCRM
     /**
      * @var bool
      */
-    public bool $has_media = false;
+    public bool $has_media = true;
     /**
      * @var array
      */
-    public array $media = [];
+    public array $media = [
+        'avatar' => false
+    ];
 
     //Filters
     /**

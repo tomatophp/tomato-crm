@@ -10,6 +10,9 @@
             @include(config('tomato-crm.views.accounts.buttons'))
         @endif
     </x-slot:buttons>
+    <x-slot:icon>
+        bx bxs-user
+    </x-slot:icon>
 
 
     <div class="pb-12" v-cloak>
@@ -21,75 +24,112 @@
                 @if(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
                     @include(\TomatoPHP\TomatoCrm\Facades\TomatoCrm::getTableCells())
                 @endif
-                <x-splade-cell groups>
-                    @if(config('tomato-crm.features.groups'))
-                        @foreach($item->groups as $group)
-                            <x-tomato-admin-row type="badge" href="{{url()->current().'?group_id='.$group->id}}" icon="{{$group->icon}}" color="{{$group->color}}" table value="{{$group->name}}" />
-                        @endforeach
-                    @endif
-                </x-splade-cell>
-                <x-splade-cell email>
-                    <x-tomato-admin-row table type="email" :value="$item->email" />
-                </x-splade-cell>
-                <x-splade-cell phone>
-                    <x-tomato-admin-row table type="tel" :value="$item->phone" />
-                </x-splade-cell>
-                <x-splade-cell last_login>
-                    @if($item->last_login)
-                        {{  Carbon\Carbon::parse($item->last_login)->diffForHumans() }}
-                    @else
-                        -
-                    @endif
+                <x-splade-cell name>
+                    <div class="flex justify-start gap-4">
+                        <div class="flex flex-col items-center justify-center">
+                            @if($item->getMedia('avatar')?->first())
+                            <div class="bg-cover bg-center rounded-full w-12 h-12" style="background-image: url('{{$item->getMedia('avatar')?->first()->getUrl()}}')">
+
+                            </div>
+                            @else
+                                <div class="w-12 h-12 border rounded-full border-gray-200 bg-white">
+                                    <div class="flex flex-col items-center justify-center mt-3">
+                                        <div>
+                                            <i class="bx bxs-user text-xl"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="flex flex-col">
+                            <x-splade-link :href="route('admin.accounts.show', $item->id)" class="text-lg font-bold">{{$item->name}}</x-splade-link>
+                            <a href="mailto:{{$item->email}}" class="text-sm text-gray-400">{{$item->email}}</a>
+                            <a href="tel:{{$item->phone}}" class="text-sm text-gray-400">{{$item->phone}}</a>
+                            <div class="my-2 grid grid-cols-4">
+                                @if(config('tomato-crm.features.groups'))
+                                    @foreach($item->groups as $group)
+                                        <x-tomato-admin-row type="badge" href="{{url()->current().'?group_id='.$group->id}}" icon="{{$group->icon}}" color="{{$group->color}}" table value="{{$group->name}}" />
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </x-splade-cell>
                 <x-splade-cell is_active>
-                    @if($item->is_active)
-                        <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
-                    @else
-                        <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
-                    @endif
+                    <x-tomato-admin-tooltip :text="$item->last_login ? Carbon\Carbon::parse($item->last_login)->diffForHumans() : __('Not Login')">
+                        <x-tomato-admin-row table type="bool" :value="$item->is_active" />
+                    </x-tomato-admin-tooltip>
                 </x-splade-cell>
                 <x-splade-cell actions>
-                    <div class="flex justify-start">
+                    <x-tomato-admin-dropdown class="text-primary-500" icon="bx bxs-cog bx-sm" label="{{__('Actions')}}" primary>
                         @if(config('tomato-crm.views.accounts.actions', null))
                             @include(config('tomato-crm.views.accounts.actions'))
                         @endif
+                        <x-tomato-admin-dropdown-item
+                            success
+                            type="link"
+                            icon="bx bxs-show"
+                            label="{{trans('tomato-admin::global.crud.view')}}"
+                            :href="route('admin.accounts.show', $item->id)"
+                        />
+                        <x-tomato-admin-dropdown-item
+                            warning
+                            modal
+                            type="link"
+                            icon="bx bxs-edit"
+                            label="{{trans('tomato-admin::global.crud.edit')}}"
+                            :href="route('admin.accounts.edit', $item->id)"
+                        />
+                        <x-tomato-admin-dropdown-item
+                            danger
+                            type="link"
+                            icon="bx bxs-lock-alt"
+                            modal
+                            label="{{__('Change Password')}}"
+                            :href="route('admin.accounts.password', $item->id)"
+                        />
                         @if(class_exists(\Bavix\Wallet\Models\Wallet::class))
-                            <x-tomato-admin-button modal type="icon" :href="route('admin.wallets.balance', $item->id)" title="{{__('Charge Balance')}}">
-                                <x-heroicon-s-currency-dollar class="h-6 w-6"/>
-                            </x-tomato-admin-button>
+                            <x-tomato-admin-dropdown-item
+                                success
+                                type="link"
+                                icon="bx bxs-wallet"
+                                modal
+                                label="{{__('Charge Balance')}}"
+                                :href="route('admin.wallets.balance', $item->id)"
+                            />
                         @endif
-                        <x-tomato-admin-button danger modal type="icon" :href="route('admin.accounts.password', $item->id)" title="{{__('Change Password')}}">
-                            <x-heroicon-s-lock-closed class="h-6 w-6"/>
-                        </x-tomato-admin-button>
                         @if(config('tomato-crm.features.notifications'))
-                        <x-tomato-admin-button  modal type="icon" :href="route('admin.accounts.notifications', $item->id)" title="{{__('Send Notification')}}">
-                            <x-heroicon-s-bell class="h-6 w-6"/>
-                        </x-tomato-admin-button>
+                            <x-tomato-admin-dropdown-item
+                                type="link"
+                                icon="bx bxs-bell"
+                                modal
+                                label="{{__('Send Notification')}}"
+                                :href="route('admin.accounts.notifications', $item->id)"
+                            />
                         @endif
                         @if(config('tomato-crm.features.locations'))
-                        <x-tomato-admin-button warning  modal type="icon" :href="route('admin.locations.create',['account_id' =>  $item->id])" title="{{__('Add Address')}}">
-                            <x-heroicon-s-map-pin class="h-6 w-6"/>
-                        </x-tomato-admin-button>
+                            <x-tomato-admin-dropdown-item
+                                warning
+                                type="link"
+                                icon="bx bxs-map"
+                                modal
+                                label="{{__('Add Address')}}"
+                                :href="route('admin.locations.create',['account_id' =>  $item->id])"
+                            />
                         @endif
-                        <x-tomato-admin-button success type="icon" :href="route('admin.accounts.show', $item->id)" title="{{trans('tomato-admin::global.crud.view')}}">
-                            <x-heroicon-s-eye class="h-6 w-6"/>
-                        </x-tomato-admin-button>
-                        <x-tomato-admin-button warning modal type="icon" :href="route('admin.accounts.edit', $item->id)" title="{{trans('tomato-admin::global.crud.edit')}}">
-                            <x-heroicon-s-pencil class="h-6 w-6"/>
-                        </x-tomato-admin-button>
-                        <x-tomato-admin-button type="icon"
-                                               :href="route('admin.accounts.destroy', $item->id)"
-                                               title="{{trans('tomato-admin::global.crud.edit')}}"
-                                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
-                                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
-                                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
-                                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
-                                               class="px-2 text-red-500"
-                                               method="delete"
-                        >
-                            <x-heroicon-s-trash class="h-6 w-6"/>
-                        </x-tomato-admin-button>
-                    </div>
+                        <x-tomato-admin-dropdown-item
+                            danger
+                            method="DELETE"
+                            type="link"
+                            icon="bx bxs-trash"
+                            label="{{trans('tomato-admin::global.crud.delete')}}"
+                            :href="route('admin.accounts.destroy', $item->id)"
+                            confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                            confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                            confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                            cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                        />
+                    </x-tomato-admin-dropdown>
                 </x-splade-cell>
             </x-splade-table>
         </div>

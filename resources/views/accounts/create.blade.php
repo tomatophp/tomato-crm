@@ -1,9 +1,10 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.create')}} {{__('Account')}}">
-    <x-splade-form :default="['loginBy' => config('tomato-crm.login_by')]" class="flex flex-col space-y-4" action="{{route('admin.accounts.store')}}" method="post">
+    <x-splade-form :default="['loginBy' => config('tomato-crm.login_by'), 'type' => 'customer']" class="flex flex-col space-y-4" action="{{route('admin.accounts.store')}}" method="post">
+        <x-splade-file filepond preview name="avatar" label="{{__('Account Avatar')}}" />
 
-        <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type_id" choices>
+        <x-splade-select  label="{{__('Account Type')}}" placeholder="{{__('Account Type')}}" name="type" choices>
             @foreach($types as $type)
-                <option value="{{$type->id}}">{{$type->name}}</option>
+                <option value="{{$type->key}}">{{$type->name}}</option>
             @endforeach
         </x-splade-select>
 
