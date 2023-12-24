@@ -98,18 +98,20 @@ class GroupsController extends Controller
             redirect: 'admin.groups.index',
         );
 
-        $response->record->accounts()->sync(array_values($request->accounts));
-
         return back();
     }
 
 
     public function destroy(Group $model)
     {
-        return Tomato::destroy(
+        $model->accounts()->detach();
+
+        $response = Tomato::destroy(
             model: $model,
             message: __('Group deleted successfully'),
             redirect: 'admin.groups.index',
         );
+
+        return back();
     }
 }

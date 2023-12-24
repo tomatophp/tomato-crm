@@ -17,6 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $name
  * @property string $username
  * @property string $loginBy
+ * @property string $type
  * @property string $address
  * @property string $password
  * @property string $otp_code

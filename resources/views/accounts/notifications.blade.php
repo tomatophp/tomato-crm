@@ -1,4 +1,7 @@
 <x-tomato-admin-container label="{{__('Send Notification')}}">
+    <x-slot:icon>
+       bx bxs-bell
+    </x-slot:icon>
     <x-splade-form :default="[
                 'use_template' => true,
                 'privacy' => isset($model) ? 'customer':'public',

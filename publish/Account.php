@@ -19,6 +19,7 @@ use TomatoPHP\TomatoCrm\Models\Group;
  * @property string $username
  * @property string $loginBy
  * @property string $address
+ * @property string $type
  * @property string $password
  * @property string $otp_code
  * @property string $otp_activated_at
@@ -50,7 +51,7 @@ class Account extends Authenticatable implements HasMedia
         'email',
         'phone',
         'parent_id',
-        'type_id',
+        'type',
         'name',
         'username',
         'loginBy',

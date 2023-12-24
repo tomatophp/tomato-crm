@@ -14,7 +14,25 @@
         bx bxs-user
     </x-slot:icon>
 
-
+    @if(config('tomato-crm.features.groups'))
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-3">
+        @foreach($groups as $group)
+            <div class="relative border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-4 rounded-lg bg-white">
+                <x-splade-link :href="route('admin.groups.edit', $group->id)" modal class="absolute top-10 right-10 text-warning-500">
+                    <i class="bx bx-edit"></i>
+                </x-splade-link>
+               <x-splade-link :href="route('admin.accounts.index') . '?group_id=' . $group->id" class="flex flex-col items-center justify-center">
+                   <i class="{{$group->icon}} bx-lg" style="color: {{$group->color}}"></i>
+                   <h1 class="font-bold text-2xl">{{$group->name}}</h1>
+                   <h1 class="text-gray-400 text-sm">{{$group->description}}</h1>
+               </x-splade-link>
+            </div>
+        @endforeach
+        <x-splade-link modal :href="route('admin.groups.create')" class="border border-gray-200 dark:border-gray-700 p-4 rounded-lg bg-primary-500 text-white flex flex-col items-center justify-center">
+            <i class="bx bx-plus-circle bx-lg"></i>
+        </x-splade-link>
+    </div>
+    @endif
     <div class="pb-12" v-cloak>
         <div class="mx-auto">
             <x-splade-table :for="$table" striped>
@@ -35,7 +53,15 @@
                                 <div class="w-12 h-12 border rounded-full border-gray-200 bg-white">
                                     <div class="flex flex-col items-center justify-center mt-3">
                                         <div>
-                                            <i class="bx bxs-user text-xl"></i>
+                                            @if($item->type === 'customer')
+                                                <i class="bx bxs-group text-xl"></i>
+                                            @elseif($item->type === 'supplier')
+                                                <i class="bx bxs-briefcase text-xl"></i>
+                                            @elseif($item->type === 'lead')
+                                                <i class="bx bxs-traffic text-xl"></i>
+                                            @else
+                                                <i class="bx bxs-user text-xl"></i>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -45,13 +71,13 @@
                             <x-splade-link :href="route('admin.accounts.show', $item->id)" class="text-lg font-bold">{{$item->name}}</x-splade-link>
                             <a href="mailto:{{$item->email}}" class="text-sm text-gray-400">{{$item->email}}</a>
                             <a href="tel:{{$item->phone}}" class="text-sm text-gray-400">{{$item->phone}}</a>
+                            @if(config('tomato-crm.features.groups'))
                             <div class="my-2 grid grid-cols-4">
-                                @if(config('tomato-crm.features.groups'))
-                                    @foreach($item->groups as $group)
-                                        <x-tomato-admin-row type="badge" href="{{url()->current().'?group_id='.$group->id}}" icon="{{$group->icon}}" color="{{$group->color}}" table value="{{$group->name}}" />
-                                    @endforeach
-                                @endif
+                                @foreach($item->groups as $group)
+                                    <x-tomato-admin-row type="badge" href="{{url()->current().'?group_id='.$group->id}}" icon="{{$group->icon}}" color="{{$group->color}}" table value="{{$group->name}}" />
+                                @endforeach
                             </div>
+                            @endif
                         </div>
                     </div>
                 </x-splade-cell>
@@ -61,10 +87,7 @@
                     </x-tomato-admin-tooltip>
                 </x-splade-cell>
                 <x-splade-cell actions>
-                    <x-tomato-admin-dropdown class="text-primary-500" icon="bx bxs-cog bx-sm" label="{{__('Actions')}}" primary>
-                        @if(config('tomato-crm.views.accounts.actions', null))
-                            @include(config('tomato-crm.views.accounts.actions'))
-                        @endif
+                    <x-tomato-admin-dropdown class="text-primary-500" icon="bx bx-dots-vertical-rounded bx-sm" label="{{__('Actions')}}" primary>
                         <x-tomato-admin-dropdown-item
                             success
                             type="link"
@@ -116,6 +139,9 @@
                                 label="{{__('Add Address')}}"
                                 :href="route('admin.locations.create',['account_id' =>  $item->id])"
                             />
+                        @endif
+                        @if(config('tomato-crm.views.accounts.actions', null))
+                            @include(config('tomato-crm.views.accounts.actions'))
                         @endif
                         <x-tomato-admin-dropdown-item
                             danger

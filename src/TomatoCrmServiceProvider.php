@@ -101,20 +101,6 @@ class TomatoCrmServiceProvider extends ServiceProvider
                 ->route('admin.accounts.index')
                 ->icon('bx bxs-user');
         }
-        if (config('tomato-crm.features.groups')) {
-            $menus[] = Menu::make()
-                ->group(__('CRM'))
-                ->label(__('Groups'))
-                ->route('admin.groups.index')
-                ->icon('bx bxs-group');
-        }
-        if (config('tomato-crm.features.locations')) {
-            $menus[] = Menu::make()
-                ->group(__('CRM'))
-                ->label(__('Locations'))
-                ->route('admin.locations.index')
-                ->icon('bx bxs-map');
-        }
         if (config('tomato-crm.features.contacts')) {
             $menus[] = Menu::make()
                 ->group(__('CRM'))

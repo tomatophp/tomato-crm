@@ -120,14 +120,15 @@ class AccountTable extends AbstractTable
                         $model->delete();
                     },
                     after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
-                    confirm: true,
-                    style: "danger"
+                    confirm: true
+
                 );
 
                 $table->bulkAction(
                     label: __('Attach to group'),
                     type: 'modal',
-                    href: route('admin.accounts.groups')
+                    href: route('admin.accounts.groups'),
+                    style: "primary"
                 );
             }
         }
@@ -140,13 +141,13 @@ class AccountTable extends AbstractTable
                     $model->delete();
                 },
                 after: fn () => Toast::danger(__('Account Has Been Deleted'))->autoDismiss(2),
-                confirm: true,
-                style: "danger"
+                confirm: true
             );
             $table->bulkAction(
                 label: __('Attach to group'),
                 type: 'modal',
-                href: route('admin.accounts.groups')
+                href: route('admin.accounts.groups'),
+                style: "primary"
             );
             $table->export();
         }

@@ -14,15 +14,6 @@
 
         </div>
 
-        <x-splade-select class="col-span-2" name="accounts[]"
-                         label="{{ __('Select Accounts') }}"
-                         :options="$accounts"
-                         option-label="name"
-                         option-value="id"
-                         multiple
-                         choices
-                         relation
-        />
 
         <div class="flex justify-start gap-2 pt-3">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />

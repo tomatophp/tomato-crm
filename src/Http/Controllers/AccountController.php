@@ -56,6 +56,9 @@ class AccountController extends Controller
                 }
             }
         }
+
+        $groups= Group::all();
+
         return Tomato::index(
             request: $request,
             model: app(config('tomato-crm.model'))::class,
@@ -63,6 +66,9 @@ class AccountController extends Controller
             table: \TomatoPHP\TomatoCrm\Tables\AccountTable::class,
             query: $query,
             filters: $setFiltersArray,
+            data: [
+                "groups" => $groups
+            ]
         );
     }
 
