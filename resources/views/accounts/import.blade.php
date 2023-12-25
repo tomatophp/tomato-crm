@@ -1,5 +1,5 @@
-<x-tomato-admin-container label="{{__('Import Product')}}">
-    <x-splade-form :default="['type_id' => $types[0]->id]" confirm class="flex flex-col space-y-4" action="{{route('admin.accounts.import.store')}}" method="post">
+<x-tomato-admin-container label="{{__('Import Accounts')}}">
+    <x-splade-form :default="['type_id' => $types[0]->id]" confirm class="flex flex-col gap-4" action="{{route('admin.accounts.import.store')}}" method="post">
         <a class="text-primary-500 underline" href="https://docs.google.com/spreadsheets/d/1Q5MUuYL2lP3pBtuPBC9xt5JTp-hi8wh9478RgTD4jxE/edit?usp=sharing" target="_blank">
             {{__('Please Check This XLSX file before create new one')}}
         </a>

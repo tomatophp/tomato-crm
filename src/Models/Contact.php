@@ -28,6 +28,10 @@ class Contact extends Model
      */
     protected $fillable = ['type_id', 'status_id', 'name', 'email', 'phone', 'subject', 'message', 'active', 'created_at', 'updated_at'];
 
+
+    protected $casts = [
+        'active' => 'boolean',
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -25,10 +25,12 @@ class GroupStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_tomato_translations_ar' => ['required', 'string', 'max:255'],
-            'name_tomato_translations_en' => ['required', 'string', 'max:255'],
-            'description_tomato_translations_en' => ['required', 'string', 'max:255'],
-            'description_tomato_translations_en' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'array'],
+            'name.ar' => ['required', 'string', 'max:255'],
+            'name.en' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'array'],
+            'description.en' => ['nullable', 'string', 'max:255'],
+            'description.en' => ['nullable', 'string', 'max:255'],
             'color' => ['nullable', 'string', 'max:255'],
             'icon' => ['nullable', 'string', 'max:255']
         ];

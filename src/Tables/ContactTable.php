@@ -64,18 +64,22 @@ class ContactTable extends AbstractTable
                 after: fn () => Toast::danger(__('Contact Has Been Deleted'))->autoDismiss(2),
                 confirm: true
             )
+            ->boolFilter(
+                label: __('Is Active?'),
+                key: 'active',
+            )
             ->export()
             ->defaultSort('id')
             ->column(
                 key: 'type.name',
                 label: __('Type'),
-                sortable: false,
-                searchable: true)
+                sortable: false
+            )
             ->column(
                 key: 'status.name',
                 label: __('Status'),
-                sortable: false,
-                searchable: true)
+                sortable: false
+            )
             ->column(
                 key: 'name',
                 label: __('Name'),

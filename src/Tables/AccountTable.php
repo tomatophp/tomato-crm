@@ -68,6 +68,7 @@ class AccountTable extends AbstractTable
                     "type" => "type"
                 ]),
                 option_label: 'name.'.app()->getLocale(),
+                option_value: 'key',
                 label: __('Type'))
             ->boolFilter(
                 key: 'is_active',
@@ -82,11 +83,13 @@ class AccountTable extends AbstractTable
                 key: 'email',
                 label: __('Email'),
                 sortable: true,
+                searchable: true,
                 hidden: true
             )
             ->column(
                 key: 'phone',
                 label: __('Phone'),
+                searchable: true,
                 sortable: true,
                 hidden: true
             )

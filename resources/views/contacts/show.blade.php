@@ -1,115 +1,30 @@
-<x-splade-modal class="font-main">
-    <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.view')}} {{ __('Contact') }} #{{$model->id}}</h1>
-
-    <div class="flex flex-col space-y-4">
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Type')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->Type->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Status')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->Status->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Name')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Email')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->email}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Phone')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->phone}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Subject')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->subject}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Message')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->message}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{__('Active')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      @if($model->active)
-                          <x-heroicon-s-check-circle class="text-green-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
-                      @else
-                          <x-heroicon-s-x-circle class="text-red-600 h-8 w-8 ltr:mr-2 rtl:ml-2"/>
-                      @endif
-                  </h3>
-              </div>
-          </div>
-
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{ __('Contact') }} #{{$model->id}}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <x-tomato-admin-row :label="__('Type')" :value="$model->type?->name" type="text" />
+        <x-tomato-admin-row :label="__('Status')" :value="$model->status?->name" type="text" />
+        <x-tomato-admin-row :label="__('Name')" :value="$model->name" type="text" />
+        <x-tomato-admin-row :label="__('Email')" :value="$model->email" type="email" />
+        <x-tomato-admin-row :label="__('Phone')" :value="$model->phone" type="tel" />
+        <x-tomato-admin-row :label="__('Subject')" :value="$model->subject" type="text" />
+        <x-tomato-admin-row :label="__('Message')" :value="$model->message" type="text" />
+        <x-tomato-admin-row :label="__('Is Active?')" :value="$model->active" type="bool" />
     </div>
-</x-splade-modal>
+
+    <div class="flex justify-start gap-2 pt-3">
+        <x-tomato-admin-button
+            danger
+            :href="route('admin.contacts.destroy', $model->id)"
+            title="{{trans('tomato-admin::global.crud.edit')}}"
+            confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+            confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+            confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+            cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+            class="px-2 text-red-500"
+            method="delete"
+        >
+            {{__('Delete')}}
+        </x-tomato-admin-button>
+        <x-tomato-admin-button secondary :href="route('admin.contacts.index')" label="{{__('Cancel')}}"/>
+    </div>
+
+</x-tomato-admin-container>

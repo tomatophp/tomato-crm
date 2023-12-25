@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use TomatoPHP\TomatoAdmin\Facade\TomatoMenu;
 use TomatoPHP\TomatoAdmin\Services\Contracts\Menu;
+use TomatoPHP\TomatoCategory\Facades\TomatoCategory;
+use TomatoPHP\TomatoCategory\Services\Contracts\Type;
 use TomatoPHP\TomatoCrm\Console\TomatoAuthGenerate;
 use TomatoPHP\TomatoCrm\Events\SendOTP;
 use TomatoPHP\TomatoCrm\Menus\AccountMenu;
@@ -143,6 +145,14 @@ class TomatoCrmServiceProvider extends ServiceProvider
         }
 
         TomatoMenu::register($menus);
+
+        TomatoCategory::register([
+            Type::make()
+                ->label(__('Account Types'))
+                ->for('accounts')
+                ->type('type')
+                ->back('admin.accounts.index')
+        ]);
 
     }
 }

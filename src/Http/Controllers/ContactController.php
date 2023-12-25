@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Js;
 use Illuminate\View\View;
+use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
 use TomatoPHP\TomatoCrm\Models\Contact;
 
@@ -123,5 +124,16 @@ class ContactController extends Controller
         );
 
         return $response->redirect;
+    }
+    /**
+     * @param \TomatoPHP\TomatoCrm\Models\Contact $model
+     * @return RedirectResponse
+     */
+    public function close(\TomatoPHP\TomatoCrm\Models\Contact $model): RedirectResponse|JsonResponse
+    {
+        $model->update(['active' => false]);
+
+        Toast::success(__('Contact closed successfully'))->autoDismiss(2);
+        return back();
     }
 }

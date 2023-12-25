@@ -38,9 +38,9 @@ class AccountController extends Controller
         if ($request->get('type') && !empty($request->get('type'))) {
             $query->where('type', $request->get('type'));
         }
-        if ($request->get('group_id') && !empty($request->get('group_id'))) {
+        if ($request->get('filter') && isset($request->get('filter')['group_id'])) {
             $query->whereHas('groups', function ($q) use ($request) {
-                $q->where('group_id', $request->get('group_id'));
+                $q->where('group_id', $request->get('filter')['group_id']);
             });
         }
         $filters = \TomatoPHP\TomatoCrm\Facades\TomatoCrm::getFilters();

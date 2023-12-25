@@ -18,9 +18,6 @@ use TomatoPHP\TomatoTranslations\Services\HandelTranslationInput;
 
 class GroupsController extends Controller
 {
-
-    use HandelTranslationInput;
-
     public function index(Request $request): View
     {
         return Tomato::index(
@@ -51,7 +48,6 @@ class GroupsController extends Controller
 
     public function store(GroupStoreRequest $request): RedirectResponse
     {
-        $this->translate($request);
         $response = Tomato::store(
             request: $request,
             model: Group::class,
@@ -74,10 +70,6 @@ class GroupsController extends Controller
 
     public function edit(Group $model): View
     {
-        $this->loadTranslation($model, [
-            'name',
-            'description'
-        ]);
         return Tomato::get(
             model: $model,
             view: 'tomato-crm::groups.edit',
@@ -90,7 +82,6 @@ class GroupsController extends Controller
 
     public function update(GroupUpdateRequest $request, Group $model): RedirectResponse
     {
-        $this->translate($request);
         $response = Tomato::update(
             request: $request,
             model: $model,

@@ -6,7 +6,10 @@ use Illuminate\Support\Facades\Route;
 if(config('tomato-crm.features.accounts')){
     Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
         Route::get('admin/accounts', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'index'])->name('accounts.index');
+        //Account Types
+
         Route::get('admin/accounts/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'groups'])->name('accounts.groups');
+        Route::post('admin/accounts/types', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'typesStore'])->name('accounts.typesStore');
         Route::post('admin/accounts/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'groupsStore'])->name('accounts.groups.store');
         Route::get('admin/accounts/api', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'api'])->name('accounts.api');
         Route::get('admin/accounts/create', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'create'])->name('accounts.create');
@@ -41,6 +44,7 @@ if(config('tomato-crm.features.contacts')) {
         Route::get('admin/contacts/{model}/edit', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'edit'])->name('contacts.edit');
         Route::post('admin/contacts/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'update'])->name('contacts.update');
         Route::delete('admin/contacts/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'destroy'])->name('contacts.destroy');
+        Route::post('admin/contacts/{model}/close', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'close'])->name('contacts.close');
     });
 }
 
