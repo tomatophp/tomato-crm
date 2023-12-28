@@ -89,3 +89,16 @@ if(config('tomato-crm.features.groups')) {
         Route::delete('admin/groups/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'destroy'])->name('groups.destroy');
     });
 }
+
+if(config('tomato-crm.features.requests')) {
+    Route::middleware(['auth', 'splade', 'verified', 'web'])->name('admin.')->group(function () {
+        Route::get('admin/account-requests', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'index'])->name('account-requests.index');
+        Route::get('admin/account-requests/api', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'api'])->name('account-requests.api');
+        Route::get('admin/account-requests/create', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'create'])->name('account-requests.create');
+        Route::post('admin/account-requests', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'store'])->name('account-requests.store');
+        Route::get('admin/account-requests/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'show'])->name('account-requests.show');
+        Route::get('admin/account-requests/{model}/edit', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'edit'])->name('account-requests.edit');
+        Route::post('admin/account-requests/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'update'])->name('account-requests.update');
+        Route::delete('admin/account-requests/{model}', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'destroy'])->name('account-requests.destroy');
+    });
+}

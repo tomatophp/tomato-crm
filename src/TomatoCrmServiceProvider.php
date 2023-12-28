@@ -103,6 +103,13 @@ class TomatoCrmServiceProvider extends ServiceProvider
                 ->route('admin.accounts.index')
                 ->icon('bx bxs-user');
         }
+        if (config('tomato-crm.features.requests')) {
+            $menus[] = Menu::make()
+                ->group(__('CRM'))
+                ->label(__('Account Requests'))
+                ->route('admin.account-requests.index')
+                ->icon('bx bxs-user-circle');
+        }
         if (config('tomato-crm.features.contacts')) {
             $menus[] = Menu::make()
                 ->group(__('CRM'))
@@ -124,6 +131,8 @@ class TomatoCrmServiceProvider extends ServiceProvider
                 ->route('admin.accounts.notifications.index')
                 ->icon('bx bxs-bell');
         }
+
+
         if (config('tomato-crm.features.send_otp')) {
             Event::listen([
                 SendOTP::class

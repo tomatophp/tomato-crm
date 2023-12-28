@@ -11,7 +11,7 @@ return [
         "groups" => true,
         "locations" => true,
         "contacts" => true,
-        "activites" => false,
+        "requests" => true,
         "notifications" => true,
         "apis" => true,
         "send_otp" => true
