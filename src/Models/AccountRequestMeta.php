@@ -3,6 +3,8 @@
 namespace TomatoPHP\TomatoCrm\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property integer $id
@@ -14,17 +16,27 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed $value
  * @property boolean $is_approved
  * @property string $is_approved_at
+ * @property boolean $is_rejected
+ * @property string $is_rejected_at
+ * @property string $rejected_reason
  * @property string $created_at
  * @property string $updated_at
  * @property AccountRequest $accountRequest
  * @property User $user
  */
-class AccountRequestMeta extends Model
+class AccountRequestMeta extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'account_request_id', 'model_id', 'model_type', 'key', 'value', 'is_approved', 'is_approved_at', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'account_request_id', 'model_id', 'model_type', 'key', 'value', 'is_approved', 'is_approved_at', 'is_rejected', 'is_rejected_at', 'rejected_reason', 'created_at', 'updated_at'];
+
+    protected $casts = [
+        'value' => 'json',
+        'is_approved' => 'boolean'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

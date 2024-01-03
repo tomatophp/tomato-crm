@@ -7,7 +7,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use ProtoneMedia\Splade\Facades\Toast;
 use TomatoPHP\TomatoAdmin\Facade\Tomato;
+use TomatoPHP\TomatoCrm\Models\AccountRequest;
+use TomatoPHP\TomatoCrm\Models\AccountRequestMeta;
 
 class AccountRequestController extends Controller
 {
@@ -150,5 +153,102 @@ class AccountRequestController extends Controller
         }
 
         return $response->redirect;
+    }
+
+    public function approve(AccountRequestMeta $model)
+    {
+        $model->update([
+            "is_approved" => true,
+            "is_approved_at" => now(),
+            "is_rejected" => false,
+            "is_rejected_at" => null,
+            "rejected_reason" => null,
+        ]);
+
+        $request = $model->accountRequest;
+        $hasPending = false;
+        foreach ($request->accountRequestMetas as $meta){
+            if(!$meta->is_approved){
+                $hasPending = true;
+            }
+        }
+
+        if(!$hasPending){
+            $request->update([
+                "user_id" => auth('web')->user()->id,
+                "status" => "approved",
+                "is_approved" => true,
+                "is_approved_at" => now(),
+            ]);
+
+            $request->account->type = 'vendor';
+            $request->account->save();
+
+            foreach ($request->accountRequestMetas as $meta){
+                if($meta->key === 'image'){
+                    $request->account->meta($meta->key, $meta->getMedia('image')->first()?->getUrl());
+                }
+                else {
+                    $request->account->meta($meta->key, $meta->value);
+                }
+            }
+        }
+
+        Toast::success(__('Account request approvied successfully'))->autoDismiss(2);
+        return redirect()->back();
+    }
+
+    public function reject(AccountRequestMeta $model, Request $request)
+    {
+        $request->validate([
+            "rejected_reason" => "required|string"
+        ]);
+
+        $model->update([
+            "is_rejected" => true,
+            "is_rejected_at" => now(),
+            "rejected_reason" => $request->get("rejected_reason"),
+        ]);
+
+        $model->accountRequest->update([
+            "user_id" => auth('web')->user()->id,
+            "status" => "rejected"
+        ]);
+
+        Toast::success(__('Account request rejected successfully'))->autoDismiss(2);
+        return redirect()->back();
+    }
+
+    public function approveAll(AccountRequest $model)
+    {
+        foreach ($model->accountRequestMetas as $meta){
+            $meta->is_approved = true;
+            $meta->is_approved_at = now();
+            $meta->is_rejected = false;
+            $meta->is_rejected_at = null;
+            $meta->rejected_reason = null;
+            $meta->save();
+
+
+            $model->account->type = 'vendor';
+            $model->account->save();
+
+            foreach ($model->accountRequestMetas as $meta){
+                if($meta->key === 'image'){
+                    $model->account->meta($meta->key, $meta->getMedia('image')->first()?->getUrl());
+                }
+                else {
+                    $model->account->meta($meta->key, $meta->value);
+                }
+            }
+        }
+
+        $model->user_id = auth('web')->user()->id;
+        $model->status = "approved";
+        $model->is_approved = true;
+        $model->save();
+
+        Toast::success(__('Account request approvied successfully'))->autoDismiss(2);
+        return redirect()->back();
     }
 }

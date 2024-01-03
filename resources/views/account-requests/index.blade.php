@@ -18,9 +18,6 @@
                         <x-tomato-admin-button success type="icon" title="{{trans('tomato-admin::global.crud.view')}}" modal :href="route('admin.account-requests.show', $item->id)">
                             <x-heroicon-s-eye class="h-6 w-6"/>
                         </x-tomato-admin-button>
-                        <x-tomato-admin-button warning type="icon" title="{{trans('tomato-admin::global.crud.edit')}}" modal :href="route('admin.account-requests.edit', $item->id)">
-                            <x-heroicon-s-pencil class="h-6 w-6"/>
-                        </x-tomato-admin-button>
                         <x-tomato-admin-button danger type="icon" title="{{trans('tomato-admin::global.crud.delete')}}" :href="route('admin.account-requests.destroy', $item->id)"
                            confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
                            confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"

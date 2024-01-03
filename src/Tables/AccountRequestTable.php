@@ -68,13 +68,13 @@ class AccountRequestTable extends AbstractTable
                 sortable: true
             )
             ->column(
-                key: 'account_id',
-                label: __('Account id'),
+                key: 'account.name',
+                label: __('Account'),
                 sortable: true
             )
             ->column(
-                key: 'user_id',
-                label: __('User id'),
+                key: 'user.name',
+                label: __('User'),
                 sortable: true
             )
             ->column(

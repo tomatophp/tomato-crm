@@ -80,6 +80,10 @@ class AccountTable extends AbstractTable
                 label: __('Name'),
                 sortable: true)
             ->column(
+                key: 'type',
+                label: __('Type'),
+                sortable: true)
+            ->column(
                 key: 'email',
                 label: __('Email'),
                 sortable: true,

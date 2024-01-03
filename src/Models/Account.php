@@ -118,7 +118,7 @@ class Account extends Authenticatable implements HasMedia
      */
     public function meta(string $key, string|null $value=null): Model|string|null
     {
-        if($value){
+        if($value!==null){
             return $this->accountsMetas()->updateOrCreate(['key' => $key], ['value' => $value]);
         }
         else {

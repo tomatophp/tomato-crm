@@ -25,6 +25,9 @@ class AccountRequest extends Model
      */
     protected $fillable = ['account_id', 'user_id', 'type', 'status', 'is_approved', 'is_approved_at', 'created_at', 'updated_at'];
 
+    protected $casts = [
+        'is_approved' => 'boolean'
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -47,5 +50,29 @@ class AccountRequest extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+
+    /**
+     * @param string $key
+     * @param string|null $value
+     * @return Model|string
+     */
+    public function meta(string $key, string|null $value=null): Model|string|null
+    {
+        if($value!==null){
+            return $this->accountRequestMetas()->updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+        else {
+            $value = $this->accountRequestMetas()->where('key', $key)->first()?->value;
+            if($value === 'image'){
+                return $this->accountRequestMetas()->where('key', $key)->first()?->getMedia('image')->first()?->getUrl();
+            }
+            else {
+                return $this->accountRequestMetas()->where('key', $key)->first()?->value;
+            }
+
+
+        }
     }
 }

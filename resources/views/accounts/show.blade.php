@@ -1,5 +1,6 @@
 <x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{ __('Account') }} #{{$model->id}}">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <x-tomato-admin-row :label="__('Type')" :value="$model->type" type="text" />
         <x-tomato-admin-row :label="__('Name')" :value="$model->name" type="text" />
         <x-tomato-admin-row :label="__('Username')" :value="$model->username" type="text" />
         <x-tomato-admin-row :label="__('Email')" :value="$model->email" type="email" />
