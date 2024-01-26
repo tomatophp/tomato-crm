@@ -13,6 +13,8 @@ use TomatoPHP\TomatoLocations\Models\Country;
  * @property string $street
  * @property string $area
  * @property string $city
+ * @property string $zip
+ * @property boolean $is_main
  * @property string $country
  * @property integer $home_number
  * @property integer $flat_number
@@ -34,6 +36,8 @@ class Location extends Model
     protected $fillable = [
         'account_id',
         'street',
+        'zip',
+        'is_main',
         'area_id',
         'city_id',
         'country_id',
@@ -47,6 +51,10 @@ class Location extends Model
         'lng',
         'created_at',
         'updated_at'
+    ];
+
+    protected $casts = [
+        'is_main' => 'boolean',
     ];
 
     /**

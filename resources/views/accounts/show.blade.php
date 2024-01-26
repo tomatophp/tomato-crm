@@ -70,6 +70,7 @@
                 :model="$model"
                 name="locations"
                 :table="\TomatoPHP\TomatoCrm\Tables\LocationTable::class"
+                view="tomato-crm::locations.index"
             />
         @endif
         @foreach (array_merge(config('tomato-crm.relations'), \TomatoPHP\TomatoCrm\Facades\TomatoCrm::loadRelation()) as $item)

@@ -4,10 +4,8 @@
         action="{{route('admin.groups.store')}}"
         method="post"
     >
-        <x-splade-input  label="{{__('Name [AR]')}}" placeholder="{{__('Name [AR]')}}" name="name.ar" />
-        <x-splade-input  label="{{__('Name [EN]')}}" placeholder="{{__('Name [EN]')}}" name="name.en" />
-        <x-splade-textarea label="{{__('Description [AR]')}}" placeholder="{{__('Description [AR]')}}" name="description.ar" />
-        <x-splade-textarea label="{{__('Description [EN]')}}" placeholder="{{__('Description [EN]')}}" name="description.en" />
+        <x-tomato-translation label="{{__('Name')}}" placeholder="{{__('Name')}}" name="name" />
+        <x-tomato-translation textarea label="{{__('Description')}}" placeholder="{{__('Description')}}" name="description" />
 
         <div class="flex justifiy-between gap-4 my-4">
             <div class="w-full">
