@@ -100,6 +100,10 @@ class LocationTable extends AbstractTable
                 key: 'country.name',
                 label: __('Country'),
                 sortable: false)
+            ->column(
+                key: 'is_main',
+                label: __('Is Main?'),
+                sortable: false)
             ->column(key: 'actions',label: trans('tomato-admin::global.crud.actions'))
             ->paginate(15);
     }

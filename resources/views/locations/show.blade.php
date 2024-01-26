@@ -8,10 +8,11 @@
         <x-tomato-admin-row :label="__('Home number')" :value="$model->home_number"/>
         <x-tomato-admin-row :label="__('Flat number')" :value="$model->flat_number"/>
         <x-tomato-admin-row :label="__('Floor number')" :value="$model->floor_number"/>
+        <x-tomato-admin-row :label="__('Zip')" :value="$model->zip"/>
         <x-tomato-admin-row :label="__('Mark')" :value="$model->mark"/>
         <x-tomato-admin-row :label="__('Map url')" :value="$model->map_url"/>
         <x-tomato-admin-row :label="__('Note')" :value="$model->note"/>
-        <x-tomato-admin-row :label="__('Note')" :value="$model->note"/>
+        <x-tomato-admin-row :label="__('Is Main')" :value="$model->is_main" type="bool"/>
     </div>
 
     <div class="flex justify-start gap-2 pt-3">
