@@ -201,7 +201,7 @@ class AccountController extends Controller
         }
 
         if(config('tomato-crm.features.groups')){
-            if($request->has('groups') && is_array($request->has('groups')) && count($request->get('groups'))){
+            if($request->has('groups') && is_array($request->get('groups')) && count($request->get('groups'))){
                 $response->record->groups()->attach(array_values($request->get('groups')));
             }
         }
@@ -372,39 +372,44 @@ class AccountController extends Controller
         ]);
 
         $collection = Excel::toArray(new ImportAccounts(), $request->file('file'));
-        if(isset($collection[0][0])){
-            unset($collection[0][0]);
-        }
-        if (isset($collection[0])){
-            foreach ($collection[0] as $item){
-                if(isset($item[1])){
-                    $checkIfExists = Account::where('username', $item[1])->first();
-                    if($checkIfExists){
-                        $checkIfExists->update([
-                            "name" => $item[0]??$checkIfExists->name,
-                            "phone" => $item[2]??$checkIfExists->phone,
-                            "address" => $item[3]??$checkIfExists->address,
-                            "type" => $request->get('type'),
-                        ]);
-
-                        $checkIfExists->groups()->sync($request->get('groups'));
-                    }
-                    else {
-                        if(isset($item[0]) && isset($item[1]) && isset($item[2]) && isset($item[3])){
-                            $account = config('tomato-crm.model')::create([
-                                "name" => $item[0],
-                                "email" => $item[1],
-                                "username" => $item[1],
-                                "phone" => $item[2],
-                                "address" => $item[3],
+        try {
+            if(isset($collection[0][0])){
+                unset($collection[0][0]);
+            }
+            if (isset($collection[0])){
+                foreach ($collection[0] as $item){
+                    if(isset($item[1])){
+                        $checkIfExists = Account::where('username', $item[1])->first();
+                        if($checkIfExists){
+                            $checkIfExists->update([
+                                "name" => $item[0]??$checkIfExists->name,
+                                "phone" => $item[2]??$checkIfExists->phone,
+                                "address" => $item[3]??$checkIfExists->address,
                                 "type" => $request->get('type'),
                             ]);
 
-                            $account->groups()->sync($request->get('groups'));
+                            $checkIfExists->groups()->sync($request->get('groups'));
+                        }
+                        else {
+                            if(isset($item[0]) && isset($item[1]) && isset($item[2]) && isset($item[3])){
+                                $account = config('tomato-crm.model')::create([
+                                    "name" => $item[0],
+                                    "email" => $item[1],
+                                    "username" => $item[1],
+                                    "phone" => $item[2],
+                                    "address" => $item[3],
+                                    "type" => $request->get('type'),
+                                ]);
+
+                                $account->groups()->sync($request->get('groups'));
+                            }
                         }
                     }
                 }
-           }
+            }
+        }catch (\Exception $exception){
+            Toast::danger(__('Something on your excel sheet is not correct'))->autoDismiss(2);
+            return back();
         }
 
         Toast::success(__('Your File Has Been Imported Successfully'))->autoDismiss(2);

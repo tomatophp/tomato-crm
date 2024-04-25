@@ -26,11 +26,9 @@ class GroupUpdateRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'array'],
-            'name.en' => ['sometimes', 'string', 'max:255'],
-            'name.ar' => ['sometimes', 'string', 'max:255'],
+            'name.*' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'array'],
-            'description.en' => ['sometimes', 'string', 'max:255'],
-            'description.en' => ['sometimes', 'string', 'max:255'],
+            'description.*' => ['sometimes', 'string', 'max:255'],
             'color' => ['nullable', 'string', 'max:255'],
             'icon' => ['nullable', 'string', 'max:255'],
         ];

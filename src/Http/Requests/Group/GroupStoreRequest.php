@@ -26,11 +26,9 @@ class GroupStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'array'],
-            'name.ar' => ['required', 'string', 'max:255'],
-            'name.en' => ['required', 'string', 'max:255'],
+            'name.*' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'array'],
-            'description.en' => ['nullable', 'string', 'max:255'],
-            'description.en' => ['nullable', 'string', 'max:255'],
+            'description.*' => ['nullable', 'string', 'max:255'],
             'color' => ['nullable', 'string', 'max:255'],
             'icon' => ['nullable', 'string', 'max:255']
         ];
