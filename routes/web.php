@@ -4,7 +4,7 @@
 use Illuminate\Support\Facades\Route;
 
 if(config('tomato-crm.features.accounts')){
-    Route::middleware(['web','auth', 'splade', 'verified'])->name('admin.')->group(function () {
+    Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
         Route::get('admin/accounts', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountController::class, 'index'])->name('accounts.index');
         //Account Types
 
@@ -35,7 +35,7 @@ if(config('tomato-crm.features.accounts')){
 }
 
 if(config('tomato-crm.features.contacts')) {
-    Route::middleware(['web', 'auth', 'splade', 'verified'])->name('admin.')->group(function () {
+    Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
         Route::get('admin/contacts', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'index'])->name('contacts.index');
         Route::get('admin/contacts/api', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'api'])->name('contacts.api');
         Route::get('admin/contacts/create', [\TomatoPHP\TomatoCrm\Http\Controllers\ContactController::class, 'create'])->name('contacts.create');
@@ -50,7 +50,7 @@ if(config('tomato-crm.features.contacts')) {
 
 
 if(config('tomato-crm.features.locations')) {
-    Route::middleware(['web', 'auth', 'splade', 'verified'])->name('admin.')->group(function () {
+    Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
         Route::get('admin/locations', [\TomatoPHP\TomatoCrm\Http\Controllers\LocationController::class, 'index'])->name('locations.index');
         Route::get('admin/locations/api', [\TomatoPHP\TomatoCrm\Http\Controllers\LocationController::class, 'api'])->name('locations.api');
         Route::get('admin/locations/create', [\TomatoPHP\TomatoCrm\Http\Controllers\LocationController::class, 'create'])->name('locations.create');
@@ -63,7 +63,7 @@ if(config('tomato-crm.features.locations')) {
 }
 
 if(config('tomato-crm.features.groups')) {
-    Route::middleware(['web', 'auth', 'splade', 'verified'])->name('admin.')->group(function () {
+    Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
         Route::get('admin/groups', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'index'])
             ->name('groups.index');
         Route::get('admin/groups/api', [\TomatoPHP\TomatoCrm\Http\Controllers\GroupsController::class, 'api'])->name('groups.api');
@@ -77,7 +77,7 @@ if(config('tomato-crm.features.groups')) {
 }
 
 if(config('tomato-crm.features.requests')) {
-    Route::middleware(['auth', 'splade', 'verified', 'web'])->name('admin.')->group(function () {
+    Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
         Route::get('admin/account-requests', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'index'])->name('account-requests.index');
         Route::post('admin/account-requests/{model}/meta/approve-all', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'approveAll'])->name('account-requests.approve.all');
         Route::post('admin/account-requests/{model}/meta/approve', [\TomatoPHP\TomatoCrm\Http\Controllers\AccountRequestController::class, 'approve'])->name('account-requests.approve');
